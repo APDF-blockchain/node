@@ -64,10 +64,17 @@ export class HttpServer {
 
         app.get('/debug', (req, res) => {
             console.log('GET /debug');
+            let hostUrl: string = req.get('host');
+            let hostArray: string[] = hostUrl.split(':');
+
             let rVal = {
                 'nodeId': this.nodeId,
-                'host': req.get('host'),
+                'host': hostArray[0],
+                'port': hostArray[1],
+                'selfUrl': hostUrl,
+                'peers': this.p2p.getPeers()
             };
+            res.send(rVal);
         });
 
         app.get('/debug/reset-chain', (req, res) => {

@@ -31,6 +31,7 @@ class Message {
  */
 export class P2P {
     private sockets: WebSocket[] = [];
+    private peers: string[] = [];
 
     /**
     * Create a P2P.
@@ -63,6 +64,7 @@ export class P2P {
         const server: Server = new WebSocket.Server({ port: p2pPort });
         server.on('connection', (ws: WebSocket) => {
             this.initConnection(ws);
+            console.log('ws=' + ws);
         });
         console.log('listening websocket p2p port on: ' + p2pPort);
     }
@@ -81,6 +83,11 @@ export class P2P {
      */
     public getPeerCount(): number {
         return this.sockets.length;
+    }
+
+    public getPeers(): string[] {
+        let rVal: string[] = this.peers;
+        return rVal;
     }
 
     /**
@@ -287,7 +294,7 @@ export class P2P {
      * Connect to a new peer.
      * @param {string} newPeer - string of the new peer to connect to.
      */
-    public connectToPeers(newPeer: string): void {
+    public connectToPeer(newPeer: string): void {
         const ws: WebSocket = new WebSocket(newPeer);
         ws.on('open', () => {
             this.initConnection(ws);
@@ -295,6 +302,17 @@ export class P2P {
         ws.on('error', () => {
             console.log('connection failed');
         });
+    }
+
+    /**
+     * Connect to the list of peers.
+     * @param {string[]} newPeers - array of peers to connect to.
+     */
+    public connectToPeers(newPeers: string[]): void {
+        for (let i = 0; i < newPeers.length; i++) {
+            this.connectToPeer(newPeers[i]);
+            this.peers.push(newPeers[i]);
+        }
     }
 
     /**
