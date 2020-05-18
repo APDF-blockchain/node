@@ -12,8 +12,25 @@ export class BlockChain {
 
     constructor() {
         if (this.blockchain.length === 0) {
+            let transaction = new Transaction();
+            transaction.data = "genesis tx";
+            transaction.dateCreated = new Date();
+            transaction.fee = 0;
+            transaction.from = "0000000000000000000000000000000000000000";
+            transaction.to = "f3a1e69b6176052fcc4a3248f1c5a91dea308ca9";
+            transaction.value = 1000000000000;
+            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
+            transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
+            let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
+            transaction.senderSignature = [];
+            transaction.senderSignature.push(signature);
+            transaction.senderSignature.push(signature);
+            transaction.mindInBlockIndex = 0;
+            transaction.tranferSuccessful = true;
+            let transactions: Transaction[] = [];
+            transactions.push(transaction);
             this.genesisBlock = new Block(
-                0, '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', 1465154705, [], 0, 0
+                0, '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', 1465154705, transactions, 0, 0
             );
             this.blockchain.push(this.genesisBlock);
             this.chainId = "c6da93eb4249cb5ff4f9da36e2a7f8d0d61999221ed6910180948153e71cc47f";
