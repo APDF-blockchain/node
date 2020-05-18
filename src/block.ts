@@ -1,20 +1,24 @@
 import { Transaction } from './transaction';
 export class Block {
     public index: number;
-    public hash: string;
-    public previousHash: string;
+    public blockDataHash: string;
     public timestamp: number;
-    public data: Transaction[];
+    public transactions: Transaction[];
     public difficulty: number;
-    public nonce: number
+    public nonce: number;
+    public minedBy: string;
+    public dateCreated: Date;
+    public blockHash: string;
 
-    constructor(_index: number, _hash: string, _previousHash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number) {
+    constructor(_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number) {
         this.index = _index;
-        this.hash = _hash;
-        this.previousHash = _previousHash;
+        this.blockHash = _hash;
         this.timestamp = _timestamp;
-        this.data = _data;
+        this.transactions = _data;
         this.difficulty = _difficulty;
         this.nonce = _nonce;
+        this.minedBy = "0000000000000000000000000000000000000000";
+        this.blockDataHash = "15cc5052fb3c307dd2bfc6bcaa057632250ee05104e4fb7cc75e59db1a92cefc";
+        this.dateCreated = new Date();
     }
 }

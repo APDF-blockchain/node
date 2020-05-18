@@ -13,7 +13,7 @@ export class BlockChain {
     constructor() {
         if (this.blockchain.length === 0) {
             this.genesisBlock = new Block(
-                0, '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', '', 1465154705, [], 0, 0
+                0, '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', 1465154705, [], 0, 0
             );
             this.blockchain.push(this.genesisBlock);
             this.chainId = "c6da93eb4249cb5ff4f9da36e2a7f8d0d61999221ed6910180948153e71cc47f";
@@ -25,6 +25,7 @@ export class BlockChain {
     }
 
     getPendingTransactionsCount() {
+        throw new Error("Method not implemented.");
         return this.pendingTransactionsCount;
     }
 
@@ -49,10 +50,9 @@ export class BlockChain {
     }
 
     public getLatestBlock(): Block {
-        //_index: number, _hash: string, _previousHash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number)
+        //_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number)
         return new Block(
             0,
-            '',
             '',
             0,
             [],

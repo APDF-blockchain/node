@@ -260,7 +260,7 @@ export class P2P {
         if (latestBlockReceived.index > latestBlockHeld.index) {
             console.log('blockchain possibly behind. We got: '
                 + latestBlockHeld.index + ' Peer got: ' + latestBlockReceived.index);
-            if (latestBlockHeld.hash === latestBlockReceived.previousHash) {
+            if (latestBlockHeld.blockHash === latestBlockReceived.blockHash) { // TODO: Not sure if this is right.
                 if (this.blockchain.addBlockToChain(latestBlockReceived)) {
                     this.broadcast(this.responseLatestMsg());
                 }
