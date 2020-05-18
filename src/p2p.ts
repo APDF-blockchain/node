@@ -76,6 +76,14 @@ export class P2P {
     }
 
     /**
+     * Returns the number of peers.
+     * @returns {number} peerCount;
+     */
+    public getPeerCount(): number {
+        return this.sockets.length;
+    }
+
+    /**
      * Initialize the given websocket
      * @param {WebSocket} ws - websocket to be initialized
      */

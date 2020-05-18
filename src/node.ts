@@ -11,8 +11,8 @@ export class Node {
 
     constructor() {
         this.blockchain = new BlockChain();
-        this.httpServer = new HttpServer(this.blockchain);
         this.p2p = new P2P(this.blockchain);
+        this.httpServer = new HttpServer(this.blockchain, this.p2p);
         this.httpServer.initHttpServer(this.httpPort);
         this.p2p.initP2PServer(this.p2pPort);
     }

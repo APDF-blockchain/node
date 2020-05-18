@@ -2,11 +2,20 @@ import express = require('express');
 import * as  bodyParser from 'body-parser';
 
 import { BlockChain } from './blockchain'
+import { P2P } from './p2p';
 
 export class HttpServer {
 
-    constructor(private blockchain: BlockChain) {
+    private listenerUrl: string;
+    private about: string = "Blockchain Project";
+    private nodeId: string = "17228da872ebe975d676d904";  // TODO this needs to be calculated.
 
+    constructor(private blockchain: BlockChain, private p2p: P2P) {
+
+    }
+
+    public getListenerUrl(): string {
+        return this.listenerUrl;
     }
 
     public initHttpServer(myHttpPort: number) {
@@ -16,11 +25,14 @@ export class HttpServer {
         app.use((err, req, res, next) => {
             if (err) {
                 res.status(400).send(err.message);
+            } else {
+                this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             }
         });
 
         app.get('/blocks', (req, res) => {
             res.send(this.blockchain.getBlockchain());
+            //res.send(JSON.stringify(this.blockchain.getBlockchain()));
         });
 
         app.get('/blocks/:index', (req, res) => {
@@ -29,6 +41,23 @@ export class HttpServer {
 
         app.get('/info', (req, res) => {
             console.log('GET /info');
+            //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
+            this.listenerUrl = req.protocol + "://" + req.get('host');
+            ;
+            let rVal = {
+                'about': this.about,
+                'nodeId': this.nodeId,
+                'chainId': this.blockchain.getChainId(),
+                'nodeUrl': this.getListenerUrl(),
+                'peers': this.p2p.getPeerCount(),
+                'currentDifficulty': this.blockchain.getCurrentDifficulty(),
+                'blockCount': this.blockchain.getBlocksCount(),
+                'cumulativeDifficulty': this.blockchain.getCumulativeDifficulty(),
+                'confirmedTransactions': this.blockchain.getConfirmedTransactionsCount(),
+                'pendingTransactions': this.blockchain.getPendingTransactionsCount()
+            };
+            //res.send(JSON.stringify(rVal));
+            res.send(rVal);
         });
 
         app.get('/debug', (req, res) => {
