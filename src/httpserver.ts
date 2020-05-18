@@ -3,15 +3,17 @@ import * as  bodyParser from 'body-parser';
 
 import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
+import { Config } from './config';
 
 export class HttpServer {
 
     private listenerUrl: string;
     private about: string = "Blockchain Project";
     private nodeId: string = "17228da872ebe975d676d904";  // TODO this needs to be calculated.
+    private config: Config;
 
     constructor(private blockchain: BlockChain, private p2p: P2P) {
-
+        this.config = new Config();
     }
 
     public getListenerUrl(): string {
@@ -62,6 +64,10 @@ export class HttpServer {
 
         app.get('/debug', (req, res) => {
             console.log('GET /debug');
+            let rVal = {
+                'nodeId': this.nodeId,
+                'host': req.get('host'),
+            };
         });
 
         app.get('/debug/reset-chain', (req, res) => {

@@ -9,6 +9,7 @@ export class BlockChain {
     private blockchain: Block[] = [];
     private genesisBlock: Block;
     private chainId: string;
+    private confirmedBalances: number[] = [];
 
     constructor() {
         if (this.blockchain.length === 0) {
@@ -36,12 +37,19 @@ export class BlockChain {
         }
     }
 
+    getConfirmedBalances(): number[] {
+        return this.confirmedBalances;
+    }
+
+    addConfirmedBalance(amount: number) {
+        this.confirmedBalances.push(amount);
+    }
+
     getConfirmedTransactionsCount() {
         return this.confirmedTransactionsCount;
     }
 
     getPendingTransactionsCount() {
-        throw new Error("Method not implemented.");
         return this.pendingTransactionsCount;
     }
 
