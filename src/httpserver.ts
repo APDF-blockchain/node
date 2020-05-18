@@ -14,6 +14,7 @@ export class HttpServer {
 
     constructor(private blockchain: BlockChain, private p2p: P2P) {
         this.config = new Config();
+        this.config.genesisBlock = this.blockchain.getGenesisBlock();
     }
 
     public getListenerUrl(): string {
@@ -72,7 +73,10 @@ export class HttpServer {
                 'host': hostArray[0],
                 'port': hostArray[1],
                 'selfUrl': hostUrl,
-                'peers': this.p2p.getPeers()
+                'peers': this.p2p.getPeers(),
+                'chain': {'blocks': this.blockchain.getBlockchain()},
+                'chainId': this.blockchain.getChainId(),
+                'config': this.config
             };
             res.send(rVal);
         });

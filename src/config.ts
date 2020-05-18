@@ -18,6 +18,5 @@ export class Config {
     public genesisBlock: Block;
 
     constructor() {
-
     }
 }
