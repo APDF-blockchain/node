@@ -7,7 +7,7 @@ export class Transaction {
     public data: string;
     public senderPubKey: string;
     public transactionDataHash: string;
-    public senderSignature: string[];
+    public senderSignature: string[] = [];
     public mindInBlockIndex: number;
     public tranferSuccessful: boolean;
     constructor() {

@@ -22,7 +22,6 @@ export class BlockChain {
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
-            transaction.senderSignature = [];
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.mindInBlockIndex = 0;
