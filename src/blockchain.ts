@@ -1,5 +1,6 @@
 import { Transaction } from './transaction';
 import { Block } from './block';
+import { ConfirmedBalances } from './confirmed-balances';
 export class BlockChain {
 
     private difficulty: number = 4;
@@ -9,7 +10,7 @@ export class BlockChain {
     private blockchain: Block[] = [];
     private genesisBlock: Block;
     private chainId: string;
-    private confirmedBalances: number[] = [];
+    private confirmedBalances: ConfirmedBalances[] = [];
 
     constructor() {
         if (this.blockchain.length === 0) {
@@ -34,15 +35,30 @@ export class BlockChain {
             );
             this.blockchain.push(this.genesisBlock);
             this.chainId = "c6da93eb4249cb5ff4f9da36e2a7f8d0d61999221ed6910180948153e71cc47f";
+            let confirmedBalance = new ConfirmedBalances();
+            confirmedBalance.accountAddress = '0000000000000000000000000000000000000000';
+            confirmedBalance.coinBalance = -1000010000060;
+            this.confirmedBalances.push(confirmedBalance);
+            confirmedBalance = new ConfirmedBalances();
+            confirmedBalance.accountAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
+            confirmedBalance.coinBalance = 999998799980;
+            this.confirmedBalances.push(confirmedBalance);
+            confirmedBalance = new ConfirmedBalances();
+            confirmedBalance.accountAddress = '84ede81c58f5c490fc6e1a3035789eef897b5b35';
+            confirmedBalance.coinBalance = 10000060;
+            this.confirmedBalances.push(confirmedBalance);
         }
     }
 
-    getConfirmedBalances(): number[] {
+    getConfirmedBalances(): ConfirmedBalances[] {
         return this.confirmedBalances;
     }
 
-    addConfirmedBalance(amount: number) {
-        this.confirmedBalances.push(amount);
+    addConfirmedBalance(accountAddress: string, amount: number) {
+        let confirmedBalance: ConfirmedBalances = new ConfirmedBalances();
+        confirmedBalance.accountAddress = accountAddress;
+        confirmedBalance.coinBalance = amount;
+        this.confirmedBalances.push(confirmedBalance);
     }
 
     getConfirmedTransactionsCount() {

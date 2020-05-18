@@ -90,7 +90,8 @@ export class HttpServer {
                 'peers': this.p2p.getPeers(),
                 'chain': {'blocks': this.blockchain.getBlockchain()},
                 'chainId': this.blockchain.getChainId(),
-                'config': this.config
+                'config': this.config,
+                'confirmedBalance': this.blockchain.getConfirmedBalances()
             };
             res.send(rVal);
         });
