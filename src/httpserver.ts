@@ -144,6 +144,8 @@ export class HttpServer {
 
         app.get('/balances', (req, res) => {
             console.log('GET /balances');
+            // TODO fake for now.
+            res.send(this.blockchain.getConfirmedBalances());
         });
 
         app.get('/address/:address/transactions', (req, res) => {
