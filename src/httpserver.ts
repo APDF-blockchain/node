@@ -42,10 +42,6 @@ export class HttpServer {
             //res.send(JSON.stringify(this.blockchain.getBlockchain()));
         });
 
-        // app.get('/blocks/:index', (req, res) => {
-        //     console.log('GET /blocks/:indexdebug');
-        // });
-
         app.get('/info', (req, res) => {
             console.log('GET /info');
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
