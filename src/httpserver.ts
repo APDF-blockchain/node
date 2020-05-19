@@ -91,7 +91,7 @@ export class HttpServer {
                 'chain': {'blocks': this.blockchain.getBlockchain()},
                 'chainId': this.blockchain.getChainId(),
                 'config': this.config,
-                'confirmedBalance': this.blockchain.getConfirmedBalances()
+                'confirmedBalances:': this.blockchain.getConfirmedBalances()
             };
             res.send(rVal);
         });
