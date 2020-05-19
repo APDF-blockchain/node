@@ -11,6 +11,8 @@ export class BlockChain {
     private genesisBlock: Block;
     private chainId: string;
     private confirmedBalances: ConfirmedBalances[] = [];
+    private pendingTransactions: Transaction[] = [];
+    private confirmedTransactions: Transaction[] = [];
 
     constructor() {
         if (this.blockchain.length === 0) {
@@ -48,6 +50,14 @@ export class BlockChain {
             confirmedBalance.coinBalance = 10000060;
             this.confirmedBalances.push(confirmedBalance);
         }
+    }
+
+    getPendingTransactions(): Transaction[] {
+        return this.pendingTransactions;
+    }
+
+    getConfirmedTransactions(): Transaction[] {
+        return this.confirmedTransactions;
     }
 
     getConfirmedBalances(): ConfirmedBalances[] {

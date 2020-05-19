@@ -4,6 +4,7 @@ import * as  bodyParser from 'body-parser';
 import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
 import { Config } from './config';
+import { Transaction } from './transaction';
 
 export class HttpServer {
 
@@ -34,6 +35,7 @@ export class HttpServer {
         });
 
         app.get('/blocks', (req, res) => {
+            // TODO: For now let's fake it.
             res.send(this.blockchain.getBlockchain());
             //res.send(JSON.stringify(this.blockchain.getBlockchain()));
         });
@@ -45,6 +47,7 @@ export class HttpServer {
         app.get('/info', (req, res) => {
             console.log('GET /info');
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
+            // TODO: For now let's fake it.
             this.listenerUrl = req.protocol + "://" + req.get('host');
             ;
             let rVal = {
@@ -65,6 +68,7 @@ export class HttpServer {
 
         app.get('/debug', (req, res) => {
             console.log('GET /debug');
+            // TODO: For now let's fake it.
             let hostUrl: string = req.get('host');
             let hostArray: string[] = hostUrl.split(':');
             this.config.defaultServerHost = hostArray[0];
@@ -111,6 +115,21 @@ export class HttpServer {
 
         app.get('/transactions/pending', (req, res) => {
             console.log('GET /transactions/pending');
+            let rVal: Transaction[] = this.blockchain.getPendingTransactions();
+            // TODO: For now let's fake it.
+            let tTran: Transaction = new Transaction();
+            tTran.from = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
+            tTran.to = 'a1de0763f26176c6d68cc77e0a1c2c42045f2314';
+            tTran.value = 40000;
+            tTran.fee = 10;
+            tTran.dateCreated = new Date();
+            tTran.data = 'Faucet -> Alice (again)';
+            tTran.senderPubKey = '8c4431db61e9095d5794ff53a3ae4171c766cadef015f2e11bec22b98a80f74a0';
+            tTran.transactionDataHash = 'd6f958a4501cf7e3d40e8fdfeab16e3ab77721e48b4bc85e1393d69ad414843d';
+            tTran.senderSignature.push('9eeac79031dcfef4c7b4c62d22025c7654d4fb0c21c37cf111314653559488c7');
+            tTran.senderSignature.push('617488c37966dc2da45e5bd5e53a292841b541b13259920be3ce57e861c2ed9a');
+            rVal.push(tTran);
+            res.send(rVal);
         });
 
         app.get('/transactions/confirmed', (req, res) => {
