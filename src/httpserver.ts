@@ -14,6 +14,7 @@ export class HttpServer {
     private about: string = "Blockchain Project";
     private nodeId: string = "17228da872ebe975d676d904";  // TODO this needs to be calculated.
     private config: Config;
+    private myHttpPort: number;
 
     constructor(private blockchain: BlockChain, private p2p: P2P) {
         this.config = new Config();
@@ -43,7 +44,7 @@ export class HttpServer {
         });
 
         app.get('/info', (req, res) => {
-            console.log('GET /info');
+            console.log(this.myHttpPort + ':GET /info');
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             // TODO: For now let's fake it.
             this.listenerUrl = req.protocol + "://" + req.get('host');
@@ -65,7 +66,7 @@ export class HttpServer {
         });
 
         app.get('/debug', (req, res) => {
-            console.log('GET /debug');
+            console.log(this.myHttpPort + ':GET /debug');
             // TODO: For now let's fake it.
             let hostUrl: string = req.get('host');
             let hostArray: string[] = hostUrl.split(':');
@@ -99,16 +100,16 @@ export class HttpServer {
         });
 
         app.get('/debug/reset-chain', (req, res) => {
-            console.log('GET /debug/reset-chain');
+            console.log(this.myHttpPort + ':GET /debug/reset-chain');
         });
 
         app.get('/debug/mine/:minerAddress/:difficulty', (req, res) => {
             let parms = { 'minerAddress': req.params.minerAddress, 'difficulty': req.params.difficulty };
-            console.log('GET /debug/mine/:minerAddress/:' + parms.minerAddress + '/:' + parms.difficulty);
+            console.log(this.myHttpPort + ':GET /debug/mine/:minerAddress/:' + parms.minerAddress + '/:' + parms.difficulty);
         });
 
         app.get('/blocks/:index', (req, res) => {
-            console.log('GET /blocks/:' + req.params.index);
+            console.log(this.myHttpPort + ':GET /blocks/:' + req.params.index);
             let rVal: Block = this.blockchain.getBlockchain()[req.params.index];
             if (rVal == null) {
                 res.status(401).send("No block at index=" + req.params.index);
@@ -118,7 +119,7 @@ export class HttpServer {
         });
 
         app.get('/transactions/pending', (req, res) => {
-            console.log('GET /transactions/pending');
+            console.log(this.myHttpPort + ':GET /transactions/pending');
             let rVal: Transaction[] = this.blockchain.getPendingTransactions();
             // TODO: For now let's fake it.
             let tTran: Transaction = new Transaction();
@@ -137,35 +138,35 @@ export class HttpServer {
         });
 
         app.get('/transactions/confirmed', (req, res) => {
-            console.log('GET /transactions/confirmed');
+            console.log(this.myHttpPort + ':GET /transactions/confirmed');
             let rVal: Transaction[] = this.blockchain.getConfirmedTransactions();
             res.send(rVal);
         });
 
         app.get('/transactions/:tranHash', (req, res) => {
-            console.log('GET /transactions/:' + req.params.tranHash);
+            console.log(this.myHttpPort + ':GET /transactions/:' + req.params.tranHash);
         });
 
         app.get('/balances', (req, res) => {
-            console.log('GET /balances');
+            console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
             res.send(this.blockchain.getConfirmedBalances());
         });
 
         app.get('/address/:address/transactions', (req, res) => {
-            console.log('GET /address/:' + req.params.address + '/transactions');
+            console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
         });
 
         app.get('/address/:address/transactions', (req, res) => {
-            console.log('GET /address/:' + req.params.address + '/transactions');
+            console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
         });
 
         app.get('/address/:address/balance', (req, res) => {
-            console.log('GET /address/:' + req.params.address + '/balance');
+            console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/balance');
         });
 
         app.post('/transactions/send', (req, res) => {
-            console.log('POST /transactions/send');
+            console.log(this.myHttpPort + ':POST /transactions/send');
             let body: Transaction[] = req.body;
             console.log(body);
             for (let i = 0; i < body.length; i++) {
@@ -175,7 +176,7 @@ export class HttpServer {
         });
 
         app.get('/peers', (req, res) => {
-            console.log('GET /peers');
+            console.log(this.myHttpPort + ':GET /peers');
             let rVal: string[] = this.p2p.getPeers();
             if (rVal.length !== 0) {
                 for (let i = 0; i < rVal.length; i++) {
@@ -188,7 +189,7 @@ export class HttpServer {
         });
 
         app.post('/peers/connect', (req, res) => {
-            console.log('POST /peers/connect');
+            console.log(this.myHttpPort + ':POST /peers/connect');
             let body: NodePeers = req.body;
             console.log(body);
             this.p2p.connectToPeer(body.peerUrl);
@@ -196,7 +197,7 @@ export class HttpServer {
         });
 
         app.post('/peers/notify-new-block', (req, res) => {
-            console.log('POST /peers/notify-new-block');
+            console.log(this.myHttpPort + ':POST /peers/notify-new-block');
         });
 
         app.post('/stop', (req, res) => {
@@ -205,16 +206,17 @@ export class HttpServer {
         });
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
-            console.log('GET /mining/get-mining-job/:' + req.params.address);
+            console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
-            console.log('POST /mining/submit-mined-block');
+            console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
         });
 
 
         app.listen(myHttpPort, () => {
             console.log('HttpServer listening http on port: ' + myHttpPort);
+            this.myHttpPort = myHttpPort;
         });
     };
 }
