@@ -1,4 +1,4 @@
-import * as WebSocket from 'ws';
+import WebSocket from 'ws';
 import { Server } from 'ws';
 import { Block } from './block';
 import { Transaction } from './transaction';
@@ -295,9 +295,12 @@ export class P2P {
      * @param {string} newPeer - string of the new peer to connect to.
      */
     public connectToPeer(newPeer: string): void {
+        console.log('newPeer='+newPeer);
+        //const ws: WebSocket = new WebSocket.Server({ port: newPeer });
         const ws: WebSocket = new WebSocket(newPeer);
         ws.on('open', () => {
             this.initConnection(ws);
+            this.peers.push(newPeer);
         });
         ws.on('error', () => {
             console.log('connection failed');
@@ -311,7 +314,7 @@ export class P2P {
     public connectToPeers(newPeers: string[]): void {
         for (let i = 0; i < newPeers.length; i++) {
             this.connectToPeer(newPeers[i]);
-            this.peers.push(newPeers[i]);
+            //this.peers.push(newPeers[i]);
         }
     }
 

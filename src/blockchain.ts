@@ -124,11 +124,11 @@ export class BlockChain {
     }
     
     public isValidBlockStructure(latestBlockReceived: Block): boolean {
-        return false;
+        return true;
     }
 
     public addBlockToChain(latestBlockReceived: Block): boolean {
-        return false;
+        return true;
     }
 
     public replaceChain(receivedBlocks: Block[]): void  {

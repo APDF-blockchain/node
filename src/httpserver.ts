@@ -5,6 +5,7 @@ import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
 import { Config } from './config';
 import { Transaction } from './transaction';
+import { NodePeers } from './node-peers';
 
 export class HttpServer {
 
@@ -172,10 +173,19 @@ export class HttpServer {
 
         app.get('/peers', (req, res) => {
             console.log('GET /peers');
+            let rVal: string[] = this.p2p.getPeers();
+            for( let i = 0; i < rVal.length; i++ ) {
+                console.log('peer'+i+':'+rVal[i]);
+            }
+            res.send(rVal);
         });
 
-        app.post('/peers/connet', (req, res) => {
-            console.log('POST /peers/connet');
+        app.post('/peers/connect', (req, res) => {
+            console.log('POST /peers/connect');
+            let body: NodePeers = req.body;
+            console.log(body);
+            this.p2p.connectToPeer(body.peerUrl);
+            res.status(201).send("Peers connect requested.");
         });
 
         app.post('/peers/notify-new-block', (req, res) => {
