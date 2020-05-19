@@ -26,7 +26,7 @@ export class BlockChain {
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
-            transaction.mindInBlockIndex = 0;
+            transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
             let transactions: Transaction[] = [];
             transactions.push(transaction);

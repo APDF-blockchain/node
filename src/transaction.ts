@@ -8,7 +8,7 @@ export class Transaction {
     public senderPubKey: string;
     public transactionDataHash: string;
     public senderSignature: string[] = [];
-    public mindInBlockIndex: number;
+    public minedInBlockIndex: number;
     public tranferSuccessful: boolean;
     constructor() {
 
