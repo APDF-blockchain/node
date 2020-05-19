@@ -109,14 +109,16 @@ export class BlockChain {
 
     public getLatestBlock(): Block {
         //_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number)
-        return new Block(
-            0,
-            '',
-            0,
-            [],
-            0,
-            0
-        );
+        // return new Block(
+        //     0,
+        //     '',
+        //     0,
+        //     [],
+        //     0,
+        //     0
+        // );
+        let latestBlock: Block = this.getBlockchain()[this.getBlockchain().length - 1];
+        return latestBlock;
     }
 
     public getTransactionPool(): Transaction[] {

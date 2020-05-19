@@ -6,6 +6,7 @@ import { P2P } from './p2p';
 import { Config } from './config';
 import { Transaction } from './transaction';
 import { NodePeers } from './node-peers';
+import { Block } from './block';
 
 export class HttpServer {
 
@@ -41,16 +42,16 @@ export class HttpServer {
             //res.send(JSON.stringify(this.blockchain.getBlockchain()));
         });
 
-        app.get('/blocks/:index', (req, res) => {
-            console.log('GET /blocks/:indexdebug');
-        });
+        // app.get('/blocks/:index', (req, res) => {
+        //     console.log('GET /blocks/:indexdebug');
+        // });
 
         app.get('/info', (req, res) => {
             console.log('GET /info');
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             // TODO: For now let's fake it.
             this.listenerUrl = req.protocol + "://" + req.get('host');
-            
+
             let rVal = {
                 'about': this.about,
                 'nodeId': this.nodeId,
@@ -93,7 +94,7 @@ export class HttpServer {
                 'port': hostArray[1],
                 'selfUrl': hostUrl,
                 'peers': this.p2p.getPeers(),
-                'chain': {'blocks': this.blockchain.getBlockchain()},
+                'chain': { 'blocks': this.blockchain.getBlockchain() },
                 'chainId': this.blockchain.getChainId(),
                 'config': this.config,
                 'confirmedBalances:': this.blockchain.getConfirmedBalances()
@@ -106,12 +107,18 @@ export class HttpServer {
         });
 
         app.get('/debug/mine/:minerAddress/:difficulty', (req, res) => {
-            let parms = {'minerAddress': req.params.minerAddress, 'difficulty': req.params.difficulty};
+            let parms = { 'minerAddress': req.params.minerAddress, 'difficulty': req.params.difficulty };
             console.log('GET /debug/mine/:minerAddress/:' + parms.minerAddress + '/:' + parms.difficulty);
         });
 
         app.get('/blocks/:index', (req, res) => {
-            console.log('GET /blocks/:indexdebug' + req.params.index);
+            console.log('GET /blocks/:' + req.params.index);
+            let rVal: Block = this.blockchain.getBlockchain()[req.params.index];
+            if (rVal == null) {
+                res.status(401).send("No block at index=" + req.params.index);
+            } else {
+                res.send(rVal);
+            }
         });
 
         app.get('/transactions/pending', (req, res) => {
@@ -165,7 +172,7 @@ export class HttpServer {
             console.log('POST /transactions/send');
             let body: Transaction[] = req.body;
             console.log(body);
-            for( let i = 0; i < body.length; i++) {
+            for (let i = 0; i < body.length; i++) {
                 this.blockchain.addConfirmedTransaction(body[i]); // TODO: This may be pending only.  We will see.
             }
             res.status(201).send("Transaction send complete.");
@@ -174,8 +181,8 @@ export class HttpServer {
         app.get('/peers', (req, res) => {
             console.log('GET /peers');
             let rVal: string[] = this.p2p.getPeers();
-            for( let i = 0; i < rVal.length; i++ ) {
-                console.log('peer'+i+':'+rVal[i]);
+            for (let i = 0; i < rVal.length; i++) {
+                console.log('peer' + i + ':' + rVal[i]);
             }
             res.send(rVal);
         });
