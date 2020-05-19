@@ -177,10 +177,14 @@ export class HttpServer {
         app.get('/peers', (req, res) => {
             console.log('GET /peers');
             let rVal: string[] = this.p2p.getPeers();
-            for (let i = 0; i < rVal.length; i++) {
-                console.log('peer' + i + ':' + rVal[i]);
+            if (rVal.length !== 0) {
+                for (let i = 0; i < rVal.length; i++) {
+                    console.log('peer' + i + ':' + rVal[i]);
+                }
+                res.send(rVal);
+            } else {
+                res.status(401).send("There currently no peers for this node.");
             }
-            res.send(rVal);
         });
 
         app.post('/peers/connect', (req, res) => {
