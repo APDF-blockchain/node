@@ -49,7 +49,7 @@ export class HttpServer {
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             // TODO: For now let's fake it.
             this.listenerUrl = req.protocol + "://" + req.get('host');
-            ;
+            
             let rVal = {
                 'about': this.about,
                 'nodeId': this.nodeId,
