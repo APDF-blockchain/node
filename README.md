@@ -31,5 +31,10 @@ curl -d '[{"from":"0000000000000000000000000000000000000000","to":"f3a1e69b61760
 
 curl -d '{"peerUrl":"http://localhost:6002"}' -H "Content-Type: application/json" -X POST http://localhost:3001/peers/connect
 
+## This one will stop the given node
+
+1. curl -H "Content-Type: application/json" -X POST http://localhost:3001/stop
+2. curl -H "Content-Type: application/json" -X POST http://localhost:3002/stop
+
 
 
