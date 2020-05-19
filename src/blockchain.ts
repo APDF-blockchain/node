@@ -52,6 +52,14 @@ export class BlockChain {
         }
     }
 
+    addConfirmedTransaction(trans: Transaction): void {
+        this.confirmedTransactions.push(trans);
+    }
+
+    addPendingTransaction(trans: Transaction): void {
+        this.pendingTransactions.push(trans);
+    }
+
     getPendingTransactions(): Transaction[] {
         return this.pendingTransactions;
     }

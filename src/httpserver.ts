@@ -134,6 +134,8 @@ export class HttpServer {
 
         app.get('/transactions/confirmed', (req, res) => {
             console.log('GET /transactions/confirmed');
+            let rVal: Transaction[] = this.blockchain.getConfirmedTransactions();
+            res.send(rVal);
         });
 
         app.get('/transactions/:tranHash', (req, res) => {
@@ -158,6 +160,12 @@ export class HttpServer {
 
         app.post('/transactions/send', (req, res) => {
             console.log('POST /transactions/send');
+            let body: Transaction[] = req.body;
+            console.log(body);
+            for( let i = 0; i < body.length; i++) {
+                this.blockchain.addConfirmedTransaction(body[i]); // TODO: This may be pending only.  We will see.
+            }
+            res.status(201).send("Transaction send complete.");
         });
 
         app.get('/peers', (req, res) => {
