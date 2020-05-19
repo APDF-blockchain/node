@@ -124,7 +124,16 @@ export class BlockChain {
     }
     
     public isValidBlockStructure(latestBlockReceived: Block): boolean {
-        return true;
+        let rVal: boolean = false;
+        rVal = typeof latestBlockReceived.blockDataHash === 'string'
+            && typeof latestBlockReceived.blockHash === 'string'
+            && typeof latestBlockReceived.difficulty === 'number'
+            && typeof latestBlockReceived.index === 'number'
+            && typeof latestBlockReceived.minedBy === 'string'
+            && typeof latestBlockReceived.nonce === 'number'
+            && typeof latestBlockReceived.timestamp === 'number'
+            && typeof latestBlockReceived.transactions === 'object';
+        return rVal;
     }
 
     public addBlockToChain(latestBlockReceived: Block): boolean {

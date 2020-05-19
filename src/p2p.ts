@@ -32,6 +32,7 @@ class Message {
 export class P2P {
     private sockets: WebSocket[] = [];
     private peers: string[] = [];
+    private listenerPort: number;
 
     /**
     * Create a P2P.
@@ -61,6 +62,7 @@ export class P2P {
      * @param {number} p2pPort - port number to listen on.
      */
     public initP2PServer(p2pPort: number) {
+        this.listenerPort = p2pPort;
         const server: Server = new WebSocket.Server({ port: p2pPort });
         server.on('connection', (ws: WebSocket) => {
             this.initConnection(ws);
@@ -119,7 +121,7 @@ export class P2P {
                     console.log('could not parse received JSON message: ' + data);
                     return;
                 }
-                console.log('Received message: %s', JSON.stringify(message));
+                console.log(this.listenerPort + ':Received message: %s', JSON.stringify(message));
                 switch (message.type) {
                     case MessageType.QUERY_LATEST:
                         this.write(ws, this.responseLatestMsg());
@@ -130,7 +132,7 @@ export class P2P {
                     case MessageType.RESPONSE_BLOCKCHAIN:
                         const receivedBlocks: Block[] = this.JSONToObject<Block[]>(message.data);
                         if (receivedBlocks === null) {
-                            console.log('invalid blocks received: %s', JSON.stringify(message.data));
+                            console.log(this.listenerPort + ':invalid blocks received: %s', JSON.stringify(message.data));
                             break;
                         }
                         this.handleBlockchainResponse(receivedBlocks);
@@ -141,7 +143,7 @@ export class P2P {
                     case MessageType.RESPONSE_TRANSACTION_POOL:
                         const receivedTransactions: Transaction[] = this.JSONToObject<Transaction[]>(message.data);
                         if (receivedTransactions === null) {
-                            console.log('invalid transaction received: %s', JSON.stringify(message.data));
+                            console.log(this.listenerPort + ':invalid transaction received: %s', JSON.stringify(message.data));
                             break;
                         }
                         receivedTransactions.forEach((transaction: Transaction) => {
@@ -255,31 +257,31 @@ export class P2P {
      */
     public handleBlockchainResponse(receivedBlocks: Block[]) {
         if (receivedBlocks.length === 0) {
-            console.log('received block chain size of 0');
+            console.log(this.listenerPort + ':received block chain size of 0');
             return;
         }
         const latestBlockReceived: Block = receivedBlocks[receivedBlocks.length - 1];
         if (!this.blockchain.isValidBlockStructure(latestBlockReceived)) {
-            console.log('block structuture not valid');
+            console.log(this.listenerPort + ':block structuture not valid');
             return;
         }
         const latestBlockHeld: Block = this.blockchain.getLatestBlock();
         if (latestBlockReceived.index > latestBlockHeld.index) {
-            console.log('blockchain possibly behind. We got: '
+            console.log(this.listenerPort + ':blockchain possibly behind. We got: '
                 + latestBlockHeld.index + ' Peer got: ' + latestBlockReceived.index);
             if (latestBlockHeld.blockHash === latestBlockReceived.blockHash) { // TODO: Not sure if this is right.
                 if (this.blockchain.addBlockToChain(latestBlockReceived)) {
                     this.broadcast(this.responseLatestMsg());
                 }
             } else if (receivedBlocks.length === 1) {
-                console.log('We have to query the chain from our peer');
+                console.log(this.listenerPort + ':We have to query the chain from our peer');
                 this.broadcast(this.queryAllMsg());
             } else {
-                console.log('Received blockchain is longer than current blockchain');
+                console.log(this.listenerPort + ':Received blockchain is longer than current blockchain');
                 this.blockchain.replaceChain(receivedBlocks);
             }
         } else {
-            console.log('received blockchain is not longer than received blockchain. Do nothing');
+            console.log(this.listenerPort + ':received blockchain is not longer than received blockchain. Do nothing');
         }
     }
 
