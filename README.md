@@ -1,5 +1,6 @@
 # node
 This project contains the code for a blockchain.
+This code can be found at https://github.com/APDF-blockchain/node
 
 # Run the application
 To run this application, run 'npm start' in the root directory of the project.

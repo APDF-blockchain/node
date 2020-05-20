@@ -90,12 +90,19 @@
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#about" class="tsd-kind-icon">about</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#blockchain" class="tsd-kind-icon">blockchain</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#config" class="tsd-kind-icon">config</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#listenerurl" class="tsd-kind-icon">listener<wbr>Url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#myhttpport" class="tsd-kind-icon">my<wbr>Http<wbr>Port</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#nodeid" class="tsd-kind-icon">node<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_.httpserver.html#p2p" class="tsd-kind-icon">p2p</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_httpserver_.httpserver.html#getlistenerurl" class="tsd-kind-icon">get<wbr>Listener<wbr>Url</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_httpserver_.httpserver.html#inithttpserver" class="tsd-kind-icon">init<wbr>Http<wbr>Server</a></li>
 							</ul>
 						</section>
@@ -108,19 +115,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Http<wbr>Server<span class="tsd-signature-symbol">(</span>blockchain<span class="tsd-signature-symbol">: </span><a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_httpserver_.httpserver.html" class="tsd-signature-type">HttpServer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Http<wbr>Server<span class="tsd-signature-symbol">(</span>blockchain<span class="tsd-signature-symbol">: </span><a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a>, p2p<span class="tsd-signature-symbol">: </span><a href="_p2p_.p2p.html" class="tsd-signature-type">P2P</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_httpserver_.httpserver.html" class="tsd-signature-type">HttpServer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/acb6940/src/httpserver.ts#L6">httpserver.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L17">httpserver.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>blockchain: <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></h5>
+								</li>
+								<li>
+									<h5>p2p: <a href="_p2p_.p2p.html" class="tsd-signature-type">P2P</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_httpserver_.httpserver.html" class="tsd-signature-type">HttpServer</a></h4>
@@ -131,18 +141,95 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="about" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> about</h3>
+					<div class="tsd-signature tsd-kind-icon">about<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;Blockchain Project&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L14">httpserver.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="blockchain" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> blockchain</h3>
 					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/acb6940/src/httpserver.ts#L8">httpserver.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L19">httpserver.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="config" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> config</h3>
+					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="_config_.config.html" class="tsd-signature-type">Config</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L16">httpserver.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="listenerurl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listener<wbr>Url</h3>
+					<div class="tsd-signature tsd-kind-icon">listener<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L13">httpserver.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="myhttpport" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> my<wbr>Http<wbr>Port</h3>
+					<div class="tsd-signature tsd-kind-icon">my<wbr>Http<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L17">httpserver.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="nodeid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> node<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">node<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;17228da872ebe975d676d904&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L15">httpserver.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="p2p" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> p2p</h3>
+					<div class="tsd-signature tsd-kind-icon">p2p<span class="tsd-signature-symbol">:</span> <a href="_p2p_.p2p.html" class="tsd-signature-type">P2P</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L19">httpserver.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getlistenerurl" class="tsd-anchor"></a>
+					<h3>get<wbr>Listener<wbr>Url</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Listener<wbr>Url<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L24">httpserver.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="inithttpserver" class="tsd-anchor"></a>
 					<h3>init<wbr>Http<wbr>Server</h3>
@@ -153,7 +240,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/acb6940/src/httpserver.ts#L12">httpserver.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver.ts#L28">httpserver.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -181,6 +268,12 @@
 						<a href="../modules/_blockchain_.html">&quot;blockchain&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_config_.html">&quot;config&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_confirmed_balances_.html">&quot;confirmed-<wbr>balances&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_httpserver_copy_.html">&quot;httpserver copy&quot;</a>
 					</li>
 					<li class="current tsd-kind-module">
@@ -188,6 +281,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_node_.html">&quot;node&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_node_peers_.html">&quot;node-<wbr>peers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_p2p_.html">&quot;p2p&quot;</a>
@@ -208,7 +304,28 @@
 								<a href="_httpserver_.httpserver.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#about" class="tsd-kind-icon">about</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_httpserver_.httpserver.html#blockchain" class="tsd-kind-icon">blockchain</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#config" class="tsd-kind-icon">config</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#listenerurl" class="tsd-kind-icon">listener<wbr>Url</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#myhttpport" class="tsd-kind-icon">my<wbr>Http<wbr>Port</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#nodeid" class="tsd-kind-icon">node<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_httpserver_.httpserver.html#p2p" class="tsd-kind-icon">p2p</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_httpserver_.httpserver.html#getlistenerurl" class="tsd-kind-icon">get<wbr>Listener<wbr>Url</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_httpserver_.httpserver.html#inithttpserver" class="tsd-kind-icon">init<wbr>Http<wbr>Server</a>

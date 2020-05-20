@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>HttpServer | node</title>
+	<title>ConfirmedBalances | node</title>
 	<meta name="description" content="Documentation for node">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_httpserver_copy_.html">&quot;httpserver copy&quot;</a>
+					<a href="../modules/_confirmed_balances_.html">&quot;confirmed-balances&quot;</a>
 				</li>
 				<li>
-					<a href="_httpserver_copy_.httpserver.html">HttpServer</a>
+					<a href="_confirmed_balances_.confirmedbalances.html">ConfirmedBalances</a>
 				</li>
 			</ul>
-			<h1>Class HttpServer</h1>
+			<h1>Class ConfirmedBalances</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">HttpServer</span>
+						<span class="target">ConfirmedBalances</span>
 					</li>
 				</ul>
 			</section>
@@ -84,21 +84,14 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_httpserver_copy_.httpserver.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_httpserver_copy_.httpserver.html#blockchain" class="tsd-kind-icon">blockchain</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_httpserver_copy_.httpserver.html#httpport" class="tsd-kind-icon">http<wbr>Port</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_httpserver_copy_.httpserver.html#p2pport" class="tsd-kind-icon">p2p<wbr>Port</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_httpserver_copy_.httpserver.html#inithttpserver" class="tsd-kind-icon">init<wbr>Http<wbr>Server</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#coinbalance" class="tsd-kind-icon">coin<wbr>Balance</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,83 +103,41 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Http<wbr>Server<span class="tsd-signature-symbol">(</span>blockchain<span class="tsd-signature-symbol">: </span><a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_httpserver_copy_.httpserver.html" class="tsd-signature-type">HttpServer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Confirmed<wbr>Balances<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_confirmed_balances_.confirmedbalances.html" class="tsd-signature-type">ConfirmedBalances</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver copy.ts#L6">httpserver copy.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/confirmed-balances.ts#L3">confirmed-balances.ts:3</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>blockchain: <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_httpserver_copy_.httpserver.html" class="tsd-signature-type">HttpServer</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_confirmed_balances_.confirmedbalances.html" class="tsd-signature-type">ConfirmedBalances</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="blockchain" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> blockchain</h3>
-					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="accountaddress" class="tsd-anchor"></a>
+					<h3>account<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">account<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver copy.ts#L7">httpserver copy.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/confirmed-balances.ts#L2">confirmed-balances.ts:2</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="httpport" class="tsd-anchor"></a>
-					<h3>http<wbr>Port</h3>
-					<div class="tsd-signature tsd-kind-icon">http<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.HTTP_PORT) || 3001</span></div>
+					<a name="coinbalance" class="tsd-anchor"></a>
+					<h3>coin<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">coin<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver copy.ts#L11">httpserver copy.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/confirmed-balances.ts#L3">confirmed-balances.ts:3</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="p2pport" class="tsd-anchor"></a>
-					<h3>p2p<wbr>Port</h3>
-					<div class="tsd-signature tsd-kind-icon">p2p<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.P2P_PORT) || 6001</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver copy.ts#L12">httpserver copy.ts:12</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="inithttpserver" class="tsd-anchor"></a>
-					<h3>init<wbr>Http<wbr>Server</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">init<wbr>Http<wbr>Server<span class="tsd-signature-symbol">(</span>myHttpPort<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6d7394/src/httpserver copy.ts#L14">httpserver copy.ts:14</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>myHttpPort: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -205,10 +156,10 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_config_.html">&quot;config&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_confirmed_balances_.html">&quot;confirmed-<wbr>balances&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_httpserver_copy_.html">&quot;httpserver copy&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -233,30 +184,21 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_httpserver_copy_.httpserver.html" class="tsd-kind-icon">Http<wbr>Server</a>
+						<a href="_confirmed_balances_.confirmedbalances.html" class="tsd-kind-icon">Confirmed<wbr>Balances</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_httpserver_copy_.httpserver.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_httpserver_copy_.httpserver.html#blockchain" class="tsd-kind-icon">blockchain</a>
+								<a href="_confirmed_balances_.confirmedbalances.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_httpserver_copy_.httpserver.html#httpport" class="tsd-kind-icon">http<wbr>Port</a>
+								<a href="_confirmed_balances_.confirmedbalances.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_httpserver_copy_.httpserver.html#p2pport" class="tsd-kind-icon">p2p<wbr>Port</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_httpserver_copy_.httpserver.html#inithttpserver" class="tsd-kind-icon">init<wbr>Http<wbr>Server</a>
+								<a href="_confirmed_balances_.confirmedbalances.html#coinbalance" class="tsd-kind-icon">coin<wbr>Balance</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_httpserver_copy_.html#express" class="tsd-kind-icon">express</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -270,16 +212,12 @@
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>
