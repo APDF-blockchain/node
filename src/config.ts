@@ -1,23 +1,83 @@
 import { Block } from "./block";
 
+/**
+ * @description - This class contains the configuration for the Node.
+ * @class Config
+ */
 export class Config {
+    /**
+     * @description - default http server host
+     */
     public defaultServerHost: string;
+    /**
+     * @description - default peer-to-pear listener host.
+     */
     public defaultP2pHost: string;
+    /**
+     * @description - default http server port
+     */
     public defaultServerPort: number;
+    /**
+     * @description - default peer-to-peer listener port
+     */
     public defaultP2pPort: number;
+    /**
+     * @description - faucet private key.
+     */
     public faucetPrivateKey: string;
+    /**
+     * @description - faucet public key
+     */
     public faucetPublicKey: string;
+    /**
+     * @description - faucet address
+     */
     public faucetAddress: string;
+    /**
+     * @description - null address
+     */
     public nullAddress: string;
+    /**
+     * @description - null public key
+     */
     public nullPubKey: string;
+    /**
+     * @description - null signature array
+     */
     public nullSignature: string[] = [];
+    /**
+     * @description - the starting difficult level for mining a block
+     */
     public startDifficulty: number;
+    /**
+     * @description - minimum transaction fee
+     */
     public minTransactionFee: number;
+    /**
+     * @description - maximum transaction fee
+     */
     public maxTransactionFee: number;
+    /**
+     * @description - block mining award
+     */
     public blockReward: number;
+    /**
+     * @description - maximum transfer fee
+     */
     public maxTransferValue: number;
+    /**
+     * @description - safe confirm count
+     */
     public safeConfirmCount: number;
+    /**
+     * @description - the genesis block for the blockchain
+     */
     public genesisBlock: Block;
+
+    /**
+     * @description - Class constructor initializes the configuration attributes for the entire Node/blockchain.
+     * @constructor
+     */
     constructor() {
         this.defaultServerHost = 'localhost';
         this.defaultP2pHost = 'localhost';

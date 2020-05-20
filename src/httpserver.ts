@@ -8,23 +8,55 @@ import { Transaction } from './transaction';
 import { NodePeers } from './node-peers';
 import { Block } from './block';
 
+/**
+ * @description - contains the attributes and methods for the http server required by the blockchain
+ * @class HttpServer
+ */
 export class HttpServer {
 
+    /**
+     * @description - http listener url
+     */
     private listenerUrl: string;
+    /**
+     * @description - about this block chain
+     */
     private about: string = "Blockchain Project";
+    /**
+     * @description - the ID of the Node that contains the blockchain
+     */
     private nodeId: string = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";  // TODO this needs to be calculated.
+    /**
+     * @description - the configuration for this Node
+     */
     private config: Config;
+    /**
+     * @description - the http port number to listen on for http requests.
+     */
     private myHttpPort: number;
 
+    /**
+     * @description - initializes this http server
+     * @constructor
+     * @param {BlockChain} blockchain - blockchain associated with this http server
+     * @param {P2P} p2p - the peer-to-peer server associate with this http server 
+     */
     constructor(private blockchain: BlockChain, private p2p: P2P) {
         this.config = new Config();
         this.config.genesisBlock = this.blockchain.getGenesisBlock();
     }
 
+    /**
+     * @description - get the listener for this http server
+     */
     public getListenerUrl(): string {
         return this.listenerUrl;
     }
 
+    /**
+     * @description - initialize this http listener for http requests.
+     * @param {number} myHttpPort - port number for this listener
+     */
     public initHttpServer(myHttpPort: number) {
         const app: express.Application = express();
         app.use(bodyParser.json());

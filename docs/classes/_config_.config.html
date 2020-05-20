@@ -69,6 +69,17 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>description</dt>
+						<dd><ul>
+								<li>This class contains the configuration for the Node.</li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -91,6 +102,8 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#blockreward" class="tsd-kind-icon">block<wbr>Reward</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#defaultp2phost" class="tsd-kind-icon">default<wbr>P2p<wbr>Host</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#defaultp2pport" class="tsd-kind-icon">default<wbr>P2p<wbr>Port</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#defaultserverhost" class="tsd-kind-icon">default<wbr>Server<wbr>Host</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#defaultserverport" class="tsd-kind-icon">default<wbr>Server<wbr>Port</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_config_.config.html#faucetaddress" class="tsd-kind-icon">faucet<wbr>Address</a></li>
@@ -122,9 +135,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L18">config.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L75">config.ts:75</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>Class constructor initializes the configuration attributes for the entire Node/blockchain.</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_config_.config.html" class="tsd-signature-type">Config</a></h4>
 						</li>
 					</ul>
@@ -138,9 +160,56 @@
 					<div class="tsd-signature tsd-kind-icon">block<wbr>Reward<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L15">config.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L63">config.ts:63</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>block mining award</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="defaultp2phost" class="tsd-anchor"></a>
+					<h3>default<wbr>P2p<wbr>Host</h3>
+					<div class="tsd-signature tsd-kind-icon">default<wbr>P2p<wbr>Host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L15">config.ts:15</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>default peer-to-pear listener host.</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="defaultp2pport" class="tsd-anchor"></a>
+					<h3>default<wbr>P2p<wbr>Port</h3>
+					<div class="tsd-signature tsd-kind-icon">default<wbr>P2p<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L23">config.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>default peer-to-peer listener port</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="defaultserverhost" class="tsd-anchor"></a>
@@ -148,9 +217,18 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Server<wbr>Host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L4">config.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L11">config.ts:11</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>default http server host</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="defaultserverport" class="tsd-anchor"></a>
@@ -158,9 +236,18 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Server<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L5">config.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L19">config.ts:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>default http server port</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="faucetaddress" class="tsd-anchor"></a>
@@ -168,9 +255,18 @@
 					<div class="tsd-signature tsd-kind-icon">faucet<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L8">config.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L35">config.ts:35</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>faucet address</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="faucetprivatekey" class="tsd-anchor"></a>
@@ -178,9 +274,18 @@
 					<div class="tsd-signature tsd-kind-icon">faucet<wbr>Private<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L6">config.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L27">config.ts:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>faucet private key.</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="faucetpublickey" class="tsd-anchor"></a>
@@ -188,9 +293,18 @@
 					<div class="tsd-signature tsd-kind-icon">faucet<wbr>Public<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L7">config.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L31">config.ts:31</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>faucet public key</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="genesisblock" class="tsd-anchor"></a>
@@ -198,9 +312,18 @@
 					<div class="tsd-signature tsd-kind-icon">genesis<wbr>Block<span class="tsd-signature-symbol">:</span> <a href="_block_.block.html" class="tsd-signature-type">Block</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L18">config.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L75">config.ts:75</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>the genesis block for the blockchain</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="maxtransactionfee" class="tsd-anchor"></a>
@@ -208,9 +331,18 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Transaction<wbr>Fee<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L14">config.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L59">config.ts:59</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>maximum transaction fee</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="maxtransfervalue" class="tsd-anchor"></a>
@@ -218,9 +350,18 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Transfer<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L16">config.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L67">config.ts:67</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>maximum transfer fee</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="mintransactionfee" class="tsd-anchor"></a>
@@ -228,9 +369,18 @@
 					<div class="tsd-signature tsd-kind-icon">min<wbr>Transaction<wbr>Fee<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L13">config.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L55">config.ts:55</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>minimum transaction fee</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="nulladdress" class="tsd-anchor"></a>
@@ -238,9 +388,18 @@
 					<div class="tsd-signature tsd-kind-icon">null<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L9">config.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L39">config.ts:39</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>null address</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="nullpubkey" class="tsd-anchor"></a>
@@ -248,9 +407,18 @@
 					<div class="tsd-signature tsd-kind-icon">null<wbr>Pub<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L10">config.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L43">config.ts:43</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>null public key</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="nullsignature" class="tsd-anchor"></a>
@@ -258,9 +426,18 @@
 					<div class="tsd-signature tsd-kind-icon">null<wbr>Signature<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L11">config.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L47">config.ts:47</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>null signature array</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="safeconfirmcount" class="tsd-anchor"></a>
@@ -268,9 +445,18 @@
 					<div class="tsd-signature tsd-kind-icon">safe<wbr>Confirm<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L17">config.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L71">config.ts:71</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>safe confirm count</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="startdifficulty" class="tsd-anchor"></a>
@@ -278,9 +464,18 @@
 					<div class="tsd-signature tsd-kind-icon">start<wbr>Difficulty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/e366ba5/src/config.ts#L12">config.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/config.ts#L51">config.ts:51</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>the starting difficult level for mining a block</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -334,6 +529,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_config_.config.html#blockreward" class="tsd-kind-icon">block<wbr>Reward</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_config_.config.html#defaultp2phost" class="tsd-kind-icon">default<wbr>P2p<wbr>Host</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_config_.config.html#defaultp2pport" class="tsd-kind-icon">default<wbr>P2p<wbr>Port</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_config_.config.html#defaultserverhost" class="tsd-kind-icon">default<wbr>Server<wbr>Host</a>

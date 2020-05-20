@@ -5,7 +5,7 @@ import { Transaction } from './transaction';
 import { BlockChain } from './blockchain';
 
 /**
- * An Enum for the message types.
+ * @description - An Enum for the message types.
  * @enum MessageType
  */
 enum MessageType {
@@ -17,7 +17,7 @@ enum MessageType {
 }
 
 /**
- * A class representing a message to peers.
+ * @description - A class representing a message to peers.
  * @class Message
  */
 class Message {
@@ -26,16 +26,26 @@ class Message {
 }
 
 /**
- * A class for peer-to-peer http communication.  Modified from https://github.com/lhartikk/naivecoin/blob/chapter6/src/p2p.ts
+ * @description - A class for peer-to-peer http communication.  Modified from https://github.com/lhartikk/naivecoin/blob/chapter6/src/p2p.ts
  * @class  P2P
  */
 export class P2P {
+    /**
+     * @description - array of peer-to-peer WebSocket's
+     */
     private sockets: WebSocket[] = [];
+    /**
+     * @description - array of peer url's
+     */
     private peers: string[] = [];
+    /**
+     * @description - listener port of this peer.
+     */
     private listenerPort: number;
 
     /**
-    * Create a P2P.
+    * @description - Create a P2P.
+    * @constructor
     * @param {Block[]} blockchain - The blockchain.
     */
     constructor(private blockchain: BlockChain) {
@@ -43,7 +53,7 @@ export class P2P {
     }
 
     /**
-     * Convert a string to a JSON object.
+     * @description - Convert a string to a JSON object.
      * @param {string} data - the string to be converted.
      * @returns {T} Object - object requested.
      */
@@ -58,7 +68,7 @@ export class P2P {
     }
 
     /**
-     * Initialize the listener for this peer-to-peer server 
+     * @description - Initialize the listener for this peer-to-peer server 
      * @param {number} p2pPort - port number to listen on.
      */
     public initP2PServer(p2pPort: number) {
@@ -72,7 +82,7 @@ export class P2P {
     }
 
     /**
-     * Get the array of WebSocket's
+     * @description - Get the array of WebSocket's
      * @returns {WebSocket[]} sockets
      */
     public getSockets(): WebSocket[] {
@@ -80,7 +90,7 @@ export class P2P {
     }
 
     /**
-     * Returns the number of peers.
+     * @description - Returns the number of peers.
      * @returns {number} peerCount;
      */
     public getPeerCount(): number {
@@ -93,7 +103,7 @@ export class P2P {
     }
 
     /**
-     * Initialize the given websocket
+     * @description - Initialize the given websocket
      * @param {WebSocket} ws - websocket to be initialized
      */
     public initConnection(ws: WebSocket) {
@@ -109,7 +119,7 @@ export class P2P {
     }
 
     /**
-     * Initialize the websocket for the message handler.
+     * @description - Initialize the websocket for the message handler.
      * @param {WebSocket} ws - websocket for sending messages.
      */
     public initMessageHandler(ws: WebSocket) {
@@ -165,7 +175,7 @@ export class P2P {
     }
 
     /**
-     * Write a message to a websocket.
+     * @description - Write a message to a websocket.
      * @param {WebSocket} ws - websockt to write the message to.
      * @param {Message} message - The message to written.
      */
@@ -174,7 +184,7 @@ export class P2P {
     }
 
     /**
-     * Broadcast the given message to all the listeners.
+     * @description - Broadcast the given message to all the listeners.
      * @param {Message} message - message to be broadcast.
      */
     public broadcast(message: Message): void {
@@ -182,7 +192,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the QUERY_LATEST.
+     * @description - Gets the Message object for the QUERY_LATEST.
      * @returns {Message} - message Object
      */
     public queryChainLengthMsg(): Message {
@@ -190,7 +200,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the QUERY_ALL
+     * @description - Gets the Message object for the QUERY_ALL
      * @returns {Message} - message Object
      */
     public queryAllMsg(): Message {
@@ -198,7 +208,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the RESPONSE_BLCOKCHAIN.
+     * @description - Gets the Message object for the RESPONSE_BLCOKCHAIN.
      * @returns {Message} - message Object for the blockchain.
      */
     public responseChainMsg(): Message {
@@ -208,7 +218,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the RESPONSE_BLCOKCHAIN.
+     * @description - Gets the Message object for the RESPONSE_BLCOKCHAIN.
      * @returns {Message} - message Object for the lastest block.
      */
     public responseLatestMsg(): Message {
@@ -219,7 +229,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the QUERY_TRANSACTION_POOL.
+     * @description - Gets the Message object for the QUERY_TRANSACTION_POOL.
      * @returns {Message} - message Object.
      */
     public queryTransactionPoolMsg(): Message {
@@ -230,7 +240,7 @@ export class P2P {
     }
 
     /**
-     * Gets the Message object for the QUERY_TRANSACTION_POOL.
+     * @description - Gets the Message object for the QUERY_TRANSACTION_POOL.
      * @returns {Message} - message Object for the tranaction pool.
      */
     public responseTransactionPoolMsg = (): Message => ({
@@ -239,7 +249,7 @@ export class P2P {
     })
 
     /**
-     * Initialize the error handler websocket
+     * @description - Initialize the error handler websocket
      * @param {WebSocket} ws 
      */
     public initErrorHandler(ws: WebSocket) {
@@ -252,7 +262,7 @@ export class P2P {
     }
 
     /**
-     * Handle the block chain response for the received array of blocks.
+     * @description - Handle the block chain response for the received array of blocks.
      * @param receivedBlocks - array of received blocks.
      */
     public handleBlockchainResponse(receivedBlocks: Block[]) {
@@ -286,14 +296,14 @@ export class P2P {
     }
 
     /**
-     * Broadcast the latest message.
+     * @description - Broadcast the latest message.
      */
     public broadcastLatest(): void {
         this.broadcast(this.responseLatestMsg());
     }
 
     /**
-     * Connect to a new peer.
+     * @description - Connect to a new peer.
      * @param {string} newPeer - string of the new peer to connect to.
      */
     public connectToPeer(newPeer: string): void {
@@ -310,7 +320,7 @@ export class P2P {
     }
 
     /**
-     * Connect to the list of peers.
+     * @description - Connect to the list of peers.
      * @param {string[]} newPeers - array of peers to connect to.
      */
     public connectToPeers(newPeers: string[]): void {
@@ -321,7 +331,7 @@ export class P2P {
     }
 
     /**
-     * Broadcast the transaction pool message.
+     * @description - Broadcast the transaction pool message.
      */
     public broadCastTransactionPool() {
         this.broadcast(this.responseTransactionPoolMsg());

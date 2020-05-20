@@ -2,6 +2,11 @@ import { Transaction } from './transaction';
 import { Block } from './block';
 import { ConfirmedBalances } from './confirmed-balances';
 import { Config } from './config';
+
+/**
+ * @description - This class contains all the elements of a complete blockchain
+ * @class BlockChain
+ */
 export class BlockChain {
 
     private confirmedTransactionsCount: number = 0;
@@ -16,6 +21,10 @@ export class BlockChain {
     private difficulty: number = this.config.startDifficulty;;
     private cumulativeDifficulty: number = this.difficulty;
 
+    /**
+     * @description - This constructor initializes the blockchain.  Currently the blockchain is not persisted.
+     * @constructor
+     */
     constructor() {
         if (this.blockchain.length === 0) {
             let transaction = new Transaction();
@@ -54,14 +63,25 @@ export class BlockChain {
         }
     }
 
+    /**
+     * @description - Add a confirmed transaction to this blockchain
+     * @param {Transaction} trans - confirmed transaction to be added
+     */
     addConfirmedTransaction(trans: Transaction): void {
         this.confirmedTransactions.push(trans);
     }
 
+    /**
+     * @description - Add a pending transaction to the this blockchain
+     * @param trans - pending transction to be added
+     */
     addPendingTransaction(trans: Transaction): void {
         this.pendingTransactions.push(trans);
     }
 
+    /**
+     * @description - get the pending transactions for this blockchain
+     */
     getPendingTransactions(): Transaction[] {
         return this.pendingTransactions;
     }
