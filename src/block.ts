@@ -71,8 +71,7 @@ export class Block {
         this.difficulty = _difficulty;
         this.nonce = _nonce;
         this.minedBy = "0000000000000000000000000000000000000000";
-        // TODO: need to know how to calculate this.
-        this.blockDataHash = "0x0";
+        this.blockDataHash = "0000000000000000000000000000000000000000000000000000000000000000";
         this.previousBlockHash = "0000000000000000000000000000000000000000000000000000000000000000";
         this.dateCreated = new Date();
     }
