@@ -1,3 +1,4 @@
+import { sha256, sha224 } from 'js-sha256';
 import { Transaction } from './transaction';
 import { Block } from './block';
 import { Balance } from './balance';
@@ -32,25 +33,35 @@ export class BlockChain {
             transaction.dateCreated = new Date();
             transaction.fee = 0;
             transaction.from = "0000000000000000000000000000000000000000";
-            transaction.to = "f3a1e69b6176052fcc4a3248f1c5a91dea308ca9";
+            //transaction.to = "f3a1e69b6176052fcc4a3248f1c5a91dea308ca9";
+            transaction.to = this.config.faucetAddress;
             transaction.value = 1000000000000;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
-            transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
+            //transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
+            let json: string = JSON.stringify(transaction);
+            let hash: string = sha256(json)
+            transaction.transactionDataHash = hash;
             let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block(
                 0, 
-                '0x0', 
+                '0000000000000000000000000000000000000000000000000000000000000000', 
                 new Date().getTime(), 
                 transactions, 
                 0, 
                 0
             );
+            json = JSON.stringify(this.genesisBlock);
+            hash = sha256(json);
+            this.genesisBlock.blockHash = hash;
+            json = JSON.stringify(transactions);
+            hash = sha256(json);
+            this.genesisBlock.blockDataHash = hash;
             this.blockchain.push(this.genesisBlock);
             this.chainId = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";
             // let balance = new Balance();

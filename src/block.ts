@@ -73,7 +73,7 @@ export class Block {
         this.minedBy = "0000000000000000000000000000000000000000";
         // TODO: need to know how to calculate this.
         this.blockDataHash = "0x0";
-        this.previousBlockHash = "0x0";
+        this.previousBlockHash = "0000000000000000000000000000000000000000000000000000000000000000";
         this.dateCreated = new Date();
     }
 }
