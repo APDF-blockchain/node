@@ -12,7 +12,7 @@ export class HttpServer {
 
     private listenerUrl: string;
     private about: string = "Blockchain Project";
-    private nodeId: string = "17228da872ebe975d676d904";  // TODO this needs to be calculated.
+    private nodeId: string = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";  // TODO this needs to be calculated.
     private config: Config;
     private myHttpPort: number;
 
@@ -67,24 +67,8 @@ export class HttpServer {
 
         app.get('/debug', (req, res) => {
             console.log(this.myHttpPort + ':GET /debug');
-            // TODO: For now let's fake it.
             let hostUrl: string = req.get('host');
             let hostArray: string[] = hostUrl.split(':');
-            this.config.defaultServerHost = hostArray[0];
-            this.config.defaultServerPort = parseInt(hostArray[1]);
-            this.config.faucetPrivateKey = "838ff8634c41ba62467cc874ca156830ba55efe3e41ceeeeae5f3e77238f4eef";
-            this.config.faucetPublicKey = '8c4431db61e9095d5794ff53a3ae4171c766cadef015f2e11bec22b98a80f74a0';
-            this.config.faucetAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
-            this.config.nullAddress = '0000000000000000000000000000000000000000';
-            this.config.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
-            this.config.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
-            this.config.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
-            this.config.startDifficulty = this.blockchain.getCurrentDifficulty();
-            this.config.minTransactionFee = 10;
-            this.config.maxTransactionFee = 1000000;
-            this.config.blockReward = 5000000;
-            this.config.maxTransferValue = 10000000000000;
-            this.config.safeConfirmCount = 3;
             let rVal = {
                 'nodeId': this.nodeId,
                 'host': hostArray[0],
@@ -94,6 +78,7 @@ export class HttpServer {
                 'chain': { 'blocks': this.blockchain.getBlockchain() },
                 'chainId': this.blockchain.getChainId(),
                 'config': this.config,
+                // TODO: For now let's fake it.
                 'confirmedBalances:': this.blockchain.getConfirmedBalances()
             };
             res.send(rVal);

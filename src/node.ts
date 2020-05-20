@@ -1,13 +1,15 @@
 import { P2P } from './p2p';
 import { HttpServer } from './httpserver';
 import { BlockChain } from './blockchain';
+import { Config } from './config';
 export class Node {
 
     public blockchain: BlockChain;
     public p2p: P2P;
     public httpServer: HttpServer;
-    public httpPort: number = parseInt(process.env.HTTP_PORT) || 3001;
-    public p2pPort: number = parseInt(process.env.P2P_PORT) || 6001;
+    public config: Config = new Config();
+    public httpPort: number = parseInt(process.env.HTTP_PORT) || this.config.defaultServerPort;
+    public p2pPort: number = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort;
     public initialPeers: string[] = process.env.PEERS ? process.env.PEERS.split(',') : [];
 
     constructor() {

@@ -1,10 +1,9 @@
 import { Transaction } from './transaction';
 import { Block } from './block';
 import { ConfirmedBalances } from './confirmed-balances';
+import { Config } from './config';
 export class BlockChain {
 
-    private difficulty: number = 4;
-    private cumulativeDifficulty: number = 4;
     private confirmedTransactionsCount: number = 0;
     private pendingTransactionsCount: number = 0;
     private blockchain: Block[] = [];
@@ -13,6 +12,9 @@ export class BlockChain {
     private confirmedBalances: ConfirmedBalances[] = [];
     private pendingTransactions: Transaction[] = [];
     private confirmedTransactions: Transaction[] = [];
+    private config: Config = new Config();
+    private difficulty: number = this.config.startDifficulty;;
+    private cumulativeDifficulty: number = this.difficulty;
 
     constructor() {
         if (this.blockchain.length === 0) {
