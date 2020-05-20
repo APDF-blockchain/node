@@ -5,7 +5,7 @@ import { Transaction } from './transaction';
 import { BlockChain } from './blockchain';
 
 /**
- * @description - An Enum for the message types.
+ * @classdesc - An Enum for the message types.
  * @enum MessageType
  */
 enum MessageType {

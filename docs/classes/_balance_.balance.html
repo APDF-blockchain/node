@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ConfirmedBalances | node</title>
+	<title>Balance | node</title>
 	<meta name="description" content="Documentation for node">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_confirmed_balances_.html">&quot;confirmed-balances&quot;</a>
+					<a href="../modules/_balance_.html">&quot;balance&quot;</a>
 				</li>
 				<li>
-					<a href="_confirmed_balances_.confirmedbalances.html">ConfirmedBalances</a>
+					<a href="_balance_.balance.html">Balance</a>
 				</li>
 			</ul>
-			<h1>Class ConfirmedBalances</h1>
+			<h1>Class Balance</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ConfirmedBalances</span>
+						<span class="target">Balance</span>
 					</li>
 				</ul>
 			</section>
@@ -84,14 +84,16 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_balance_.balance.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_confirmed_balances_.confirmedbalances.html#coinbalance" class="tsd-kind-icon">coin<wbr>Balance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_balance_.balance.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_balance_.balance.html#confirmedbalance" class="tsd-kind-icon">confirmed<wbr>Balance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_balance_.balance.html#pendingbalance" class="tsd-kind-icon">pending<wbr>Balance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_balance_.balance.html#safebalance" class="tsd-kind-icon">safe<wbr>Balance</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,16 +105,16 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Confirmed<wbr>Balances<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_confirmed_balances_.confirmedbalances.html" class="tsd-signature-type">ConfirmedBalances</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Balance<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_balance_.balance.html" class="tsd-signature-type">Balance</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/confirmed-balances.ts#L3">confirmed-balances.ts:3</a></li>
+									<li>Defined in balance.ts:5</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_confirmed_balances_.confirmedbalances.html" class="tsd-signature-type">ConfirmedBalances</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_balance_.balance.html" class="tsd-signature-type">Balance</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -125,17 +127,37 @@
 					<div class="tsd-signature tsd-kind-icon">account<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/confirmed-balances.ts#L2">confirmed-balances.ts:2</a></li>
+							<li>Defined in balance.ts:2</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="coinbalance" class="tsd-anchor"></a>
-					<h3>coin<wbr>Balance</h3>
-					<div class="tsd-signature tsd-kind-icon">coin<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="confirmedbalance" class="tsd-anchor"></a>
+					<h3>confirmed<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">confirmed<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/c4f3c09/src/confirmed-balances.ts#L3">confirmed-balances.ts:3</a></li>
+							<li>Defined in balance.ts:3</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="pendingbalance" class="tsd-anchor"></a>
+					<h3>pending<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">pending<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in balance.ts:5</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="safebalance" class="tsd-anchor"></a>
+					<h3>safe<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in balance.ts:4</li>
 						</ul>
 					</aside>
 				</section>
@@ -147,6 +169,9 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_balance_.html">&quot;balance&quot;</a>
+					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_block_.html">&quot;block&quot;</a>
 					</li>
@@ -155,9 +180,6 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_config_.html">&quot;config&quot;</a>
-					</li>
-					<li class="current tsd-kind-module">
-						<a href="../modules/_confirmed_balances_.html">&quot;confirmed-<wbr>balances&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_httpserver_copy_.html">&quot;httpserver copy&quot;</a>
@@ -184,16 +206,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_confirmed_balances_.confirmedbalances.html" class="tsd-kind-icon">Confirmed<wbr>Balances</a>
+						<a href="_balance_.balance.html" class="tsd-kind-icon">Balance</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_confirmed_balances_.confirmedbalances.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_balance_.balance.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_confirmed_balances_.confirmedbalances.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a>
+								<a href="_balance_.balance.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_confirmed_balances_.confirmedbalances.html#coinbalance" class="tsd-kind-icon">coin<wbr>Balance</a>
+								<a href="_balance_.balance.html#confirmedbalance" class="tsd-kind-icon">confirmed<wbr>Balance</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_balance_.balance.html#pendingbalance" class="tsd-kind-icon">pending<wbr>Balance</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_balance_.balance.html#safebalance" class="tsd-kind-icon">safe<wbr>Balance</a>
 							</li>
 						</ul>
 					</li>

@@ -1,7 +1,7 @@
 import { Block } from "./block";
 
 /**
- * @description - This class contains the configuration for the Node.
+ * @classdesc - This class contains the configuration for the Node.
  * @class Config
  */
 export class Config {

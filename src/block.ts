@@ -1,7 +1,7 @@
 import { Transaction } from './transaction';
 
 /**
- * This class contains the attributes of a block in the blockchain.
+ * @classdesc - This class contains the attributes of a block in the blockchain.
  * @class Block
  */
 export class Block {
@@ -10,7 +10,7 @@ export class Block {
      */
     public index: number;
     /**
-     * @description - the block's data hash
+     * @description - the block's data hash of all the transactions data
      */
     public blockDataHash: string;
     /**
@@ -43,6 +43,11 @@ export class Block {
     public blockHash: string;
 
     /**
+     * @description - hash of previous block
+     */
+    public previousBlockHash: string;
+
+    /**
      * @constructor
      * @description - represents a block in the blockchain
      * @param {number} _index - index of the block
@@ -52,7 +57,13 @@ export class Block {
      * @param {number} _difficulty - difficulty of block
      * @param {number} _nonce - nounce value of the block
      */
-    constructor(_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number) {
+    constructor(
+        _index: number,
+        _hash: string,
+        _timestamp: number,
+        _data: Transaction[],
+        _difficulty: number,
+        _nonce: number) {
         this.index = _index;
         this.blockHash = _hash;
         this.timestamp = _timestamp;
@@ -61,7 +72,8 @@ export class Block {
         this.nonce = _nonce;
         this.minedBy = "0000000000000000000000000000000000000000";
         // TODO: need to know how to calculate this.
-        this.blockDataHash = "15cc5052fb3c307dd2bfc6bcaa057632250ee05104e4fb7cc75e59db1a92cefc";
+        this.blockDataHash = "0x0";
+        this.previousBlockHash = "0x0";
         this.dateCreated = new Date();
     }
 }

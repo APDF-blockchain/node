@@ -9,7 +9,7 @@ import { NodePeers } from './node-peers';
 import { Block } from './block';
 
 /**
- * @description - contains the attributes and methods for the http server required by the blockchain
+ * @classdesc - contains the attributes and methods for the http server required by the blockchain
  * @class HttpServer
  */
 export class HttpServer {
@@ -25,7 +25,7 @@ export class HttpServer {
     /**
      * @description - the ID of the Node that contains the blockchain
      */
-    private nodeId: string = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";  // TODO this needs to be calculated.
+    private nodeId: string;
     /**
      * @description - the configuration for this Node
      */
@@ -58,9 +58,17 @@ export class HttpServer {
      * @param {number} myHttpPort - port number for this listener
      */
     public initHttpServer(myHttpPort: number) {
+        this.nodeId = (myHttpPort + Math.random()).toString();
         const app: express.Application = express();
         app.use(bodyParser.json());
 
+        /**
+         * @description - http use request
+         * @param err - contains any errors in the request
+         * @param req - contains the http request object
+         * @param res - contains the http response object
+         * @param next - contains the http next object.  currently not used.
+         */
         app.use((err, req, res, next) => {
             if (err) {
                 res.status(400).send(err.message);
@@ -111,7 +119,7 @@ export class HttpServer {
                 'chainId': this.blockchain.getChainId(),
                 'config': this.config,
                 // TODO: For now let's fake it.
-                'confirmedBalances:': this.blockchain.getConfirmedBalances()
+                'balances:': this.blockchain.getBalances()
             };
             res.send(rVal);
         });
@@ -167,7 +175,7 @@ export class HttpServer {
         app.get('/balances', (req, res) => {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
-            res.send(this.blockchain.getConfirmedBalances());
+            res.send(this.blockchain.getBalances());
         });
 
         app.get('/address/:address/transactions', (req, res) => {
@@ -187,7 +195,7 @@ export class HttpServer {
             let body: Transaction[] = req.body;
             console.log(body);
             for (let i = 0; i < body.length; i++) {
-                this.blockchain.addConfirmedTransaction(body[i]); // TODO: This may be pending only.  We will see.
+                this.blockchain.addPendingTransaction(body[i]); // TODO: This may be pending only.  We will see.
             }
             res.status(201).send("Transaction send complete.");
         });

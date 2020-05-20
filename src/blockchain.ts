@@ -1,25 +1,25 @@
 import { Transaction } from './transaction';
 import { Block } from './block';
-import { ConfirmedBalances } from './confirmed-balances';
+import { Balance } from './balance';
 import { Config } from './config';
 
 /**
- * @description - This class contains all the elements of a complete blockchain
+ * @classdesc - This class contains all the elements of a complete blockchain
  * @class BlockChain
  */
 export class BlockChain {
-
     private confirmedTransactionsCount: number = 0;
     private pendingTransactionsCount: number = 0;
     private blockchain: Block[] = [];
     private genesisBlock: Block;
     private chainId: string;
-    private confirmedBalances: ConfirmedBalances[] = [];
+    private balances: Balance[] = [];
     private pendingTransactions: Transaction[] = [];
     private confirmedTransactions: Transaction[] = [];
     private config: Config = new Config();
     private difficulty: number = this.config.startDifficulty;;
     private cumulativeDifficulty: number = this.difficulty;
+    private miningJobs: Map<string, Block> = new Map<string, Block>();
 
     /**
      * @description - This constructor initializes the blockchain.  Currently the blockchain is not persisted.
@@ -44,23 +44,32 @@ export class BlockChain {
             let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block(
-                0, '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7', 1465154705, transactions, 0, 0
+                0, 
+                '0x0', 
+                new Date().getTime(), 
+                transactions, 
+                0, 
+                0
             );
             this.blockchain.push(this.genesisBlock);
-            this.chainId = "c6da93eb4249cb5ff4f9da36e2a7f8d0d61999221ed6910180948153e71cc47f";
-            let confirmedBalance = new ConfirmedBalances();
-            confirmedBalance.accountAddress = '0000000000000000000000000000000000000000';
-            confirmedBalance.coinBalance = -1000010000060;
-            this.confirmedBalances.push(confirmedBalance);
-            confirmedBalance = new ConfirmedBalances();
-            confirmedBalance.accountAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
-            confirmedBalance.coinBalance = 999998799980;
-            this.confirmedBalances.push(confirmedBalance);
-            confirmedBalance = new ConfirmedBalances();
-            confirmedBalance.accountAddress = '84ede81c58f5c490fc6e1a3035789eef897b5b35';
-            confirmedBalance.coinBalance = 10000060;
-            this.confirmedBalances.push(confirmedBalance);
+            this.chainId = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";
+            // let balance = new Balance();
+            // balance.accountAddress = '0000000000000000000000000000000000000000';
+            // balance.confirmedBalance = -1000010000060;
+            // this.balances.push(balance);
+            // balance = new Balance();
+            // balance.accountAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
+            // balance.confirmedBalance = 999998799980;
+            // this.balances.push(balance);
+            // balance = new Balance();
+            // balance.accountAddress = '84ede81c58f5c490fc6e1a3035789eef897b5b35';
+            // balance.confirmedBalance = 10000060;
+            // this.balances.push(balance);
         }
+    }
+
+    getBalances(): Balance[] {
+        return this.balances;
     }
 
     /**
@@ -90,15 +99,15 @@ export class BlockChain {
         return this.confirmedTransactions;
     }
 
-    getConfirmedBalances(): ConfirmedBalances[] {
-        return this.confirmedBalances;
+    getBalance(): Balance[] {
+        return this.balances;
     }
 
     addConfirmedBalance(accountAddress: string, amount: number) {
-        let confirmedBalance: ConfirmedBalances = new ConfirmedBalances();
-        confirmedBalance.accountAddress = accountAddress;
-        confirmedBalance.coinBalance = amount;
-        this.confirmedBalances.push(confirmedBalance);
+        let balance: Balance = new Balance();
+        balance.accountAddress = accountAddress;
+        balance.confirmedBalance = amount;
+        this.balances.push(balance);
     }
 
     getConfirmedTransactionsCount() {
