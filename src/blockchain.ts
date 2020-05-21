@@ -79,6 +79,10 @@ export class BlockChain {
         }
     }
 
+    /**
+     * @description - Get balances
+     * @returns {Balance[]} balances
+     */
     getBalances(): Balance[] {
         return this.balances;
     }
@@ -101,54 +105,92 @@ export class BlockChain {
 
     /**
      * @description - get the pending transactions for this blockchain
+     * @returns {Transaction[]} pendingTransaction
      */
     getPendingTransactions(): Transaction[] {
         return this.pendingTransactions;
     }
 
+    /**
+     * @description - get the confirmed transactions
+     * @returns {Transaction[]} confirmedTransactions
+     */
     getConfirmedTransactions(): Transaction[] {
         return this.confirmedTransactions;
     }
 
-    getBalance(): Balance[] {
-        return this.balances;
-    }
-
-    addConfirmedBalance(accountAddress: string, amount: number) {
+    /**
+     * @description - add confirmed balance to balances
+     * @param {string} accountAddress
+     * @param {number} amount 
+     */
+    addConfirmedBalance(accountAddress: string, amount: number): void {
         let balance: Balance = new Balance();
         balance.accountAddress = accountAddress;
         balance.confirmedBalance = amount;
         this.balances.push(balance);
     }
 
-    getConfirmedTransactionsCount() {
+    /**
+     * @description - get the confirmed transactons count
+     * @returns {number} count
+     */
+    getConfirmedTransactionsCount(): number {
         return this.confirmedTransactionsCount;
     }
 
-    getPendingTransactionsCount() {
+    /**
+     * @description - get the pending transactions count
+     * @returns {number} count
+     */
+    getPendingTransactionsCount(): number {
         return this.pendingTransactionsCount;
     }
 
+    /**
+     * @description - get the genesis block
+     * @returns {Block} genesisBlock
+     */
     public getGenesisBlock(): Block {
         return this.genesisBlock;
     }
 
+    /**
+     * @description - get the chain id
+     * @returns {string} chainId
+     */
     public getChainId(): string {
         return this.chainId;
     }
 
+    /**
+     * @description - get the block chain
+     * @returns {Block[]} blockchain
+     */
     public getBlockchain(): Block[] {
         return this.blockchain;
     }
 
+    /**
+     * @description - get the count of blocks
+     * @returns {number} length
+     */
     public getBlocksCount(): number {
         return this.blockchain.length;
     }
 
-    public handleReceivedTransaction(transaction: Transaction) {
+    /**
+     * @description - handle received transaction
+     * @param {Transaction} transaction 
+     */
+    public handleReceivedTransaction(transaction: Transaction): void {
 
     }
 
+    /**
+     * @description - get the latest block in the blockchain
+     * @returns {Block} latestBlock
+     */
     public getLatestBlock(): Block {
         //_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number)
         // return new Block(
@@ -163,10 +205,19 @@ export class BlockChain {
         return latestBlock;
     }
 
+    /**
+     * @description - get the array of transactions
+     * @returns {Transaction[]} transactions
+     */
     public getTransactionPool(): Transaction[] {
         return [];
     }
     
+    /**
+     * @description - check to see if the block structure is valid
+     * @param latestBlockReceived 
+     * @returns {boolean}
+     */
     public isValidBlockStructure(latestBlockReceived: Block): boolean {
         let rVal: boolean = false;
         rVal = typeof latestBlockReceived.blockDataHash === 'string'
@@ -180,18 +231,35 @@ export class BlockChain {
         return rVal;
     }
 
+    /**
+     * @description - add the given block to the blockchain
+     * @param {Block} latestBlockReceived 
+     * @returns {booean}
+     */
     public addBlockToChain(latestBlockReceived: Block): boolean {
         return true;
     }
 
+    /**
+     * @description - replace the current blockchain with the given blockchain
+     * @param {Block[]} receivedBlocks 
+     */
     public replaceChain(receivedBlocks: Block[]): void  {
 
     }
 
+    /**
+     * @description - get the current difficulty
+     * @returns {number} current difficulty
+     */
     getCurrentDifficulty(): number {
         return this.difficulty;
     }
 
+    /**
+     * @description - get the cumulative difficulty
+     * @returns {number} cumulative difficulty
+     */
     getCumulativeDifficulty(): number {
         return this.cumulativeDifficulty;
     }

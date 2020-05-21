@@ -69,6 +69,17 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>classdesc</dt>
+						<dd><ul>
+								<li>This class is the main of the entire blockchain.  Many of these can be run as peers.</li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -114,9 +125,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L13">node.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L39">node.ts:39</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>This constructor sets up the http and p2p servers and listens on their respective ports</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_node_.node.html" class="tsd-signature-type">Node</a></h4>
 						</li>
 					</ul>
@@ -130,9 +150,18 @@
 					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L7">node.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L15">node.ts:15</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>the entire blockchain</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="config" class="tsd-anchor"></a>
@@ -140,9 +169,18 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="_config_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol"> = new Config()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L10">node.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L27">node.ts:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>configuration object</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="httpport" class="tsd-anchor"></a>
@@ -150,9 +188,18 @@
 					<div class="tsd-signature tsd-kind-icon">http<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.HTTP_PORT) || this.config.defaultServerPort</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L11">node.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L31">node.ts:31</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>http port for the http server</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="httpserver" class="tsd-anchor"></a>
@@ -160,9 +207,18 @@
 					<div class="tsd-signature tsd-kind-icon">http<wbr>Server<span class="tsd-signature-symbol">:</span> <a href="_httpserver_.httpserver.html" class="tsd-signature-type">HttpServer</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L9">node.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L23">node.ts:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>the http server that responds to http requests</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="initialpeers" class="tsd-anchor"></a>
@@ -170,9 +226,18 @@
 					<div class="tsd-signature tsd-kind-icon">initial<wbr>Peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = process.env.PEERS ? process.env.PEERS.split(&#x27;,&#x27;) : []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L13">node.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L39">node.ts:39</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>comma separated list of peer urls.</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="p2p" class="tsd-anchor"></a>
@@ -180,9 +245,18 @@
 					<div class="tsd-signature tsd-kind-icon">p2p<span class="tsd-signature-symbol">:</span> <a href="_p2p_.p2p.html" class="tsd-signature-type">P2P</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L8">node.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L19">node.ts:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>the peer-to-peer server</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="p2pport" class="tsd-anchor"></a>
@@ -190,9 +264,18 @@
 					<div class="tsd-signature tsd-kind-icon">p2p<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/0b14119/src/node.ts#L12">node.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/23126c6/src/node.ts#L35">node.ts:35</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>p2p port number for the p2p server</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
