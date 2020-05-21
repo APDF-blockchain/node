@@ -9,17 +9,41 @@ import { Config } from './config';
  * @class BlockChain
  */
 export class BlockChain {
-    private confirmedTransactionsCount: number = 0;
-    private pendingTransactionsCount: number = 0;
+    /**
+     * @description - all the blocks in the blockchain
+     */
     private blockchain: Block[] = [];
+    /**
+     * @description - the genesis block.
+     */
     private genesisBlock: Block;
+    /**
+     * @description - the block chain id
+     */
     private chainId: string;
-    private balances: Balance[] = [];
-    private pendingTransactions: Transaction[] = [];
-    private confirmedTransactions: Transaction[] = [];
+    /**
+     * @description - a map of the balances with a key of the account address
+     */
+    private balances: Map<string, Balance> = new Map<string, Balance>();
+    /**
+     * @description - a map of the transactions with a key of the from address.
+     */
+    private transactionPool: Map<string, Transaction[]> = new Map<string, Transaction[]>();
+    /**
+     * @description - the configuration object for this node/blockchain
+     */
     private config: Config = new Config();
+    /**
+     * @description - the current difficulty
+     */
     private difficulty: number = this.config.startDifficulty;;
+    /**
+     * @description - the cumalative difficulty
+     */
     private cumulativeDifficulty: number = this.difficulty;
+    /**
+     * @description - a map fo the mining jobs keyed on the (miner address?)
+     */
     private miningJobs: Map<string, Block> = new Map<string, Block>();
 
     /**
@@ -49,11 +73,11 @@ export class BlockChain {
             let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block(
-                0, 
-                '0000000000000000000000000000000000000000000000000000000000000000', 
-                new Date().getTime(), 
-                transactions, 
-                0, 
+                0,
+                '0000000000000000000000000000000000000000000000000000000000000000',
+                new Date().getTime(),
+                transactions,
+                0,
                 0
             );
             json = JSON.stringify(this.genesisBlock);
@@ -64,18 +88,6 @@ export class BlockChain {
             this.genesisBlock.blockDataHash = hash;
             this.blockchain.push(this.genesisBlock);
             this.chainId = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";
-            // let balance = new Balance();
-            // balance.accountAddress = '0000000000000000000000000000000000000000';
-            // balance.confirmedBalance = -1000010000060;
-            // this.balances.push(balance);
-            // balance = new Balance();
-            // balance.accountAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
-            // balance.confirmedBalance = 999998799980;
-            // this.balances.push(balance);
-            // balance = new Balance();
-            // balance.accountAddress = '84ede81c58f5c490fc6e1a3035789eef897b5b35';
-            // balance.confirmedBalance = 10000060;
-            // this.balances.push(balance);
         }
     }
 
@@ -84,31 +96,52 @@ export class BlockChain {
      * @returns {Balance[]} balances
      */
     getBalances(): Balance[] {
-        return this.balances;
+        let rVal: Balance[] = [];
+        for (let key of this.balances.keys()) {
+            rVal.push(this.balances.get(key));
+        }
+        return rVal;
     }
 
-    /**
-     * @description - Add a confirmed transaction to this blockchain
-     * @param {Transaction} trans - confirmed transaction to be added
-     */
-    addConfirmedTransaction(trans: Transaction): void {
-        this.confirmedTransactions.push(trans);
-    }
+    // /**
+    //  * @description - Add a confirmed transaction to this blockchain
+    //  * @param {Transaction} trans - confirmed transaction to be added
+    //  */
+    // addConfirmedTransaction(trans: Transaction): void {
+    //     if (this.transactionPool.get(trans.from) !== null) {
+    //         let _transAr: Transaction[] = this.transactionPool.get(trans.from)
+    //         for( let i = 0; i < _transAr.length; i++) {
+    //             if(_transAr[i].minedInBlockIndex === trans.minedInBlockIndex && _transAr[i].tranferSuccessful === false) {
+    //                 this.transactionPool.get(trans.from)[i].tranferSuccessful = true;
+    //             }
+    //         }
+    //     } else {
+    //        console.log("addConfirmedTransaction(): did not find any transactions associated with " + trans.from); 
+    //     }
+    // }
 
-    /**
-     * @description - Add a pending transaction to the this blockchain
-     * @param trans - pending transction to be added
-     */
-    addPendingTransaction(trans: Transaction): void {
-        this.pendingTransactions.push(trans);
-    }
+    // /**
+    //  * @description - Add a pending transaction to the this blockchain
+    //  * @param trans - pending transction to be added
+    //  */
+    // addPendingTransaction(trans: Transaction): void {
+    //     this.pendingTransactions.push(trans);
+    // }
 
     /**
      * @description - get the pending transactions for this blockchain
      * @returns {Transaction[]} pendingTransaction
      */
     getPendingTransactions(): Transaction[] {
-        return this.pendingTransactions;
+        let rVal: Transaction[] = [];
+        for (let key of this.transactionPool.keys()) {
+            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if( this.transactionPool.get(key)[i].tranferSuccessful === false) {
+                    rVal.push(this.transactionPool.get(key)[i]);
+                }
+            }
+        }
+        return rVal;
     }
 
     /**
@@ -116,7 +149,15 @@ export class BlockChain {
      * @returns {Transaction[]} confirmedTransactions
      */
     getConfirmedTransactions(): Transaction[] {
-        return this.confirmedTransactions;
+        let rVal: Transaction[] = [];
+        for (let key of this.transactionPool.keys()) {
+            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if( this.transactionPool.get(key)[i].tranferSuccessful === true) {
+                    rVal.push(this.transactionPool.get(key)[i]);
+                }
+            }
+        }
+        return rVal;
     }
 
     /**
@@ -125,10 +166,17 @@ export class BlockChain {
      * @param {number} amount 
      */
     addConfirmedBalance(accountAddress: string, amount: number): void {
-        let balance: Balance = new Balance();
-        balance.accountAddress = accountAddress;
-        balance.confirmedBalance = amount;
-        this.balances.push(balance);
+        let balance: Balance;
+        if (this.balances.get(accountAddress) !== null) {
+            this.balances.get(accountAddress).confirmedBalance += amount;
+        } else {
+            balance = new Balance();
+            balance.accountAddress = accountAddress;
+            balance.confirmedBalance = amount;
+            balance.pendingBalance = 0;
+            balance.safeBalance = 0;
+            this.balances.set(accountAddress, balance);
+        }
     }
 
     /**
@@ -136,7 +184,15 @@ export class BlockChain {
      * @returns {number} count
      */
     getConfirmedTransactionsCount(): number {
-        return this.confirmedTransactionsCount;
+        let rVal: number = 0;
+        for (let key of this.transactionPool.keys()) {
+            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if( this.transactionPool.get(key)[i].tranferSuccessful === true) {
+                    rVal++;
+                }
+            }
+        }
+        return rVal;
     }
 
     /**
@@ -144,7 +200,15 @@ export class BlockChain {
      * @returns {number} count
      */
     getPendingTransactionsCount(): number {
-        return this.pendingTransactionsCount;
+        let rVal: number = 0;
+        for (let key of this.transactionPool.keys()) {
+            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if( this.transactionPool.get(key)[i].tranferSuccessful === false) {
+                    rVal++;
+                }
+            }
+        }
+        return rVal;
     }
 
     /**
@@ -184,7 +248,13 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-
+        if (this.transactionPool.get(transaction.from) !== null) {
+            this.transactionPool.get(transaction.from).push(transaction);
+        } else {
+            let transAr: Transaction[] = [];
+            transAr.push(transaction);
+            this.transactionPool.set(transaction.from, transAr);
+        }
     }
 
     /**
@@ -210,9 +280,19 @@ export class BlockChain {
      * @returns {Transaction[]} transactions
      */
     public getTransactionPool(): Transaction[] {
-        return [];
+        let rVal: Transaction[] = [];
+        for (let key of this.transactionPool.keys()) {
+            console.log(key);
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                rVal.push(this.transactionPool.get(key)[i]);
+            }
+        }
+        return rVal;
     }
-    
+
+    public getTransactions(address: string): Transaction[] {
+        return this.transactionPool.get(address);
+    }
     /**
      * @description - check to see if the block structure is valid
      * @param latestBlockReceived 
@@ -244,7 +324,7 @@ export class BlockChain {
      * @description - replace the current blockchain with the given blockchain
      * @param {Block[]} receivedBlocks 
      */
-    public replaceChain(receivedBlocks: Block[]): void  {
+    public replaceChain(receivedBlocks: Block[]): void {
 
     }
 

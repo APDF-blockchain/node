@@ -174,26 +174,51 @@ export class HttpServer {
             res.send(this.blockchain.getBalances());
         });
 
-        app.get('/address/:address/transactions', (req, res) => {
-            console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
-        });
+        // app.get('/address/:address/transactions', (req, res) => {
+        //     console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
+        //     let rVal: Transaction[] = [];
+        //     let transactions: Transaction[] = this.blockchain.getTransactionPool();
+        //     for (let i = 0; i < transactions.length; i++) {
+        //         if (transactions[i].from === req.params.address) {
+        //             rVal.push(transactions[i]);
+        //         }
+        //     }
+        //     if (rVal.length > 0) {
+        //         res.send(rVal);
+        //     }
+        //     res.status(401).send("There are no transactions.");
+        // });
 
         app.get('/address/:address/transactions', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
+            let rVal: Transaction[] = this.blockchain.getTransactions(req.params.address);
+            if( rVal !== null) {
+                res.send(rVal);
+            } else {
+                res.status(401).send("There are not transaction for " + req.params.address + ".");
+            }
         });
 
         app.get('/address/:address/balance', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/balance');
         });
 
+        /**
+         * @description - add transactions to the transaction pool.
+         */
         app.post('/transactions/send', (req, res) => {
             console.log(this.myHttpPort + ':POST /transactions/send');
             let body: Transaction[] = req.body;
             console.log(body);
             for (let i = 0; i < body.length; i++) {
-                this.blockchain.addPendingTransaction(body[i]); // TODO: This may be pending only.  We will see.
+                body[i].tranferSuccessful = false;
+                this.blockchain.handleReceivedTransaction(body[i]);
             }
-            res.status(201).send("Transaction send complete.");
+            if (body !== null) {
+                res.status(201).send("Transaction send complete.");
+            } else {
+                res.status(401).send("No transactions were received.");
+            }
         });
 
         app.get('/peers', (req, res) => {
