@@ -70,23 +70,20 @@ export class HttpServer {
          * @param next - contains the http next object.  currently not used.
          */
         app.use((err, req, res, next) => {
+            console.log('use() time:', Date.now())
+            this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             if (err) {
                 res.status(400).send(err.message);
-            } else {
-                this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
             }
         });
 
         app.get('/blocks', (req, res) => {
-            // TODO: For now let's fake it.
             res.send(this.blockchain.getBlockchain());
-            //res.send(JSON.stringify(this.blockchain.getBlockchain()));
         });
 
         app.get('/info', (req, res) => {
             console.log(this.myHttpPort + ':GET /info');
             //this.listenerUrl = req.protocol + "://" + req.get('host') + req.originalUrl;
-            // TODO: For now let's fake it.
             this.listenerUrl = req.protocol + "://" + req.get('host');
 
             let rVal = {
@@ -101,7 +98,6 @@ export class HttpServer {
                 'confirmedTransactions': this.blockchain.getConfirmedTransactionsCount(),
                 'pendingTransactions': this.blockchain.getPendingTransactionsCount()
             };
-            //res.send(JSON.stringify(rVal));
             res.send(rVal);
         });
 
