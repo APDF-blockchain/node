@@ -39,6 +39,8 @@ export class P2P {
      * @description - array of peer url's
      */
     private peers: string[] = [];
+
+    private peersMap: Map<string, boolean> = new Map<string, boolean>();
     /**
      * @description - mylistener port of this peer.
      */
@@ -113,8 +115,17 @@ export class P2P {
         return this.sockets.length;
     }
 
+    /**
+     * @description - get all my peers.
+     */
     public getPeers(): string[] {
-        let rVal: string[] = this.peers;
+        let rVal: string[] = [];
+        for (let key of this.peersMap.keys()) {
+            //console.log(key);
+            if (this.peersMap.get(key) === true) {
+                rVal.push(key);
+            }
+        }
         return rVal;
     }
 
@@ -188,8 +199,9 @@ export class P2P {
                         });
                         break;
                     case MessageType.PEER_MSG:
-                        console.log('PEER=' + message.data);
-                        this.peers.push(message.data);
+                        console.log(this.mylistenerPort + ':connect to PEER message received: ' + message.data);
+                        //this.peers.push(message.data);
+                        this.addPeer(message.data);
                         break;
                 }
             } catch (e) {
@@ -197,6 +209,7 @@ export class P2P {
             }
         });
     }
+
 
     /**
      * @description - Write a message to a websocket.
@@ -273,18 +286,6 @@ export class P2P {
     })
 
     /**
-     * @description - Remove a peer from the list
-     * @param {string} url 
-     */
-    public removePeer(url: string): void {
-        for (let i = 0; i < this.peers.length; i++) {
-            if (url === this.peers[i]) {
-                this.peers.splice(i, 1);
-            }
-        }
-    }
-
-    /**
      * @description - Initialize the error handler websocket
      * @param {WebSocket} ws 
      */
@@ -340,6 +341,22 @@ export class P2P {
     }
 
     /**
+     * @description - add a peer to me.
+     * @param {string} url 
+     */
+    public addPeer(url: string) {
+        this.peersMap.set(url, true);
+    }
+
+    /**
+     * @description - Remove a peer from me
+     * @param {string} url 
+     */
+    public removePeer(url: string): void {
+        this.peersMap.set(url, false);
+    }
+
+    /**
      * @description - Connect to a new peer.
      * @param {string} newPeer - string of the new peer to connect to.
      */
@@ -349,13 +366,15 @@ export class P2P {
         const ws: WebSocket = new WebSocket(newPeer);
         ws.on('open', () => {
             this.initConnection(ws);
-            this.peers.push(newPeer);
+            //this.peers.push(newPeer);
+            this.addPeer(newPeer);
             this.write(ws, { 'type': MessageType.PEER_MSG, 'data': this.mylistenerUrl })
         });
         ws.on('error', () => {
             console.log('connection failed');
         });
     }
+
 
     /**
      * @description - Connect to the list of peers.
