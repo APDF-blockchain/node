@@ -224,13 +224,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        // if (this.transactionPool.get(transaction.from) !== null) {
-        //     this.transactionPool.get(transaction.from).push(transaction);
-        // } else {
-        //     let transAr: Transaction[] = [];
-        //     transAr.push(transaction);
-        //     this.transactionPool.set(transaction.from, transAr);
-        // }
+        this.getLatestBlock().transactions.push(transaction);
     }
 
     /**
