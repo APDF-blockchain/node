@@ -35,12 +35,12 @@ export class P2P {
      * @description - array of peer-to-peer WebSocket's
      */
     private sockets: WebSocket[] = [];
-    /**
-     * @description - array of peer url's
-     */
-    private peers: string[] = [];
 
+    /**
+     * @description - map of my peers.
+     */
     private peersMap: Map<string, boolean> = new Map<string, boolean>();
+
     /**
      * @description - mylistener port of this peer.
      */
