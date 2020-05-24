@@ -49,6 +49,11 @@ export class Transaction {
     public tranferSuccessful: boolean;
 
     /**
+     * @description - number of times transaction has been confirmed
+     */
+    public confirmationCount: number;
+
+    /**
      * @description - default empty constructor
      * @constructor
      */

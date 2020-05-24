@@ -129,14 +129,30 @@ export class BlockChain {
     // }
 
     /**
+     * @description - get the transactions by the transactionDataHash
+     * @returns {Transaction[]} transactions
+     */
+    getTransactionsByTxHash(txHash: string): Transaction[] {
+        let rVal: Transaction[] = [];
+        for (let key of this.transactionPool.keys()) {
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if (this.transactionPool.get(key)[i].transactionDataHash === txHash) {
+                    rVal.push(this.transactionPool.get(key)[i]);
+                }
+            }
+        }
+        return rVal;
+    }
+
+    /**
      * @description - get the pending transactions for this blockchain
      * @returns {Transaction[]} pendingTransaction
      */
     getPendingTransactions(): Transaction[] {
         let rVal: Transaction[] = [];
         for (let key of this.transactionPool.keys()) {
-            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if( this.transactionPool.get(key)[i].tranferSuccessful === false) {
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
                     rVal.push(this.transactionPool.get(key)[i]);
                 }
             }
@@ -151,8 +167,8 @@ export class BlockChain {
     getConfirmedTransactions(): Transaction[] {
         let rVal: Transaction[] = [];
         for (let key of this.transactionPool.keys()) {
-            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if( this.transactionPool.get(key)[i].tranferSuccessful === true) {
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
                     rVal.push(this.transactionPool.get(key)[i]);
                 }
             }
@@ -186,8 +202,8 @@ export class BlockChain {
     getConfirmedTransactionsCount(): number {
         let rVal: number = 0;
         for (let key of this.transactionPool.keys()) {
-            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if( this.transactionPool.get(key)[i].tranferSuccessful === true) {
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
                     rVal++;
                 }
             }
@@ -202,8 +218,8 @@ export class BlockChain {
     getPendingTransactionsCount(): number {
         let rVal: number = 0;
         for (let key of this.transactionPool.keys()) {
-            for( let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if( this.transactionPool.get(key)[i].tranferSuccessful === false) {
+            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+                if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
                     rVal++;
                 }
             }
@@ -342,5 +358,51 @@ export class BlockChain {
      */
     getCumulativeDifficulty(): number {
         return this.cumulativeDifficulty;
+    }
+
+    /**
+     * @description - get the account balances for the given account address 
+     * @param {string} address 
+     * @returns {Balance} balance
+     */
+    getAccountBalance(address: string): Balance {
+        let balance: Balance = new Balance();
+        // TODO: calculate the balances for this account.
+        balance.accountAddress = address;
+        let myTrans: Transaction[] = this.getTransactions(address);
+        if (myTrans === undefined) {
+            return null;
+        }
+        let confirmedSum: number = 0;
+        let confirmedOneSum: number = 0;
+        let pendingSum: number = 0;
+        for (let i = 0; i < myTrans.length; i++) {
+            if (myTrans[i].tranferSuccessful === true) {
+                if (myTrans[i].confirmationCount === 1) {
+                    if (myTrans[i].from === address) {
+                        confirmedOneSum += myTrans[i].value - myTrans[i].fee;
+                    } else {
+                        confirmedOneSum -= myTrans[i].value - myTrans[i].fee;
+                    }
+                } else if (myTrans[i].confirmationCount === 6) {
+                    if (myTrans[i].from === address) {
+                        confirmedSum += myTrans[i].value - myTrans[i].fee;
+                    } else {
+                        confirmedSum -= myTrans[i].value - myTrans[i].fee;
+                    }
+                }
+            } else {
+                if (myTrans[i].from === address) {
+                    pendingSum += myTrans[i].value - myTrans[i].fee;
+                } else {
+                    pendingSum -= myTrans[i].value - myTrans[i].fee;
+                }
+            }
+        }
+        balance.confirmedBalance = confirmedOneSum;
+        balance.safeBalance = confirmedSum;
+        balance.pendingBalance = pendingSum;
+
+        return balance;
     }
 }
