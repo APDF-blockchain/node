@@ -21,14 +21,6 @@ export class BlockChain {
      * @description - the block chain id
      */
     private chainId: string;
-    // /**
-    //  * @description - a map of the balances with a key of the account address
-    //  */
-    // private balances: Map<string, Balance> = new Map<string, Balance>();
-    // /**
-    //  * @description - a map of the transactions with a key of the from address.
-    //  */
-    // private transactionPool: Map<string, Transaction[]> = new Map<string, Transaction[]>();
     /**
      * @description - the configuration object for this node/blockchain
      */
@@ -73,8 +65,6 @@ export class BlockChain {
             transaction.transactionDataHash = hash;
             let transactions: Transaction[] = [];
             transactions.push(transaction);
-            //TODO: genesis transaction;
-            //this.transactionPool.set(transaction.from, transactions);
             this.genesisBlock = new Block(
                 0,
                 '0000000000000000000000000000000000000000000000000000000000000000',
@@ -122,38 +112,14 @@ export class BlockChain {
         return rval;
     }
 
-    // /**
-    //  * @description - Add a confirmed transaction to this blockchain
-    //  * @param {Transaction} trans - confirmed transaction to be added
-    //  */
-    // addConfirmedTransaction(trans: Transaction): void {
-    //     if (this.transactionPool.get(trans.from) !== null) {
-    //         let _transAr: Transaction[] = this.transactionPool.get(trans.from)
-    //         for( let i = 0; i < _transAr.length; i++) {
-    //             if(_transAr[i].minedInBlockIndex === trans.minedInBlockIndex && _transAr[i].tranferSuccessful === false) {
-    //                 this.transactionPool.get(trans.from)[i].tranferSuccessful = true;
-    //             }
-    //         }
-    //     } else {
-    //        console.log("addConfirmedTransaction(): did not find any transactions associated with " + trans.from); 
-    //     }
-    // }
-
-    // /**
-    //  * @description - Add a pending transaction to the this blockchain
-    //  * @param trans - pending transction to be added
-    //  */
-    // addPendingTransaction(trans: Transaction): void {
-    //     this.pendingTransactions.push(trans);
-    // }
-
+    /**
+     * @description - get all the transactions in all blocks
+     */
     public getAllTransactions(): Transaction[] {
         let rTrans: Transaction[] = [];
         for (let i = 0; i < this.blockchain.length; i++) {
-            let _trans: Transaction[] = [];
-            for (let j = 0; _trans.length; j++) {
-                rTrans.push(_trans[j]);
-            }
+            let _trans: Transaction[] = this.blockchain[i].transactions;
+            rTrans = rTrans.concat(_trans);
         }
         return rTrans;
     }
@@ -172,17 +138,6 @@ export class BlockChain {
         }
         return rVal;
     }
-    // getTransactionsByTxHash(txHash: string): Transaction[] {
-    //     let rVal: Transaction[] = [];
-    //     for (let key of this.transactionPool.keys()) {
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             if (this.transactionPool.get(key)[i].transactionDataHash === txHash) {
-    //                 rVal.push(this.transactionPool.get(key)[i]);
-    //             }
-    //         }
-    //     }
-    //     return rVal;
-    // }
 
     /**
      * @description - get the pending transactions for this blockchain
@@ -198,17 +153,6 @@ export class BlockChain {
         }
         return rVal;
     }
-    // getPendingTransactions(): Transaction[] {
-    //     let rVal: Transaction[] = [];
-    //     for (let key of this.transactionPool.keys()) {
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
-    //                 rVal.push(this.transactionPool.get(key)[i]);
-    //             }
-    //         }
-    //     }
-    //     return rVal;
-    // }
 
     /**
      * @description - get the confirmed transactions
@@ -224,36 +168,6 @@ export class BlockChain {
         }
         return rVal;
     }
-    // getConfirmedTransactions(): Transaction[] {
-    //     let rVal: Transaction[] = [];
-    //     for (let key of this.transactionPool.keys()) {
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
-    //                 rVal.push(this.transactionPool.get(key)[i]);
-    //             }
-    //         }
-    //     }
-    //     return rVal;
-    // }
-
-    // /**
-    //  * @description - add confirmed balance to balances
-    //  * @param {string} accountAddress
-    //  * @param {number} amount 
-    //  */
-    // addConfirmedBalance(accountAddress: string, amount: number): void {
-    //     let balance: Balance;
-    //     if (this.balances.get(accountAddress) !== null) {
-    //         this.balances.get(accountAddress).confirmedBalance += amount;
-    //     } else {
-    //         balance = new Balance();
-    //         balance.accountAddress = accountAddress;
-    //         balance.confirmedBalance = amount;
-    //         balance.pendingBalance = 0;
-    //         balance.safeBalance = 0;
-    //         this.balances.set(accountAddress, balance);
-    //     }
-    // }
 
     /**
      * @description - get the confirmed transactons count
@@ -263,17 +177,6 @@ export class BlockChain {
         let rVal: number = this.getConfirmedTransactions().length;
         return rVal;
     }
-    // getConfirmedTransactionsCount(): number {
-    //     let rVal: number = 0;
-    //     for (let key of this.transactionPool.keys()) {
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
-    //                 rVal++;
-    //             }
-    //         }
-    //     }
-    //     return rVal;
-    // }
 
     /**
      * @description - get the pending transactions count
@@ -283,17 +186,6 @@ export class BlockChain {
         let rVal: number = this.getPendingTransactions().length;
         return rVal;
     }
-    // getPendingTransactionsCount(): number {
-    //     let rVal: number = 0;
-    //     for (let key of this.transactionPool.keys()) {
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
-    //                 rVal++;
-    //             }
-    //         }
-    //     }
-    //     return rVal;
-    // }
 
     /**
      * @description - get the genesis block
@@ -346,15 +238,6 @@ export class BlockChain {
      * @returns {Block} latestBlock
      */
     public getLatestBlock(): Block {
-        //_index: number, _hash: string, _timestamp: number, _data: Transaction[], _difficulty: number, _nonce: number)
-        // return new Block(
-        //     0,
-        //     '',
-        //     0,
-        //     [],
-        //     0,
-        //     0
-        // );
         let latestBlock: Block = this.getBlockchain()[this.getBlockchain().length - 1];
         return latestBlock;
     }
@@ -367,22 +250,16 @@ export class BlockChain {
         let rVal: Transaction[] = this.getAllTransactions();
         return rVal;
     }
-    // public getTransactionPool(): Transaction[] {
-    //     let rVal: Transaction[] = [];
-    //     for (let key of this.transactionPool.keys()) {
-    //         console.log(key);
-    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-    //             rVal.push(this.transactionPool.get(key)[i]);
-    //         }
-    //     }
-    //     return rVal;
-    // }
 
-    public getTransactions(address: string): Transaction[] {
+    /**
+     * @description - get all the transctions for the from address.
+     * @param {string} fromAddress 
+     */
+    public getTransactions(fromAddress: string): Transaction[] {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if(_aTrans[i].from === address) {
+            if(_aTrans[i].from === fromAddress) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -428,7 +305,7 @@ export class BlockChain {
      * @description - get the current difficulty
      * @returns {number} current difficulty
      */
-    getCurrentDifficulty(): number {
+    public getCurrentDifficulty(): number {
         return this.difficulty;
     }
 
@@ -436,7 +313,7 @@ export class BlockChain {
      * @description - get the cumulative difficulty
      * @returns {number} cumulative difficulty
      */
-    getCumulativeDifficulty(): number {
+    public getCumulativeDifficulty(): number {
         return this.cumulativeDifficulty;
     }
 
@@ -445,7 +322,7 @@ export class BlockChain {
      * @param {string} address 
      * @returns {Balance} balance
      */
-    getAccountBalance(address: string): Balance {
+    public getAccountBalance(address: string): Balance {
         let balance: Balance = new Balance();
         // TODO: calculate the balances for this account.
         balance.accountAddress = address;
