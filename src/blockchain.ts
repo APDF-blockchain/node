@@ -21,10 +21,10 @@ export class BlockChain {
      * @description - the block chain id
      */
     private chainId: string;
-    /**
-     * @description - a map of the balances with a key of the account address
-     */
-    private balances: Map<string, Balance> = new Map<string, Balance>();
+    // /**
+    //  * @description - a map of the balances with a key of the account address
+    //  */
+    // private balances: Map<string, Balance> = new Map<string, Balance>();
     /**
      * @description - a map of the transactions with a key of the from address.
      */
@@ -92,15 +92,31 @@ export class BlockChain {
     }
 
     /**
-     * @description - Get balances
-     * @returns {Balance[]} balances
+     * @description - get balances
+     * @returns {any[]} balances
      */
-    getBalances(): Balance[] {
-        let rVal: Balance[] = [];
-        for (let key of this.balances.keys()) {
-            rVal.push(this.balances.get(key));
+    public getBalances(): any[] {
+        let rval: any[] = [];
+        let mytrans: Transaction[] = this.getConfirmedTransactions();
+        if (mytrans.length === 0) {
+            return null;
         }
-        return rVal;
+        let addressmap: Map<string, number> = new Map<string, number>();
+        for (let i = 0; i < mytrans.length; i++) {
+            addressmap.set(mytrans[i].from, 0);
+        }
+        for (let key of addressmap.keys()) {
+            for (let i = 0; i < mytrans.length; i++) {
+                if (mytrans[i].from === key) {
+                    addressmap.set(key, mytrans[i].value);
+                }
+            }
+        }
+        for (let key of addressmap.keys()) {
+            let myval = addressmap.get(key);
+            rval.push({ key, myval });
+        }
+        return rval;
     }
 
     // /**
@@ -176,24 +192,24 @@ export class BlockChain {
         return rVal;
     }
 
-    /**
-     * @description - add confirmed balance to balances
-     * @param {string} accountAddress
-     * @param {number} amount 
-     */
-    addConfirmedBalance(accountAddress: string, amount: number): void {
-        let balance: Balance;
-        if (this.balances.get(accountAddress) !== null) {
-            this.balances.get(accountAddress).confirmedBalance += amount;
-        } else {
-            balance = new Balance();
-            balance.accountAddress = accountAddress;
-            balance.confirmedBalance = amount;
-            balance.pendingBalance = 0;
-            balance.safeBalance = 0;
-            this.balances.set(accountAddress, balance);
-        }
-    }
+    // /**
+    //  * @description - add confirmed balance to balances
+    //  * @param {string} accountAddress
+    //  * @param {number} amount 
+    //  */
+    // addConfirmedBalance(accountAddress: string, amount: number): void {
+    //     let balance: Balance;
+    //     if (this.balances.get(accountAddress) !== null) {
+    //         this.balances.get(accountAddress).confirmedBalance += amount;
+    //     } else {
+    //         balance = new Balance();
+    //         balance.accountAddress = accountAddress;
+    //         balance.confirmedBalance = amount;
+    //         balance.pendingBalance = 0;
+    //         balance.safeBalance = 0;
+    //         this.balances.set(accountAddress, balance);
+    //     }
+    // }
 
     /**
      * @description - get the confirmed transactons count

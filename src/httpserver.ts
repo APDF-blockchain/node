@@ -170,13 +170,20 @@ export class HttpServer {
             let rVal: Transaction[] = this.blockchain.getTransactionsByTxHash(req.params.tranHash);
             if(rVal !== null){
                 res.send(rVal);
+            } else {
+                res.status(401).send("There are no transaction for " + req.params.tranHash + ".");
             }
         });
 
         app.get('/balances', (req, res) => {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
-            res.send(this.blockchain.getBalances());
+            let rVal: any[] = this.blockchain.getBalances();
+            if( rVal !== null) {
+                res.send(rVal);
+            } else {
+                res.status(401).send("There are no balances available");
+            }
         });
 
         // app.get('/address/:address/transactions', (req, res) => {
