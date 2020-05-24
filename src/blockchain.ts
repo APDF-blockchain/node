@@ -25,10 +25,10 @@ export class BlockChain {
     //  * @description - a map of the balances with a key of the account address
     //  */
     // private balances: Map<string, Balance> = new Map<string, Balance>();
-    /**
-     * @description - a map of the transactions with a key of the from address.
-     */
-    private transactionPool: Map<string, Transaction[]> = new Map<string, Transaction[]>();
+    // /**
+    //  * @description - a map of the transactions with a key of the from address.
+    //  */
+    // private transactionPool: Map<string, Transaction[]> = new Map<string, Transaction[]>();
     /**
      * @description - the configuration object for this node/blockchain
      */
@@ -74,7 +74,7 @@ export class BlockChain {
             let transactions: Transaction[] = [];
             transactions.push(transaction);
             //TODO: genesis transaction;
-            this.transactionPool.set(transaction.from,transactions);
+            //this.transactionPool.set(transaction.from, transactions);
             this.genesisBlock = new Block(
                 0,
                 '0000000000000000000000000000000000000000000000000000000000000000',
@@ -147,53 +147,94 @@ export class BlockChain {
     //     this.pendingTransactions.push(trans);
     // }
 
+    public getAllTransactions(): Transaction[] {
+        let rTrans: Transaction[] = [];
+        for (let i = 0; i < this.blockchain.length; i++) {
+            let _trans: Transaction[] = [];
+            for (let j = 0; _trans.length; j++) {
+                rTrans.push(_trans[j]);
+            }
+        }
+        return rTrans;
+    }
+
     /**
      * @description - get the transactions by the transactionDataHash
      * @returns {Transaction[]} transactions
      */
-    getTransactionsByTxHash(txHash: string): Transaction[] {
+    public getTransactionsByTxHash(txHash: string): Transaction[] {
         let rVal: Transaction[] = [];
-        for (let key of this.transactionPool.keys()) {
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if (this.transactionPool.get(key)[i].transactionDataHash === txHash) {
-                    rVal.push(this.transactionPool.get(key)[i]);
-                }
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if (_aTrans[i].transactionDataHash === txHash) {
+                rVal.push(_aTrans[i]);
             }
         }
         return rVal;
     }
+    // getTransactionsByTxHash(txHash: string): Transaction[] {
+    //     let rVal: Transaction[] = [];
+    //     for (let key of this.transactionPool.keys()) {
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             if (this.transactionPool.get(key)[i].transactionDataHash === txHash) {
+    //                 rVal.push(this.transactionPool.get(key)[i]);
+    //             }
+    //         }
+    //     }
+    //     return rVal;
+    // }
 
     /**
      * @description - get the pending transactions for this blockchain
      * @returns {Transaction[]} pendingTransaction
      */
-    getPendingTransactions(): Transaction[] {
+    public getPendingTransactions(): Transaction[] {
         let rVal: Transaction[] = [];
-        for (let key of this.transactionPool.keys()) {
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
-                    rVal.push(this.transactionPool.get(key)[i]);
-                }
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if (_aTrans[i].tranferSuccessful === false) {
+                rVal.push(_aTrans[i]);
             }
         }
         return rVal;
     }
+    // getPendingTransactions(): Transaction[] {
+    //     let rVal: Transaction[] = [];
+    //     for (let key of this.transactionPool.keys()) {
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
+    //                 rVal.push(this.transactionPool.get(key)[i]);
+    //             }
+    //         }
+    //     }
+    //     return rVal;
+    // }
 
     /**
      * @description - get the confirmed transactions
      * @returns {Transaction[]} confirmedTransactions
      */
-    getConfirmedTransactions(): Transaction[] {
+    public getConfirmedTransactions(): Transaction[] {
         let rVal: Transaction[] = [];
-        for (let key of this.transactionPool.keys()) {
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
-                    rVal.push(this.transactionPool.get(key)[i]);
-                }
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if (_aTrans[i].tranferSuccessful === true) {
+                rVal.push(_aTrans[i]);
             }
         }
         return rVal;
     }
+    // getConfirmedTransactions(): Transaction[] {
+    //     let rVal: Transaction[] = [];
+    //     for (let key of this.transactionPool.keys()) {
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
+    //                 rVal.push(this.transactionPool.get(key)[i]);
+    //             }
+    //         }
+    //     }
+    //     return rVal;
+    // }
 
     // /**
     //  * @description - add confirmed balance to balances
@@ -218,33 +259,41 @@ export class BlockChain {
      * @description - get the confirmed transactons count
      * @returns {number} count
      */
-    getConfirmedTransactionsCount(): number {
-        let rVal: number = 0;
-        for (let key of this.transactionPool.keys()) {
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
-                    rVal++;
-                }
-            }
-        }
+    public getConfirmedTransactionsCount(): number {
+        let rVal: number = this.getConfirmedTransactions().length;
         return rVal;
     }
+    // getConfirmedTransactionsCount(): number {
+    //     let rVal: number = 0;
+    //     for (let key of this.transactionPool.keys()) {
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             if (this.transactionPool.get(key)[i].tranferSuccessful === true) {
+    //                 rVal++;
+    //             }
+    //         }
+    //     }
+    //     return rVal;
+    // }
 
     /**
      * @description - get the pending transactions count
      * @returns {number} count
      */
-    getPendingTransactionsCount(): number {
-        let rVal: number = 0;
-        for (let key of this.transactionPool.keys()) {
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
-                    rVal++;
-                }
-            }
-        }
+    public getPendingTransactionsCount(): number {
+        let rVal: number = this.getPendingTransactions().length;
         return rVal;
     }
+    // getPendingTransactionsCount(): number {
+    //     let rVal: number = 0;
+    //     for (let key of this.transactionPool.keys()) {
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             if (this.transactionPool.get(key)[i].tranferSuccessful === false) {
+    //                 rVal++;
+    //             }
+    //         }
+    //     }
+    //     return rVal;
+    // }
 
     /**
      * @description - get the genesis block
@@ -283,13 +332,13 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        if (this.transactionPool.get(transaction.from) !== null) {
-            this.transactionPool.get(transaction.from).push(transaction);
-        } else {
-            let transAr: Transaction[] = [];
-            transAr.push(transaction);
-            this.transactionPool.set(transaction.from, transAr);
-        }
+        // if (this.transactionPool.get(transaction.from) !== null) {
+        //     this.transactionPool.get(transaction.from).push(transaction);
+        // } else {
+        //     let transAr: Transaction[] = [];
+        //     transAr.push(transaction);
+        //     this.transactionPool.set(transaction.from, transAr);
+        // }
     }
 
     /**
@@ -315,19 +364,31 @@ export class BlockChain {
      * @returns {Transaction[]} transactions
      */
     public getTransactionPool(): Transaction[] {
+        let rVal: Transaction[] = this.getAllTransactions();
+        return rVal;
+    }
+    // public getTransactionPool(): Transaction[] {
+    //     let rVal: Transaction[] = [];
+    //     for (let key of this.transactionPool.keys()) {
+    //         console.log(key);
+    //         for (let i = 0; i < this.transactionPool.get(key).length; i++) {
+    //             rVal.push(this.transactionPool.get(key)[i]);
+    //         }
+    //     }
+    //     return rVal;
+    // }
+
+    public getTransactions(address: string): Transaction[] {
         let rVal: Transaction[] = [];
-        for (let key of this.transactionPool.keys()) {
-            console.log(key);
-            for (let i = 0; i < this.transactionPool.get(key).length; i++) {
-                rVal.push(this.transactionPool.get(key)[i]);
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if(_aTrans[i].from === address) {
+                rVal.push(_aTrans[i]);
             }
         }
         return rVal;
     }
 
-    public getTransactions(address: string): Transaction[] {
-        return this.transactionPool.get(address);
-    }
     /**
      * @description - check to see if the block structure is valid
      * @param latestBlockReceived 
