@@ -42,14 +42,45 @@ export class Node {
      * @description - This constructor sets up the http and p2p servers and listens on their respective ports
      * @constructor
      */
-    constructor() {
+    constructor(args: any) {
+        // let peer: string = args.peer;
+        // let peer: string = "http://localhost:6002";
+        // if (peer !== null) {
+        //     this.initialPeers.push(peer);
+        // }
+        console.log(this.initialPeers);
         this.blockchain = new BlockChain();
         this.p2p = new P2P(this.blockchain);
         this.httpServer = new HttpServer(this.blockchain, this.p2p);
-        this.p2p.connectToPeers(this.initialPeers);
+        //this.p2p.connectToPeers(this.initialPeers);
         this.httpServer.initHttpServer(this.httpPort);
         this.p2p.initP2PServer(this.p2pPort);
+        this.p2p.connectToPeers(this.initialPeers);
     }
 }
-
-let run = new Node();
+function getArgs() {
+    const args = {};
+    process.argv
+        .slice(2, process.argv.length)
+        .forEach(arg => {
+            // long arg
+            if (arg.slice(0, 2) === '--') {
+                const longArg = arg.split('=');
+                const longArgFlag = longArg[0].slice(2, longArg[0].length);
+                const longArgValue = longArg.length > 1 ? longArg[1] : true;
+                args[longArgFlag] = longArgValue;
+            }
+            // flags
+            else if (arg[0] === '-') {
+                const flags = arg.slice(1, arg.length).split('');
+                flags.forEach(flag => {
+                    args[flag] = true;
+                });
+            }
+        });
+    return args;
+}
+const args = getArgs();
+console.log(args);
+//http://localhost:6001
+let run = new Node(args);

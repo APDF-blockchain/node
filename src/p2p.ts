@@ -13,7 +13,8 @@ enum MessageType {
     QUERY_ALL = 1,
     RESPONSE_BLOCKCHAIN = 2,
     QUERY_TRANSACTION_POOL = 3,
-    RESPONSE_TRANSACTION_POOL = 4
+    RESPONSE_TRANSACTION_POOL = 4,
+    PEER_MSG = 5
 }
 
 /**
@@ -39,9 +40,19 @@ export class P2P {
      */
     private peers: string[] = [];
     /**
-     * @description - listener port of this peer.
+     * @description - mylistener port of this peer.
      */
-    private listenerPort: number;
+    private mylistenerPort: number;
+
+    /**
+     * @description - my listener host
+     */
+    private mylistenerHost: string;
+
+    /**
+     * @description - my listener url
+     */
+    private mylistenerUrl: string;
 
     /**
     * @description - Create a P2P.
@@ -49,7 +60,7 @@ export class P2P {
     * @param {Block[]} blockchain - The blockchain.
     */
     constructor(private blockchain: BlockChain) {
-
+        this.mylistenerHost = 'localhost';
     }
 
     /**
@@ -68,15 +79,20 @@ export class P2P {
     }
 
     /**
-     * @description - Initialize the listener for this peer-to-peer server 
+     * @description - Initialize the mylistener for this peer-to-peer server 
      * @param {number} p2pPort - port number to listen on.
      */
     public initP2PServer(p2pPort: number) {
-        this.listenerPort = p2pPort;
+        this.mylistenerPort = p2pPort;
+        this.mylistenerUrl = 'ws://' + this.mylistenerHost + ":" + p2pPort;
         const server: Server = new WebSocket.Server({ port: p2pPort });
-        server.on('connection', (ws: WebSocket) => {
+        server.on('connection', (ws: WebSocket, req: Request) => {
+            //console.log('req='+JSON.stringify(req));
+            let remoteAddress: string = req.url;
+            console.log('REMOTE ADDRESS=' + remoteAddress);
+            console.log("URL=" + ws.url);
             this.initConnection(ws);
-            console.log('ws=' + ws);
+            console.log('initP2PServer(): ws=' + ws + ' and p2pPort=' + p2pPort);
         });
         console.log('listening websocket p2p port on: ' + p2pPort);
     }
@@ -123,6 +139,8 @@ export class P2P {
      * @param {WebSocket} ws - websocket for sending messages.
      */
     public initMessageHandler(ws: WebSocket) {
+        // let tstring: string = JSON.stringify(ws);
+        // console.log('DEBUG 1 Remote address='+tstring)
         ws.on('message', (data: string) => {
 
             try {
@@ -131,7 +149,9 @@ export class P2P {
                     console.log('could not parse received JSON message: ' + data);
                     return;
                 }
-                console.log(this.listenerPort + ':Received message: %s', JSON.stringify(message));
+                console.log(this.mylistenerPort + ':Received message: %s', JSON.stringify(message));
+                // let tstring: string = JSON.stringify(ws);
+                // console.log('DEBUG 2 Remote address='+tstring)
                 switch (message.type) {
                     case MessageType.QUERY_LATEST:
                         this.write(ws, this.responseLatestMsg());
@@ -142,7 +162,7 @@ export class P2P {
                     case MessageType.RESPONSE_BLOCKCHAIN:
                         const receivedBlocks: Block[] = this.JSONToObject<Block[]>(message.data);
                         if (receivedBlocks === null) {
-                            console.log(this.listenerPort + ':invalid blocks received: %s', JSON.stringify(message.data));
+                            console.log(this.mylistenerPort + ':invalid blocks received: %s', JSON.stringify(message.data));
                             break;
                         }
                         this.handleBlockchainResponse(receivedBlocks);
@@ -153,7 +173,7 @@ export class P2P {
                     case MessageType.RESPONSE_TRANSACTION_POOL:
                         const receivedTransactions: Transaction[] = this.JSONToObject<Transaction[]>(message.data);
                         if (receivedTransactions === null) {
-                            console.log(this.listenerPort + ':invalid transaction received: %s', JSON.stringify(message.data));
+                            console.log(this.mylistenerPort + ':invalid transaction received: %s', JSON.stringify(message.data));
                             break;
                         }
                         receivedTransactions.forEach((transaction: Transaction) => {
@@ -166,6 +186,10 @@ export class P2P {
                                 console.log(e.message);
                             }
                         });
+                        break;
+                    case MessageType.PEER_MSG:
+                        console.log('PEER=' + message.data);
+                        this.peers.push(message.data);
                         break;
                 }
             } catch (e) {
@@ -249,6 +273,18 @@ export class P2P {
     })
 
     /**
+     * @description - Remove a peer from the list
+     * @param {string} url 
+     */
+    public removePeer(url: string): void {
+        for (let i = 0; i < this.peers.length; i++) {
+            if (url === this.peers[i]) {
+                this.peers.splice(i, 1);
+            }
+        }
+    }
+
+    /**
      * @description - Initialize the error handler websocket
      * @param {WebSocket} ws 
      */
@@ -256,6 +292,7 @@ export class P2P {
         const closeConnection = (myWs: WebSocket) => {
             console.log('connection failed to peer: ' + myWs.url);
             this.sockets.splice(this.sockets.indexOf(myWs), 1);
+            this.removePeer(myWs.url);
         };
         ws.on('close', () => closeConnection(ws));
         ws.on('error', () => closeConnection(ws));
@@ -267,31 +304,31 @@ export class P2P {
      */
     public handleBlockchainResponse(receivedBlocks: Block[]) {
         if (receivedBlocks.length === 0) {
-            console.log(this.listenerPort + ':received block chain size of 0');
+            console.log(this.mylistenerPort + ':received block chain size of 0');
             return;
         }
         const latestBlockReceived: Block = receivedBlocks[receivedBlocks.length - 1];
         if (!this.blockchain.isValidBlockStructure(latestBlockReceived)) {
-            console.log(this.listenerPort + ':block structuture not valid');
+            console.log(this.mylistenerPort + ':block structuture not valid');
             return;
         }
         const latestBlockHeld: Block = this.blockchain.getLatestBlock();
         if (latestBlockReceived.index > latestBlockHeld.index) {
-            console.log(this.listenerPort + ':blockchain possibly behind. We got: '
+            console.log(this.mylistenerPort + ':blockchain possibly behind. We got: '
                 + latestBlockHeld.index + ' Peer got: ' + latestBlockReceived.index);
             if (latestBlockHeld.blockHash === latestBlockReceived.blockHash) { // TODO: Not sure if this is right.
                 if (this.blockchain.addBlockToChain(latestBlockReceived)) {
                     this.broadcast(this.responseLatestMsg());
                 }
             } else if (receivedBlocks.length === 1) {
-                console.log(this.listenerPort + ':We have to query the chain from our peer');
+                console.log(this.mylistenerPort + ':We have to query the chain from our peer');
                 this.broadcast(this.queryAllMsg());
             } else {
-                console.log(this.listenerPort + ':Received blockchain is longer than current blockchain');
+                console.log(this.mylistenerPort + ':Received blockchain is longer than current blockchain');
                 this.blockchain.replaceChain(receivedBlocks);
             }
         } else {
-            console.log(this.listenerPort + ':received blockchain is not longer than received blockchain. Do nothing');
+            console.log(this.mylistenerPort + ':received blockchain is not longer than received blockchain. Do nothing');
         }
     }
 
@@ -307,12 +344,13 @@ export class P2P {
      * @param {string} newPeer - string of the new peer to connect to.
      */
     public connectToPeer(newPeer: string): void {
-        console.log('newPeer='+newPeer);
+        console.log('newPeer=' + newPeer);
         //const ws: WebSocket = new WebSocket.Server({ port: newPeer });
         const ws: WebSocket = new WebSocket(newPeer);
         ws.on('open', () => {
             this.initConnection(ws);
             this.peers.push(newPeer);
+            this.write(ws, { 'type': MessageType.PEER_MSG, 'data': this.mylistenerUrl })
         });
         ws.on('error', () => {
             console.log('connection failed');
