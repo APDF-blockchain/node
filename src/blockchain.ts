@@ -56,10 +56,11 @@ export class BlockChain {
             transaction.data = "genesis tx";
             transaction.dateCreated = new Date();
             transaction.fee = 0;
-            transaction.from = "0000000000000000000000000000000000000000";
+            //transaction.from = "0000000000000000000000000000000000000000";
+            transaction.from = this.config.nullAddress;
             //transaction.to = "f3a1e69b6176052fcc4a3248f1c5a91dea308ca9";
             transaction.to = this.config.faucetAddress;
-            transaction.value = 1000000000000;
+            transaction.value = -1000340000110;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             //transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -72,6 +73,8 @@ export class BlockChain {
             transaction.transactionDataHash = hash;
             let transactions: Transaction[] = [];
             transactions.push(transaction);
+            //TODO: genesis transaction;
+            this.transactionPool.set(transaction.from,transactions);
             this.genesisBlock = new Block(
                 0,
                 '0000000000000000000000000000000000000000000000000000000000000000',
@@ -112,9 +115,9 @@ export class BlockChain {
                 }
             }
         }
-        for (let key of addressmap.keys()) {
-            let myval = addressmap.get(key);
-            rval.push({ key, myval });
+        for (let account of addressmap.keys()) {
+            let balance = addressmap.get(account);
+            rval.push({ account, balance });
         }
         return rval;
     }
