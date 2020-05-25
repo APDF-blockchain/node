@@ -55,7 +55,7 @@ export class BlockChain {
             transaction.fee = 0;
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
-            transaction.value = -1000010000060;
+            transaction.value = 1000000000000;
             transaction.confirmationCount = 1;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -75,7 +75,7 @@ export class BlockChain {
             transaction.fee = 0;
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
-            transaction.value = -1000005000020;
+            transaction.value = 5000020;
             transaction.confirmationCount = 6;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             signature = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -95,7 +95,7 @@ export class BlockChain {
             transaction.fee = 0;
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
-            transaction.value = -1000010000060;
+            transaction.value = 5000040;
             transaction.confirmationCount = 0;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             signature = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -137,7 +137,8 @@ export class BlockChain {
         /**
          * First let's get the confirmed balances
          */
-        let mytrans: Transaction[] = this.getConfirmedTransactions();
+        //let mytrans: Transaction[] = this.getConfirmedTransactions();
+        let mytrans: Transaction[] = this.getAllTransactions();
         if (mytrans.length === 0) {
             return null;
         }
@@ -236,7 +237,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount === 1) {
+            if (_aTrans[i].tranferSuccessful === true && (_aTrans[i].confirmationCount === 1 || _aTrans[i].confirmationCount === 6)) {
                 rVal.push(_aTrans[i]);
             }
         }
