@@ -237,7 +237,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true && (_aTrans[i].confirmationCount === 1 || _aTrans[i].confirmationCount === 6)) {
+            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= 1 ) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -405,13 +405,13 @@ export class BlockChain {
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
             if (myTrans[i].tranferSuccessful === true) {
-                if (myTrans[i].confirmationCount === 1) {
+                if (myTrans[i].confirmationCount >= 1 && myTrans[i].confirmationCount < 6) {
                     if (myTrans[i].from === address) {
                         confirmedOneSum += myTrans[i].value - myTrans[i].fee;
                     } else {
                         confirmedOneSum -= myTrans[i].value;
                     }
-                } else if (myTrans[i].confirmationCount === 6) {
+                } else if (myTrans[i].confirmationCount >= 6) {
                     if (myTrans[i].from === address) {
                         confirmedSum += myTrans[i].value - myTrans[i].fee;
                     } else {
