@@ -38,6 +38,8 @@ export class BlockChain {
      */
     private miningJobs: Map<string, Block> = new Map<string, Block>();
 
+    private pendingTransactions: Transaction[] = [];
+
     /**
      * @description - This constructor initializes the blockchain.  Currently the blockchain is not persisted.
      * @constructor
@@ -80,7 +82,7 @@ export class BlockChain {
             hash = sha256(json);
             this.genesisBlock.blockDataHash = hash;
             this.blockchain.push(this.genesisBlock);
-            this.chainId = "5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981";
+            this.chainId = this.config.chainId;
         }
     }
 
@@ -90,25 +92,40 @@ export class BlockChain {
      */
     public getBalances(): any[] {
         let rval: any[] = [];
+
+        /**
+         * First let's get the confirmed balances
+         */
         let mytrans: Transaction[] = this.getConfirmedTransactions();
         if (mytrans.length === 0) {
             return null;
         }
+
+        /**
+         * Create Map to prevent duplicates of addressess and set the values to 0
+         */
         let addressmap: Map<string, number> = new Map<string, number>();
         for (let i = 0; i < mytrans.length; i++) {
             addressmap.set(mytrans[i].from, 0);
         }
-        for (let key of addressmap.keys()) {
-            for (let i = 0; i < mytrans.length; i++) {
-                if (mytrans[i].from === key) {
-                    addressmap.set(key, mytrans[i].value);
-                }
-            }
+
+        /**
+         * Loop through the transactions array and set the correct values in the map
+         */
+        for (let i = 0; i < mytrans.length; i++) {
+            let _value = addressmap.get(mytrans[i].from);
+            _value += mytrans[i].value - mytrans[i].fee;
+            addressmap.set(mytrans[i].from, _value); 
         }
-        for (let account of addressmap.keys()) {
-            let balance = addressmap.get(account);
-            rval.push({ account, balance });
+
+        /**
+         * Now push the unique results from the address map to result array rval.
+         */
+        for (let accountAddress of addressmap.keys()) {
+            let balance = addressmap.get(accountAddress);
+            rval.push({ accountAddress, balance });
         }
+
         return rval;
     }
 
@@ -117,10 +134,17 @@ export class BlockChain {
      */
     public getAllTransactions(): Transaction[] {
         let rTrans: Transaction[] = [];
+        /**
+         * Get all the transactions in all the blocks.
+         */
         for (let i = 0; i < this.blockchain.length; i++) {
             let _trans: Transaction[] = this.blockchain[i].transactions;
             rTrans = rTrans.concat(_trans);
         }
+        /**
+         * Now concat these transactions with the pending ones.
+         */
+        rTrans = rTrans.concat(this.getPendingTransactions());
         return rTrans;
     }
 
@@ -144,13 +168,7 @@ export class BlockChain {
      * @returns {Transaction[]} pendingTransaction
      */
     public getPendingTransactions(): Transaction[] {
-        let rVal: Transaction[] = [];
-        let _aTrans: Transaction[] = this.getAllTransactions();
-        for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === false) {
-                rVal.push(_aTrans[i]);
-            }
-        }
+        let rVal: Transaction[] = this.pendingTransactions;
         return rVal;
     }
 
@@ -224,7 +242,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        this.getLatestBlock().transactions.push(transaction);
+        this.pendingTransactions.push(transaction);
     }
 
     /**
@@ -237,11 +255,11 @@ export class BlockChain {
     }
 
     /**
-     * @description - get the array of transactions
+     * @description - get the array of pending transactions
      * @returns {Transaction[]} transactions
      */
     public getTransactionPool(): Transaction[] {
-        let rVal: Transaction[] = this.getAllTransactions();
+        let rVal: Transaction[] = this.getPendingTransactions();
         return rVal;
     }
 
@@ -253,7 +271,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if(_aTrans[i].from === fromAddress) {
+            if (_aTrans[i].from === fromAddress) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -316,6 +334,7 @@ export class BlockChain {
      * @param {string} address 
      * @returns {Balance} balance
      */
+    // TODO: Take a look at the genesis transaction
     public getAccountBalance(address: string): Balance {
         let balance: Balance = new Balance();
         // TODO: calculate the balances for this account.
@@ -333,20 +352,20 @@ export class BlockChain {
                     if (myTrans[i].from === address) {
                         confirmedOneSum += myTrans[i].value - myTrans[i].fee;
                     } else {
-                        confirmedOneSum -= myTrans[i].value - myTrans[i].fee;
+                        confirmedOneSum -= myTrans[i].value;
                     }
                 } else if (myTrans[i].confirmationCount === 6) {
                     if (myTrans[i].from === address) {
                         confirmedSum += myTrans[i].value - myTrans[i].fee;
                     } else {
-                        confirmedSum -= myTrans[i].value - myTrans[i].fee;
+                        confirmedSum -= myTrans[i].value;
                     }
                 }
             } else {
                 if (myTrans[i].from === address) {
                     pendingSum += myTrans[i].value - myTrans[i].fee;
                 } else {
-                    pendingSum -= myTrans[i].value - myTrans[i].fee;
+                    pendingSum -= myTrans[i].value;
                 }
             }
         }

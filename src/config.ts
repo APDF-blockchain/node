@@ -74,6 +74,8 @@ export class Config {
      */
     public genesisBlock: Block;
 
+    public chainId: string;
+
     /**
      * @description - Class constructor initializes the configuration attributes for the entire Node/blockchain.
      * @constructor
@@ -96,5 +98,6 @@ export class Config {
         this.blockReward = 5000000;
         this.maxTransferValue = 10000000000000;
         this.safeConfirmCount = 3;
+        this.chainId = '5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981';
     }
 }
