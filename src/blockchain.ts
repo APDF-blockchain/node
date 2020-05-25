@@ -116,15 +116,60 @@ export class BlockChain {
                 0,
                 0
             );
-            json = JSON.stringify(this.genesisBlock);
-            hash = sha256(json);
-            this.genesisBlock.blockHash = hash;
-            json = JSON.stringify(transactions);
-            hash = sha256(json);
-            this.genesisBlock.blockDataHash = hash;
+            this.genesisBlock.blockDataHash = this.calcBlockDataHash(this.genesisBlock);
+            /**
+             * hash the genesis block
+             */
+            // json = JSON.stringify(this.genesisBlock);
+            // hash = sha256(json);
+            // this.genesisBlock.blockHash = hash;
+            this.genesisBlock.blockHash = this.calcBlockHash(this.genesisBlock);
             this.blockchain.push(this.genesisBlock);
-            this.chainId = this.config.chainId;
+            //this.chainId = this.config.chainId;
+            this.chainId = this.genesisBlock.blockHash;
         }
+    }
+
+    /**
+     * @description - calculate the block hash
+     * @param {block} block 
+     * @return {string} hash
+     */
+    private calcBlockHash(block: Block): string {
+        // TODDO: I am not sure how this supposed to be hashed.
+        let json: string = JSON.stringify(block);
+        let hash: string = sha256(json);
+        return hash;
+    }
+
+    /**
+     * @description - calculate the block data hash.
+     * @param {block} block 
+     * @return {string} hash
+     */
+    private calcBlockDataHash(block: Block): string {
+        let _unHashedString: string = "";
+        _unHashedString += block.index;
+        let _trans: Transaction[] = block.transactions;
+        for (let i = 0; i < _trans.length; i++) {
+            _unHashedString += _trans[i].from +
+                _trans[i].to +
+                _trans[i].value +
+                _trans[i].fee +
+                _trans[i].dateCreated +
+                _trans[i].data +
+                _trans[i].senderPubKey +
+                _trans[i].transactionDataHash +
+                _trans[i].senderSignature +
+                _trans[i].minedInBlockIndex +
+                _trans[i].transactionDataHash; 
+        }
+        _unHashedString += block.difficulty +
+            block.previousBlockHash +
+            block.minedBy;
+        let json: string = JSON.stringify(_unHashedString);
+        let hash: string = sha256(json)
+        return hash;
     }
 
     /**
@@ -237,7 +282,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= 1 ) {
+            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= 1) {
                 rVal.push(_aTrans[i]);
             }
         }

@@ -22,7 +22,7 @@ export class HttpServer {
     /**
      * @description - about this block chain
      */
-    private about: string = "Blockchain Project";
+    private about: string = "2020/KingslandUniChain/typescript/Bethany Osueke,Denis Putnam,Olivier Riccini";
     /**
      * @description - the ID of the Node that contains the blockchain
      */
