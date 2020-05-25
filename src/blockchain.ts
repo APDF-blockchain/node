@@ -39,9 +39,9 @@ export class BlockChain {
     private miningJobs: Map<string, Block> = new Map<string, Block>();
 
     /**
-     * @description - pending transactions array to be assigned to the next mined block
+     * @description - transactions array to be assigned to the next block to be mined.
      */
-    private pendingTransactions: Transaction[] = [];
+    private transactionsPool: Transaction[] = [];
 
     /**
      * @description - This constructor initializes the blockchain.  Currently the blockchain is not persisted.
@@ -55,7 +55,7 @@ export class BlockChain {
             transaction.fee = 0;
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
-            transaction.value = -1000340000110;
+            transaction.value = -1000010000060;
             transaction.confirmationCount = 1;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
@@ -67,6 +67,46 @@ export class BlockChain {
             let hash: string = sha256(json)
             transaction.transactionDataHash = hash;
             let transactions: Transaction[] = [];
+            transactions.push(transaction);
+
+            transaction = new Transaction();
+            transaction.data = "genesis tx";
+            transaction.dateCreated = new Date();
+            transaction.fee = 0;
+            transaction.from = this.config.nullAddress;
+            transaction.to = this.config.faucetAddress;
+            transaction.value = -1000005000020;
+            transaction.confirmationCount = 6;
+            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
+            signature = "0000000000000000000000000000000000000000000000000000000000000000";
+            transaction.senderSignature.push(signature);
+            transaction.senderSignature.push(signature);
+            transaction.minedInBlockIndex = 0;
+            transaction.tranferSuccessful = true;
+            json = JSON.stringify(transaction);
+            hash = sha256(json)
+            transaction.transactionDataHash = hash;
+            //let transactions: Transaction[] = [];
+            transactions.push(transaction);
+
+            transaction = new Transaction();
+            transaction.data = "genesis tx";
+            transaction.dateCreated = new Date();
+            transaction.fee = 0;
+            transaction.from = this.config.nullAddress;
+            transaction.to = this.config.faucetAddress;
+            transaction.value = -1000010000060;
+            transaction.confirmationCount = 0;
+            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
+            signature = "0000000000000000000000000000000000000000000000000000000000000000";
+            transaction.senderSignature.push(signature);
+            transaction.senderSignature.push(signature);
+            transaction.minedInBlockIndex = 0;
+            transaction.tranferSuccessful = true;
+            json = JSON.stringify(transaction);
+            hash = sha256(json)
+            transaction.transactionDataHash = hash;
+            //let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block(
                 0,
@@ -142,10 +182,10 @@ export class BlockChain {
             let _trans: Transaction[] = this.blockchain[i].transactions;
             rTrans = rTrans.concat(_trans);
         }
-        /**
-         * Now concat these transactions with the pending ones.
-         */
-        rTrans = rTrans.concat(this.getPendingTransactions());
+        // /**
+        //  * Now concat these transactions with the pending ones.
+        //  */
+        // rTrans = rTrans.concat(this.getPendingTransactions());
         return rTrans;
     }
 
@@ -169,7 +209,22 @@ export class BlockChain {
      * @returns {Transaction[]} pendingTransaction
      */
     public getPendingTransactions(): Transaction[] {
-        let rVal: Transaction[] = this.pendingTransactions;
+        let rVal: Transaction[] = [];
+        // for (let i = 0; i < this.blockchain.length; i++) {
+        //     let _trans: Transaction[] = this.blockchain[i].transactions;
+        //     for (let j=0; j < _trans.length; j++ ) {
+        //         if(_trans[j].confirmationCount === 0 ) {
+        //             rVal.push(_trans[j]);
+        //         }
+        //     }
+        // }
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if (_aTrans[i].confirmationCount == 0) {
+                rVal.push(_aTrans[i]);
+            }
+        }
+
         return rVal;
     }
 
@@ -243,7 +298,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        this.pendingTransactions.push(transaction);
+        this.transactionsPool.push(transaction);
     }
 
     /**
@@ -260,7 +315,7 @@ export class BlockChain {
      * @returns {Transaction[]} transactions
      */
     public getTransactionPool(): Transaction[] {
-        let rVal: Transaction[] = this.getPendingTransactions();
+        let rVal: Transaction[] = this.transactionsPool;
         return rVal;
     }
 
@@ -361,12 +416,12 @@ export class BlockChain {
                     } else {
                         confirmedSum -= myTrans[i].value;
                     }
-                }
-            } else {
-                if (myTrans[i].from === address) {
-                    pendingSum += myTrans[i].value - myTrans[i].fee;
                 } else {
-                    pendingSum -= myTrans[i].value;
+                    if (myTrans[i].from === address) {
+                        pendingSum += myTrans[i].value - myTrans[i].fee;
+                    } else {
+                        pendingSum -= myTrans[i].value;
+                    }
                 }
             }
         }
