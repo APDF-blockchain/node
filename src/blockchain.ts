@@ -38,6 +38,9 @@ export class BlockChain {
      */
     private miningJobs: Map<string, Block> = new Map<string, Block>();
 
+    /**
+     * @description - pending transactions array to be assigned to the next mined block
+     */
     private pendingTransactions: Transaction[] = [];
 
     /**
