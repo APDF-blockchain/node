@@ -236,7 +236,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true) {
+            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount === 1) {
                 rVal.push(_aTrans[i]);
             }
         }
