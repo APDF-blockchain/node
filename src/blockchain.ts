@@ -56,6 +56,7 @@ export class BlockChain {
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
             transaction.value = -1000340000110;
+            transaction.confirmationCount = 1;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
             transaction.senderSignature.push(signature);
