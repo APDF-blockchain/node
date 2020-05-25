@@ -157,7 +157,7 @@ export class P2P {
             try {
                 const message: Message = this.JSONToObject<Message>(data);
                 if (message === null) {
-                    console.log('could not parse received JSON message: ' + data);
+                    console.log(this.mylistenerPort + ':could not parse received JSON message: ' + data);
                     return;
                 }
                 console.log(this.mylistenerPort + ':Received message: %s', JSON.stringify(message));
