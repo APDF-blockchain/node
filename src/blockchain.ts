@@ -50,13 +50,10 @@ export class BlockChain {
             transaction.data = "genesis tx";
             transaction.dateCreated = new Date();
             transaction.fee = 0;
-            //transaction.from = "0000000000000000000000000000000000000000";
             transaction.from = this.config.nullAddress;
-            //transaction.to = "f3a1e69b6176052fcc4a3248f1c5a91dea308ca9";
             transaction.to = this.config.faucetAddress;
             transaction.value = -1000340000110;
             transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
-            //transaction.transactionDataHash = "8a684cb8491ee419e7d46a0fd2438cad82d1278c340b5d01974e7beb6b72ecc2";
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
@@ -115,7 +112,7 @@ export class BlockChain {
         for (let i = 0; i < mytrans.length; i++) {
             let _value = addressmap.get(mytrans[i].from);
             _value += mytrans[i].value - mytrans[i].fee;
-            addressmap.set(mytrans[i].from, _value); 
+            addressmap.set(mytrans[i].from, _value);
         }
 
         /**
