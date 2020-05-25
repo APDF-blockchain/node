@@ -63,9 +63,10 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            let json: string = JSON.stringify(transaction);
-            let hash: string = sha256(json)
-            transaction.transactionDataHash = hash;
+            // let json: string = JSON.stringify(transaction);
+            // let hash: string = sha256(json)
+            // transaction.transactionDataHash = hash;
+            transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             let transactions: Transaction[] = [];
             transactions.push(transaction);
 
@@ -83,9 +84,10 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            json = JSON.stringify(transaction);
-            hash = sha256(json)
-            transaction.transactionDataHash = hash;
+            // json = JSON.stringify(transaction);
+            // hash = sha256(json)
+            // transaction.transactionDataHash = hash;
+            transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             //let transactions: Transaction[] = [];
             transactions.push(transaction);
 
@@ -103,9 +105,10 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            json = JSON.stringify(transaction);
-            hash = sha256(json)
-            transaction.transactionDataHash = hash;
+            // json = JSON.stringify(transaction);
+            // hash = sha256(json)
+            // transaction.transactionDataHash = hash;
+            transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             //let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block(
@@ -128,6 +131,24 @@ export class BlockChain {
             //this.chainId = this.config.chainId;
             this.chainId = this.genesisBlock.blockHash;
         }
+    }
+
+    /**
+     * @description - calculate the transaction data hash 
+     * @param {Transaction} trans 
+     * @returns {string} hash
+     */
+    private calcTransactionDataHash(trans: Transaction): string {
+        let _unHashedString: string = "";
+        _unHashedString += trans.from +
+                            trans.to +
+                            trans.value +
+                            trans.dateCreated +
+                            trans.data +
+                            trans.senderPubKey;
+        let json: string = JSON.stringify(_unHashedString);
+        let hash: string = sha256(json)
+        return hash;
     }
 
     /**
@@ -344,6 +365,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
+        transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
         this.transactionsPool.push(transaction);
     }
 
