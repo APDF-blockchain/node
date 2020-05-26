@@ -1,4 +1,6 @@
-
-# dependencies
-/node_modules
+node_modules
+npm-debug.log
+.idea
 /dist
+dist
+src/p2p copy.ts.old
