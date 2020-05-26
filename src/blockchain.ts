@@ -44,6 +44,11 @@ export class BlockChain {
     private transactionsPool: Transaction[] = [];
 
     /**
+     * @description - map of mining requests with a key of blockDataHash -> Block.
+     */
+    private miningRequestsMap: Map<string, Block> = new Map<string, Block>();
+
+    /**
      * @description - This constructor initializes the blockchain.  Currently the blockchain is not persisted.
      * @constructor
      */
