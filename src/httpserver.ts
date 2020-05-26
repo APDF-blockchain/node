@@ -1,5 +1,6 @@
 import express = require('express');
 import * as  bodyParser from 'body-parser';
+import cors from 'cors';
 
 import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
@@ -62,6 +63,7 @@ export class HttpServer {
         this.nodeId = (myHttpPort + Math.random()).toString();
         const app: express.Application = express();
         app.use(bodyParser.json());
+        app.use(cors());
 
         /**
          * @description - http use request
