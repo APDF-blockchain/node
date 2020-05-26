@@ -246,6 +246,10 @@ export class HttpServer {
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
+            if( req.params.address === 'undefined') {
+                res.status(401).send("Bad address requested.");
+                return;
+            }
             //let rVal: any = { 'address': req.params.address };
             /**
              * This temporary
