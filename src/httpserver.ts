@@ -246,7 +246,16 @@ export class HttpServer {
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
-            let rVal: any = { 'address': req.params.address };
+            //let rVal: any = { 'address': req.params.address };
+            let rVal: any = { 
+                'index': 0,
+                'transactionsInclude': 3,
+                'difficulty': this.blockchain.getCumulativeDifficulty(),
+                'reward': 5000350,
+                'rewardAddress': '0x28Fcf7997E56f1Fadd4FA39fD834e5B96cb13b2B',
+                'blockDataHash': this.blockchain.getGenesisBlock().blockDataHash
+            };
+            console.log('Returning: ', rVal);
             //res.send(JSON.stringify(req.params.address));
             res.send(rVal);
         });
