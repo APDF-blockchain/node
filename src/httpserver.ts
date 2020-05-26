@@ -157,7 +157,7 @@ export class HttpServer {
         app.get('/transactions/:tranHash', (req, res) => {
             console.log(this.myHttpPort + ':GET /transactions/:' + req.params.tranHash);
             let rVal: Transaction[] = this.blockchain.getTransactionsByTxHash(req.params.tranHash);
-            if(rVal !== null){
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
                 res.status(401).send("There are no transaction for " + req.params.tranHash + ".");
@@ -168,7 +168,7 @@ export class HttpServer {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
             let rVal: any[] = this.blockchain.getBalances();
-            if( rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
                 res.status(401).send("There are no balances available");
@@ -178,7 +178,7 @@ export class HttpServer {
         app.get('/address/:address/transactions', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
             let rVal: Transaction[] = this.blockchain.getTransactions(req.params.address);
-            if( rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
                 res.status(401).send("There are no transaction for " + req.params.address + ".");
@@ -188,7 +188,7 @@ export class HttpServer {
         app.get('/address/:address/balance', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/balance');
             let rVal: Balance = this.blockchain.getAccountBalance(req.params.address);
-            if(rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
                 res.status(401).send("There are no balances available for the address of " + req.params.address);
@@ -250,7 +250,21 @@ export class HttpServer {
             /**
              * This temporary
              */
-            let rVal: any = { 
+            /**
+             * KINGSLAND SCHOOL OF BLOCKCHAIN | ENSURING THE FUTURE OF BLOCKCHAIN
+                The Mining Process: Preparation
+                    When a Miner requests a block for mining , the node prepares
+                    o Creates the next block candidate : executes all pending transactions
+                    and adds them in the block candidate + inserts a coinbase tx
+                    o Calculates the block data hash and provides it to the miner
+                    o The Node keeps a separate block candidate for each mining request
+                        It holds map< blockDataHash  block>
+                    o If a miner requests a block candidate again , the Node sends an
+                    updated block (eventually holding more
+                    o The Node will always return the latest block for mining , holding the
+                    latest pending transactions (to collect maximum
+             */
+            let rVal: any = {
                 'index': 0,
                 'transactionsInclude': 3,
                 'difficulty': this.blockchain.getCumulativeDifficulty(),
