@@ -264,6 +264,7 @@ export class HttpServer {
                     o The Node will always return the latest block for mining , holding the
                     latest pending transactions (to collect maximum
              */
+            //let myMap = this.blockchain.getMiningRequestMap();
             let myBlock: Block;
             let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
             if (this.blockchain.getMiningRequestMap().get(req.params.address) === undefined) {
