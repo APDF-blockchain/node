@@ -244,6 +244,9 @@ export class HttpServer {
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
+            let rVal: any = { 'address': req.params.address };
+            //res.send(JSON.stringify(req.params.address));
+            res.send(rVal);
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
