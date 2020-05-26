@@ -116,14 +116,13 @@ export class BlockChain {
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             //let transactions: Transaction[] = [];
             transactions.push(transaction);
-            this.genesisBlock = new Block(
-                0,
-                '0000000000000000000000000000000000000000000000000000000000000000',
-                new Date().getTime(),
-                transactions,
-                0,
-                0
-            );
+            this.genesisBlock = new Block();
+            this.genesisBlock.index = 0;
+            //this.genesisBlock.blockHash = '0000000000000000000000000000000000000000000000000000000000000000';
+            this.genesisBlock.timestamp = new Date().getTime();
+            this.genesisBlock.transactions = transactions;
+            this.genesisBlock.difficulty = 0;
+            this.genesisBlock.nonce = 0;
             this.genesisBlock.blockDataHash = this.calcBlockDataHash(this.genesisBlock);
             /**
              * hash the genesis block

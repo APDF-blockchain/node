@@ -271,15 +271,13 @@ export class HttpServer {
             //let myMap = this.blockchain.getMiningRequestMap();
             let myBlock: Block;
             let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
+            
             if (this.blockchain.getMiningRequestMap().get(req.params.address) === undefined) {
-                let newBlock: Block = new Block(
-                    this.blockchain.getLatestBlock().index + 1,
-                    "",
-                    new Date().getTime(),
-                    this.blockchain.getTransactionPool(),
-                    this.blockchain.getCurrentDifficulty(),
-                    this.blockchain.getCurrentNonce()
-                );
+                let newBlock: Block = new Block();
+                newBlock.index = this.blockchain.getLatestBlock().index + 1;
+                newBlock.timestamp = new Date().getTime();
+                newBlock.transactions = this.blockchain.getTransactionPool();
+                newBlock.difficulty = this.blockchain.getCurrentDifficulty();
                 newBlock.reward = 500350; // TODO: don't know how to determine this.
                 newBlock.rewardAddress = 'some reward address that I do not know to get.';
                 newBlock.minedBy = 'some miner address that I do not know how to get.';
@@ -287,6 +285,7 @@ export class HttpServer {
                 newBlock.nonce = this.blockchain.getCurrentNonce();
                 newBlock.transactions = this.blockchain.getTransactionPool();
                 newBlock.blockDataHash = this.blockchain.calcBlockDataHash(newBlock);
+                newBlock.blockHash = this.blockchain.calcBlockHash(newBlock);
 
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
                 myBlock = newBlock;
