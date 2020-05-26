@@ -264,17 +264,46 @@ export class HttpServer {
                     o The Node will always return the latest block for mining , holding the
                     latest pending transactions (to collect maximum
              */
-            let rVal: any = {
-                'index': 0,
-                'transactionsInclude': 3,
-                'difficulty': this.blockchain.getCumulativeDifficulty(),
-                'reward': 5000350,
-                'rewardAddress': '0x28Fcf7997E56f1Fadd4FA39fD834e5B96cb13b2B',
-                'blockDataHash': this.blockchain.getGenesisBlock().blockDataHash
-            };
-            console.log('Returning: ', rVal);
+            let myBlock: Block;
+            let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
+            if (this.blockchain.getMiningRequestMap().get(req.params.address) === undefined) {
+                let newBlock: Block = new Block(
+                    this.blockchain.getLatestBlock().index + 1,
+                    "",
+                    new Date().getTime(),
+                    this.blockchain.getTransactionPool(),
+                    this.blockchain.getCurrentDifficulty(),
+                    this.blockchain.getCurrentNonce()
+                );
+                newBlock.reward = 500350; // TODO: don't know how to determine this.
+                newBlock.rewardAddress = 'some reward address that I do not know to get.';
+                newBlock.minedBy = 'some miner address that I do not know how to get.';
+                newBlock.previousBlockHash = this.blockchain.getLatestBlock().blockDataHash;
+                newBlock.nonce = this.blockchain.getCurrentNonce();
+                newBlock.transactions = this.blockchain.getTransactionPool();
+                newBlock.blockDataHash = this.blockchain.calcBlockDataHash(newBlock);
+
+                this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+                myBlock = newBlock;
+            } else {
+                console.log('Need to update the block.')
+                myBlock = this.blockchain.getMiningRequestMap().get(req.params.address);
+            }
+
+            //newBlock.blockHash = this.blockchain.calcBlockHash(newBlock);
+
+            // let rVal: any = {
+            //     'index': 0,
+            //     'transactionsInclude': 3,
+            //     'difficulty': this.blockchain.getCumulativeDifficulty(),
+            //     'reward': 5000350,
+            //     'rewardAddress': '0x28Fcf7997E56f1Fadd4FA39fD834e5B96cb13b2B',
+            //     'blockDataHash': this.blockchain.getGenesisBlock().blockDataHash
+            // };
+            // console.log('Returning: ', rVal);
             //res.send(JSON.stringify(req.params.address));
-            res.send(rVal);
+            console.log('Returning: ', myBlock);
+            res.send(myBlock);
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {

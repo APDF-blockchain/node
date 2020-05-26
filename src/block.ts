@@ -48,6 +48,16 @@ export class Block {
     public previousBlockHash: string;
 
     /**
+     * @description - the block reward.
+     */
+    public reward: number;
+
+    /**
+     * @description - reward address of the miner.
+     */
+    public rewardAddress: string;
+
+    /**
      * @constructor
      * @description - represents a block in the blockchain
      * @param {number} _index - index of the block
@@ -74,5 +84,7 @@ export class Block {
         this.blockDataHash = "0000000000000000000000000000000000000000000000000000000000000000";
         this.previousBlockHash = "0000000000000000000000000000000000000000000000000000000000000000";
         this.dateCreated = new Date();
+        this.reward = 0;
+        this.rewardAddress = this.minedBy;
     }
 }

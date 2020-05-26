@@ -139,11 +139,27 @@ export class BlockChain {
     }
 
     /**
+     * @description - get the miningRequestMap
+     * @returns {Map<string,Block>} miniingRequestMap
+     */
+    public getMiningRequestMap(): Map<string, Block> {
+        return this.miningRequestsMap;
+    }
+
+    /**
+     * @description - get the nonce value
+     * @return {number} nounce
+     */
+    public getCurrentNonce(): number {
+        return .00001;
+    }
+
+    /**
      * @description - calculate the transaction data hash 
      * @param {Transaction} trans 
      * @returns {string} hash
      */
-    private calcTransactionDataHash(trans: Transaction): string {
+    public calcTransactionDataHash(trans: Transaction): string {
         let _unHashedString: string = "";
         _unHashedString += trans.from +
                             trans.to +
@@ -161,7 +177,7 @@ export class BlockChain {
      * @param {block} block 
      * @return {string} hash
      */
-    private calcBlockHash(block: Block): string {
+    public calcBlockHash(block: Block): string {
         // TODDO: I am not sure how this supposed to be hashed.
         let json: string = JSON.stringify(block);
         let hash: string = sha256(json);
@@ -173,7 +189,7 @@ export class BlockChain {
      * @param {block} block 
      * @return {string} hash
      */
-    private calcBlockDataHash(block: Block): string {
+    public calcBlockDataHash(block: Block): string {
         let _unHashedString: string = "";
         _unHashedString += block.index;
         let _trans: Transaction[] = block.transactions;
