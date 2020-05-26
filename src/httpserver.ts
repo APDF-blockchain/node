@@ -247,6 +247,9 @@ export class HttpServer {
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
             //let rVal: any = { 'address': req.params.address };
+            /**
+             * This temporary
+             */
             let rVal: any = { 
                 'index': 0,
                 'transactionsInclude': 3,
