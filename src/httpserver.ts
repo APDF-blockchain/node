@@ -319,7 +319,10 @@ export class HttpServer {
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
+            console.log('body=',req.body);
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
+            let rVal: any =  {"message": "Block accepted, reward paid: 5000350 microcoins"};
+            res.send(rVal);
         });
 
 
