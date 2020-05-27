@@ -130,6 +130,27 @@ export class BlockChain {
     }
 
     /**
+     * @description - create a coinbase reward transaction for the miner.
+     * @param {string} minerAddress - miner address
+     * @returns {Transaction[]} - an array of 1 transaction
+     */
+    public createCoinbaseRewardTransaction(minerAddress: string): Transaction[] {
+        let rVal: Transaction[] = [];
+        let _trans: Transaction = new Transaction();
+        _trans.from = this.config.nullAddress;
+        _trans.to = minerAddress;
+        _trans.value = this.config.blockReward;
+        _trans.fee = 0;
+        _trans.data = 'coinbase tx';
+        _trans.senderPubKey = this.config.nullPubKey;
+        _trans.senderSignature = _trans.senderSignature.concat(this.config.nullSignature);
+        _trans.minedInBlockIndex = 0;
+        _trans.tranferSuccessful = false;
+        rVal.push(_trans);
+        return rVal;
+    }
+
+    /**
      * @description - get the miningRequestMap
      * @returns {Map<string,Block>} miniingRequestMap
      */

@@ -124,6 +124,7 @@ export class Config {
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
         this.startDifficulty = 4;
+        this.microCoin = 1;
         this.minTransactionFee = 10 * this.microCoin;
         this.maxTransactionFee = 1000000;
         this.blockReward = 5000000 * this.microCoin;
