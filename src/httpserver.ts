@@ -296,6 +296,7 @@ export class HttpServer {
                     The last two values are set by the miner.
                 */
             //let myMap = this.blockchain.getMiningRequestMap();
+            // TODO: How do I tell if this is a new block.
             let myBlock: Block;
             let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
             
