@@ -300,21 +300,8 @@ export class HttpServer {
             let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
             
             if (this.blockchain.getMiningRequestMap().get(req.params.address) === undefined) {
-                let newBlock: Block = new Block();
-                newBlock.index = this.blockchain.getLatestBlock().index + 1;
-                newBlock.timestamp = new Date().getTime();
-                newBlock.transactions = this.blockchain.createCoinbaseRewardTransaction(req.params.address);
-                newBlock.transactions = newBlock.transactions.concat(this.blockchain.getTransactionPool()); // TODO: is there a restriction here?
-                newBlock.difficulty = this.blockchain.getCurrentDifficulty();
-                newBlock.reward = this.config.blockReward;
-                //newBlock.rewardAddress = 'some reward address that I do not know to get.'; // This is the address of miner.  The individual who has a mining rig.
-                newBlock.rewardAddress = req.params.address;
-                //newBlock.minedBy = 'some miner address that I do not know how to get.'; // This is the address of miner.  The individual who has a mining rig.
-                newBlock.minedBy = req.params.address;
-                newBlock.previousBlockHash = this.blockchain.getLatestBlock().blockDataHash;
-                newBlock.nonce = 0;// Where does this come from?
-                newBlock.blockDataHash = this.blockchain.calcBlockDataHash(newBlock);
-                newBlock.blockHash = this.blockchain.calcBlockHash(newBlock); // TODO: Still need clarification of how to calculate this.
+                //let newBlock: Block = new Block();
+                let newBlock: Block = this.blockchain.createMinerBlock(req.params.address);
 
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
                 myBlock = newBlock;
@@ -322,37 +309,10 @@ export class HttpServer {
                 console.log('Need to update the block.')
                 // TODO: need to perform this logic.
                 myBlock = this.blockchain.getMiningRequestMap().get(req.params.address);
-                myBlock.index = this.blockchain.getLatestBlock().index + 1;
-                myBlock.timestamp = new Date().getTime();
-                myBlock.transactions = this.blockchain.createCoinbaseRewardTransaction(req.params.address);
-                myBlock.transactions = myBlock.transactions.concat(this.blockchain.getTransactionPool()); // TODO: is there a restriction here?
-
-                myBlock.difficulty = this.blockchain.getCurrentDifficulty();
-                myBlock.reward = this.config.blockReward;
-                //myBlock.rewardAddress = 'some reward address that I do not know to get.'; // This is the address of miner.  The individual who has a mining rig.
-                myBlock.rewardAddress = req.params.address;
-                //myBlock.minedBy = 'some miner address that I do not know how to get.'; // This is the address of miner.  The individual who has a mining rig.
-                myBlock.minedBy = req.params.address;
-                myBlock.previousBlockHash = this.blockchain.getLatestBlock().blockDataHash;
-                myBlock.nonce = 0;// Where does this come from?
-                myBlock.blockDataHash = this.blockchain.calcBlockDataHash(myBlock);
-                myBlock.blockHash = this.blockchain.calcBlockHash(myBlock); // TODO: Still need clarification of how to calculate this.
+                myBlock = this.blockchain.updateMinerBlock(req.params.address,myBlock);
 
                 this.blockchain.getMiningRequestMap().set(myBlock.blockDataHash, myBlock);
             }
-
-            //newBlock.blockHash = this.blockchain.calcBlockHash(newBlock);
-
-            // let rVal: any = {
-            //     'index': 0,
-            //     'transactionsInclude': 3,
-            //     'difficulty': this.blockchain.getCumulativeDifficulty(),
-            //     'reward': 5000350,
-            //     'rewardAddress': '0x28Fcf7997E56f1Fadd4FA39fD834e5B96cb13b2B',
-            //     'blockDataHash': this.blockchain.getGenesisBlock().blockDataHash
-            // };
-            // console.log('Returning: ', rVal);
-            //res.send(JSON.stringify(req.params.address));
             console.log('Returning: ', myBlock);
             res.send(myBlock);
         });
