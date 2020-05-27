@@ -108,6 +108,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#difficulty" class="tsd-kind-icon">difficulty</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#genesisblock" class="tsd-kind-icon">genesis<wbr>Block</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#miningjobs" class="tsd-kind-icon">mining<wbr>Jobs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#miningrequestsmap" class="tsd-kind-icon">mining<wbr>Requests<wbr>Map</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#transactionspool" class="tsd-kind-icon">transactions<wbr>Pool</a></li>
 							</ul>
 						</section>
@@ -115,8 +116,9 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#addblocktochain" class="tsd-kind-icon">add<wbr>Block<wbr>ToChain</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#calcblockdatahash" class="tsd-kind-icon">calc<wbr>Block<wbr>Data<wbr>Hash</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_blockchain_.blockchain.html#calcblockhash" class="tsd-kind-icon">calc<wbr>Block<wbr>Hash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#calcblockdatahash" class="tsd-kind-icon">calc<wbr>Block<wbr>Data<wbr>Hash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#calcblockhash" class="tsd-kind-icon">calc<wbr>Block<wbr>Hash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#calctransactiondatahash" class="tsd-kind-icon">calc<wbr>Transaction<wbr>Data<wbr>Hash</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getaccountbalance" class="tsd-kind-icon">get<wbr>Account<wbr>Balance</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getalltransactions" class="tsd-kind-icon">get<wbr>All<wbr>Transactions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getbalances" class="tsd-kind-icon">get<wbr>Balances</a></li>
@@ -129,6 +131,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getcurrentdifficulty" class="tsd-kind-icon">get<wbr>Current<wbr>Difficulty</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getgenesisblock" class="tsd-kind-icon">get<wbr>Genesis<wbr>Block</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getlatestblock" class="tsd-kind-icon">get<wbr>Latest<wbr>Block</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getminingrequestmap" class="tsd-kind-icon">get<wbr>Mining<wbr>Request<wbr>Map</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getpendingtransactions" class="tsd-kind-icon">get<wbr>Pending<wbr>Transactions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#getpendingtransactionscount" class="tsd-kind-icon">get<wbr>Pending<wbr>Transactions<wbr>Count</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_blockchain_.blockchain.html#gettransactionpool" class="tsd-kind-icon">get<wbr>Transaction<wbr>Pool</a></li>
@@ -154,7 +157,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L44">blockchain.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L49">blockchain.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -179,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L15">blockchain.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L15">blockchain.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -198,7 +201,7 @@
 					<div class="tsd-signature tsd-kind-icon">chain<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L23">blockchain.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L23">blockchain.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -217,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="_config_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol"> = new Config()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L27">blockchain.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L27">blockchain.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -236,7 +239,7 @@
 					<div class="tsd-signature tsd-kind-icon">cumulative<wbr>Difficulty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.difficulty</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L35">blockchain.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L35">blockchain.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -255,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">difficulty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = this.config.startDifficulty</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L31">blockchain.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L31">blockchain.ts:31</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -274,7 +277,7 @@
 					<div class="tsd-signature tsd-kind-icon">genesis<wbr>Block<span class="tsd-signature-symbol">:</span> <a href="_block_.block.html" class="tsd-signature-type">Block</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L19">blockchain.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L19">blockchain.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -293,7 +296,7 @@
 					<div class="tsd-signature tsd-kind-icon">mining<wbr>Jobs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Block&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L39">blockchain.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L39">blockchain.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -307,12 +310,31 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="miningrequestsmap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mining<wbr>Requests<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">mining<wbr>Requests<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Block&gt;()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L49">blockchain.ts:49</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>map of mining requests with a key of blockDataHash -&gt; Block.</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="transactionspool" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> transactions<wbr>Pool</h3>
 					<div class="tsd-signature tsd-kind-icon">transactions<wbr>Pool<span class="tsd-signature-symbol">:</span> <a href="_transaction_.transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L44">blockchain.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L44">blockchain.ts:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -338,7 +360,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L406">blockchain.ts:406</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L431">blockchain.ts:431</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,17 +382,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="calcblockdatahash" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> calc<wbr>Block<wbr>Data<wbr>Hash</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3>calc<wbr>Block<wbr>Data<wbr>Hash</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">calc<wbr>Block<wbr>Data<wbr>Hash<span class="tsd-signature-symbol">(</span>block<span class="tsd-signature-symbol">: </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L150">blockchain.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L175">blockchain.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -393,17 +415,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="calcblockhash" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> calc<wbr>Block<wbr>Hash</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3>calc<wbr>Block<wbr>Hash</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">calc<wbr>Block<wbr>Hash<span class="tsd-signature-symbol">(</span>block<span class="tsd-signature-symbol">: </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L138">blockchain.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L163">blockchain.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,6 +449,39 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="calctransactiondatahash" class="tsd-anchor"></a>
+					<h3>calc<wbr>Transaction<wbr>Data<wbr>Hash</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">calc<wbr>Transaction<wbr>Data<wbr>Hash<span class="tsd-signature-symbol">(</span>trans<span class="tsd-signature-symbol">: </span><a href="_transaction_.transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L145">blockchain.ts:145</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>calculate the transaction data hash</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trans: <a href="_transaction_.transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>hash</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getaccountbalance" class="tsd-anchor"></a>
 					<h3>get<wbr>Account<wbr>Balance</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -436,7 +491,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L440">blockchain.ts:440</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L465">blockchain.ts:465</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,7 +524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L222">blockchain.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L246">blockchain.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -495,7 +550,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L179">blockchain.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L203">blockchain.ts:203</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -522,7 +577,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L330">blockchain.ts:330</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L354">blockchain.ts:354</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -549,7 +604,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L338">blockchain.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L362">blockchain.ts:362</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,7 +631,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L322">blockchain.ts:322</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L346">blockchain.ts:346</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -603,7 +658,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L281">blockchain.ts:281</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L305">blockchain.ts:305</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -630,7 +685,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L296">blockchain.ts:296</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L320">blockchain.ts:320</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -657,7 +712,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L430">blockchain.ts:430</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L455">blockchain.ts:455</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -684,7 +739,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L422">blockchain.ts:422</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L447">blockchain.ts:447</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -711,7 +766,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L314">blockchain.ts:314</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L338">blockchain.ts:338</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -738,7 +793,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L354">blockchain.ts:354</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L379">blockchain.ts:379</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -756,6 +811,33 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getminingrequestmap" class="tsd-anchor"></a>
+					<h3>get<wbr>Mining<wbr>Request<wbr>Map</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Mining<wbr>Request<wbr>Map<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L136">blockchain.ts:136</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>get the miningRequestMap</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>miniingRequestMap</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getpendingtransactions" class="tsd-anchor"></a>
 					<h3>get<wbr>Pending<wbr>Transactions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -765,7 +847,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L257">blockchain.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L281">blockchain.ts:281</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -792,7 +874,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L305">blockchain.ts:305</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L329">blockchain.ts:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -819,7 +901,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L363">blockchain.ts:363</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L388">blockchain.ts:388</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -846,7 +928,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L372">blockchain.ts:372</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L397">blockchain.ts:397</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -880,7 +962,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L242">blockchain.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L266">blockchain.ts:266</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -913,7 +995,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L346">blockchain.ts:346</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L370">blockchain.ts:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -947,7 +1029,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L388">blockchain.ts:388</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L413">blockchain.ts:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -979,7 +1061,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/40ac4e8/src/blockchain.ts#L414">blockchain.ts:414</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/d40396c/src/blockchain.ts#L439">blockchain.ts:439</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1072,16 +1154,22 @@
 								<a href="_blockchain_.blockchain.html#miningjobs" class="tsd-kind-icon">mining<wbr>Jobs</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_blockchain_.blockchain.html#miningrequestsmap" class="tsd-kind-icon">mining<wbr>Requests<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_blockchain_.blockchain.html#transactionspool" class="tsd-kind-icon">transactions<wbr>Pool</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#addblocktochain" class="tsd-kind-icon">add<wbr>Block<wbr>ToChain</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#calcblockdatahash" class="tsd-kind-icon">calc<wbr>Block<wbr>Data<wbr>Hash</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#calcblockhash" class="tsd-kind-icon">calc<wbr>Block<wbr>Hash</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_blockchain_.blockchain.html#calctransactiondatahash" class="tsd-kind-icon">calc<wbr>Transaction<wbr>Data<wbr>Hash</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#getaccountbalance" class="tsd-kind-icon">get<wbr>Account<wbr>Balance</a>
@@ -1118,6 +1206,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#getlatestblock" class="tsd-kind-icon">get<wbr>Latest<wbr>Block</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_blockchain_.blockchain.html#getminingrequestmap" class="tsd-kind-icon">get<wbr>Mining<wbr>Request<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_blockchain_.blockchain.html#getpendingtransactions" class="tsd-kind-icon">get<wbr>Pending<wbr>Transactions</a>
@@ -1166,11 +1257,10 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>

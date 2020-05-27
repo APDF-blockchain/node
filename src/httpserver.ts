@@ -200,6 +200,19 @@ export class HttpServer {
          * @description - add transactions to the transaction pool.
          */
         app.post('/transactions/send', (req, res) => {
+            /**
+             * Send Transactions
+                + For each received transaction the Node does the following:
+                    o Checks for missing / invalid fields / invalid field values
+                    o Calculates the transaction data hash (unique transaction
+                        o Checks for collisions  duplicated transactions are skipped
+                    o Validates the transaction public key , validates the signature
+                    o Checks the sender account balance to be >= value + fee
+                    o Checks whether value >= 0 and fee > 10 (min fee)
+                    o Puts the transaction in the "pending transactions " pool
+                    o Sends the transaction to all peer nodes through the REST API
+                        o It goes from peer to peer until it reaches the entire network
+            */
             console.log(this.myHttpPort + ':POST /transactions/send');
             let body: Transaction[] = req.body;
             console.log(body);
@@ -250,10 +263,6 @@ export class HttpServer {
                 res.status(401).send("Bad address requested.");
                 return;
             }
-            //let rVal: any = { 'address': req.params.address };
-            /**
-             * This temporary
-             */
             /**
              * KINGSLAND SCHOOL OF BLOCKCHAIN | ENSURING THE FUTURE OF BLOCKCHAIN
                 The Mining Process: Preparation
@@ -267,7 +276,25 @@ export class HttpServer {
                     updated block (eventually holding more
                     o The Node will always return the latest block for mining , holding the
                     latest pending transactions (to collect maximum
-             */
+
+                The Coinbase Transaction (Reward)
+                    A special coinbase transaction is inserted before all transactions
+                    in the candidate block, to transfer the block reward + fees
+                        o The sender address, sender public key and signature are zeroes
+                    { "from": "0000000000000000000000000000000000000000",
+                      "to": "9a9f082f37270ff54c5ca4204a0e4da6951fe917",
+                      "value": 5000350, 
+                      "fee": 0 , 
+                      "dateCreated": "2018 02 10T17:53:48.972Z",
+                      "data": "coinbase tx",
+                      "senderPubKey": "000000000000000000000000000000000000…0000",
+                      "transactionDataHash": "4dfc3e0ef89ed603ed54e47435a18b…176a",
+                      "senderSignature": ["0000 000000 …0000", "0 00 000 0000 …0000"],
+                      "minedInBlockIndex": 35, 
+                      "transferSuccessful": true
+                    }
+                    The last two values are set by the miner.
+                */
             //let myMap = this.blockchain.getMiningRequestMap();
             let myBlock: Block;
             let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
@@ -278,19 +305,22 @@ export class HttpServer {
                 newBlock.timestamp = new Date().getTime();
                 newBlock.transactions = this.blockchain.getTransactionPool();
                 newBlock.difficulty = this.blockchain.getCurrentDifficulty();
-                newBlock.reward = 500350; // TODO: don't know how to determine this.
-                newBlock.rewardAddress = 'some reward address that I do not know to get.';
-                newBlock.minedBy = 'some miner address that I do not know how to get.';
+                newBlock.reward = this.config.blockReward;
+                //newBlock.rewardAddress = 'some reward address that I do not know to get.'; // This is the address of miner.  The individual who has a mining rig.
+                newBlock.rewardAddress = req.params.address;
+                //newBlock.minedBy = 'some miner address that I do not know how to get.'; // This is the address of miner.  The individual who has a mining rig.
+                newBlock.minedBy = req.params.address;
                 newBlock.previousBlockHash = this.blockchain.getLatestBlock().blockDataHash;
-                newBlock.nonce = this.blockchain.getCurrentNonce();
-                newBlock.transactions = this.blockchain.getTransactionPool();
+                newBlock.nonce = 0;// Where does this come from?
+                newBlock.transactions = this.blockchain.getTransactionPool(); // TODO: Is there a limit to how many we add?
                 newBlock.blockDataHash = this.blockchain.calcBlockDataHash(newBlock);
-                newBlock.blockHash = this.blockchain.calcBlockHash(newBlock);
+                newBlock.blockHash = this.blockchain.calcBlockHash(newBlock); // TODO: Still need clarification of how to calculate this.
 
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
                 myBlock = newBlock;
             } else {
                 console.log('Need to update the block.')
+                // TODO: need to perform this logic.
                 myBlock = this.blockchain.getMiningRequestMap().get(req.params.address);
             }
 

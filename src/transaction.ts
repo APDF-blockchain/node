@@ -40,11 +40,11 @@ export class Transaction {
      */
     public senderSignature: string[] = [];
     /**
-     * @description - integer/null
+     * @description - integer/null.  Set by the miner.
      */
-    public minedInBlockIndex: number;
+    public minedInBlockIndex: number; 
     /**
-     * @description - boolean
+     * @description - boolean. Set by the miner.
      */
     public tranferSuccessful: boolean;
 

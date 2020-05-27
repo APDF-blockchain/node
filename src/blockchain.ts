@@ -55,22 +55,24 @@ export class BlockChain {
     constructor() {
         if (this.blockchain.length === 0) {
             let transaction = new Transaction();
+            /**
+             * Generate 3 genesis transactions for the genesis block.
+             */
             transaction.data = "genesis tx";
             transaction.dateCreated = new Date();
             transaction.fee = 0;
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
             transaction.value = 1000000000000;
-            transaction.confirmationCount = 1;
-            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
+            transaction.confirmationCount = this.config.confirmCount;
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
+            let senderPubKey: string = "00000000000000000000000000000000000000000000000000000000000000000";
+            transaction.senderPubKey = senderPubKey;
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            // let json: string = JSON.stringify(transaction);
-            // let hash: string = sha256(json)
-            // transaction.transactionDataHash = hash;
+
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             let transactions: Transaction[] = [];
             transactions.push(transaction);
@@ -82,18 +84,14 @@ export class BlockChain {
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
             transaction.value = 5000020;
-            transaction.confirmationCount = 6;
-            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
-            signature = "0000000000000000000000000000000000000000000000000000000000000000";
+            transaction.confirmationCount = this.config.safeConfirmCount;
+            transaction.senderPubKey = senderPubKey;
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            // json = JSON.stringify(transaction);
-            // hash = sha256(json)
-            // transaction.transactionDataHash = hash;
+
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            //let transactions: Transaction[] = [];
             transactions.push(transaction);
 
             transaction = new Transaction();
@@ -104,21 +102,16 @@ export class BlockChain {
             transaction.to = this.config.faucetAddress;
             transaction.value = 5000040;
             transaction.confirmationCount = 0;
-            transaction.senderPubKey = "00000000000000000000000000000000000000000000000000000000000000000";
-            signature = "0000000000000000000000000000000000000000000000000000000000000000";
+            transaction.senderPubKey = senderPubKey;
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.tranferSuccessful = true;
-            // json = JSON.stringify(transaction);
-            // hash = sha256(json)
-            // transaction.transactionDataHash = hash;
+
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            //let transactions: Transaction[] = [];
             transactions.push(transaction);
             this.genesisBlock = new Block();
             this.genesisBlock.index = 0;
-            //this.genesisBlock.blockHash = '0000000000000000000000000000000000000000000000000000000000000000';
             this.genesisBlock.timestamp = new Date().getTime();
             this.genesisBlock.transactions = transactions;
             this.genesisBlock.difficulty = 0;
@@ -127,12 +120,11 @@ export class BlockChain {
             /**
              * hash the genesis block
              */
-            // json = JSON.stringify(this.genesisBlock);
-            // hash = sha256(json);
-            // this.genesisBlock.blockHash = hash;
             this.genesisBlock.blockHash = this.calcBlockHash(this.genesisBlock);
             this.blockchain.push(this.genesisBlock);
-            //this.chainId = this.config.chainId;
+            /**
+             * Set the chainId
+             */
             this.chainId = this.genesisBlock.blockHash;
         }
     }
@@ -143,14 +135,6 @@ export class BlockChain {
      */
     public getMiningRequestMap(): Map<string, Block> {
         return this.miningRequestsMap;
-    }
-
-    /**
-     * @description - get the nonce value
-     * @return {number} nounce
-     */
-    public getCurrentNonce(): number {
-        return .00001;
     }
 
     /**
@@ -202,8 +186,7 @@ export class BlockChain {
                 _trans[i].senderPubKey +
                 _trans[i].transactionDataHash +
                 _trans[i].senderSignature +
-                _trans[i].minedInBlockIndex +
-                _trans[i].transactionDataHash; 
+                _trans[i].minedInBlockIndex;
         }
         _unHashedString += block.difficulty +
             block.previousBlockHash +
@@ -323,7 +306,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= 1) {
+            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= this.config.confirmCount) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -385,7 +368,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
+        transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
         this.transactionsPool.push(transaction);
     }
 
@@ -492,13 +475,13 @@ export class BlockChain {
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
             if (myTrans[i].tranferSuccessful === true) {
-                if (myTrans[i].confirmationCount >= 1 && myTrans[i].confirmationCount < 6) {
+                if (myTrans[i].confirmationCount >= this.config.confirmCount && myTrans[i].confirmationCount < this.config.safeConfirmCount) {
                     if (myTrans[i].from === address) {
                         confirmedOneSum += myTrans[i].value - myTrans[i].fee;
                     } else {
                         confirmedOneSum -= myTrans[i].value;
                     }
-                } else if (myTrans[i].confirmationCount >= 6) {
+                } else if (myTrans[i].confirmationCount >= this.config.safeConfirmCount) {
                     if (myTrans[i].from === address) {
                         confirmedSum += myTrans[i].value - myTrans[i].fee;
                     } else {
