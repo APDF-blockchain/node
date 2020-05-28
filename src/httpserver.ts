@@ -295,17 +295,19 @@ export class HttpServer {
                     }
                     The last two values are set by the miner.
                 */
-            //let myMap = this.blockchain.getMiningRequestMap();
             let myBlock: Block;
             
             let newBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
             if (this.blockchain.getMiningRequestMap().get(newBlock.blockDataHash) === undefined) {
-                //let newBlock: Block = new Block();
-                //let newBlock: Block = this.blockchain.createMinerBlock(req.params.address);
-
+                // Add the new block to the mining request map.
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
-                myBlock = newBlock;
-            } 
+            } else {
+                // Purge the mining request map.
+                this.blockchain.purgeMiningRequest();
+                // Add the new block to the mining request map.
+                this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+            }
+            myBlock = newBlock;
             console.log('Returning: ', myBlock);
             res.send(myBlock);
         });

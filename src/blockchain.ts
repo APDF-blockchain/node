@@ -139,7 +139,7 @@ export class BlockChain {
         block.index = this.getLatestBlock().index + 1;
         block.timestamp = new Date().getTime();
         block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
-        block.transactions = block.transactions.concat(this.getTransactionPool()); 
+        block.transactions = block.transactions.concat(this.getTransactionPool());
         block.difficulty = this.getCurrentDifficulty();
         block.reward = this.config.blockReward;
         block.rewardAddress = minerAddress;
@@ -180,6 +180,15 @@ export class BlockChain {
     }
 
     /**
+     * @description - purge mining request map
+     */
+    public purgeMiningRequest() {
+        for (let _blockDataHash of this.miningRequestsMap.keys()) {
+            this.miningRequestsMap.delete(_blockDataHash);
+        }
+    }
+
+    /**
      * @description - calculate the transaction data hash 
      * @param {Transaction} trans 
      * @returns {string} hash
@@ -187,11 +196,11 @@ export class BlockChain {
     public calcTransactionDataHash(trans: Transaction): string {
         let _unHashedString: string = "";
         _unHashedString += trans.from +
-                            trans.to +
-                            trans.value +
-                            trans.dateCreated +
-                            trans.data +
-                            trans.senderPubKey;
+            trans.to +
+            trans.value +
+            trans.dateCreated +
+            trans.data +
+            trans.senderPubKey;
         let json: string = JSON.stringify(_unHashedString);
         let hash: string = sha256(json)
         return hash;
