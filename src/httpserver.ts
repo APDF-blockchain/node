@@ -317,7 +317,8 @@ export class HttpServer {
                 res.send(myBlock);
             } else {
                 console.log('No transactions for a block to mine.');
-                res.status(400).send('No transactions for a block to mine.');
+                //res.status(401).send('No transactions for a block to mine.');
+                res.sendStatus(400);
             }
         });
 
