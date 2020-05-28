@@ -9,6 +9,7 @@ import { Transaction } from './transaction';
 import { NodePeers } from './node-peers';
 import { Block } from './block';
 import { Balance } from './balance';
+import { ValidationMessage } from './validation-message';
 
 /**
  * @classdesc - contains the attributes and methods for the http server required by the blockchain
@@ -214,16 +215,17 @@ export class HttpServer {
                         o It goes from peer to peer until it reaches the entire network
             */
             console.log(this.myHttpPort + ':POST /transactions/send');
-            let body: Transaction[] = req.body;
-            console.log(body);
-            for (let i = 0; i < body.length; i++) {
-                body[i].tranferSuccessful = false;
-                this.blockchain.handleReceivedTransaction(body[i]);
-            }
-            if (body !== null) {
-                res.status(201).send("Transaction send complete.");
+            let transaction: Transaction = req.body;
+            console.log(transaction);
+            transaction.tranferSuccessful = false;
+            let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
+            if (validation.message === 'success') {
+                this.blockchain.handleReceivedTransaction(transaction);
+                // TODO: broadcast transaction to all the peer nodes.
+                this.p2p.broadCastTransactionPool();
+                res.status(201).send(validation);
             } else {
-                res.status(401).send("No transactions were received.");
+                res.status(401).send(validation);
             }
         });
 

@@ -3,6 +3,7 @@ import { Transaction } from './transaction';
 import { Block } from './block';
 import { Balance } from './balance';
 import { Config } from './config';
+import { ValidationMessage } from './validation-message';
 
 /**
  * @classdesc - This class contains all the elements of a complete blockchain
@@ -128,6 +129,7 @@ export class BlockChain {
             this.chainId = this.genesisBlock.blockHash;
         }
     }
+
 
     /**
      * @description - creates a new block for the miner.
@@ -438,6 +440,118 @@ export class BlockChain {
         //transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
         this.transactionsPool.push(transaction);
     }
+
+    private validateTransactionFields(transaction: Transaction): ValidationMessage {
+        let rVal: ValidationMessage = new ValidationMessage();
+        let structureValid: boolean = true;
+        rVal.message = 'success';
+        structureValid = typeof transaction.from === 'string'
+            && typeof transaction.data === 'string'
+            && transaction.dateCreated instanceof Date
+            && typeof transaction.fee === 'number'
+            && typeof transaction.senderPubKey === 'string'
+            && transaction.senderSignature instanceof Array
+            && typeof transaction.to === 'string'
+            && typeof transaction.value === 'number';
+        if (structureValid === false) {
+            rVal.message = 'The structure of the transaction is invalid';
+        }
+        if (transaction.hasOwnProperty('from') === false) {
+            rVal.message += ', Missing from field';
+        }
+        if (transaction.hasOwnProperty('to') === false) {
+            rVal.message += ', Missing to field';
+        }
+        if (transaction.hasOwnProperty('data') === false) {
+            rVal.message += ', Missing data field';
+        }
+        if (transaction.hasOwnProperty('dateCreated') === false) {
+            rVal.message += ', Missing dateCreated field';
+        }
+        if (transaction.hasOwnProperty('fee') === false) {
+            rVal.message += ', Missing fee field';
+        }
+        if (transaction.hasOwnProperty('senderPubKey') === false) {
+            rVal.message += ', Missing senderPubKey field';
+        }
+        if (transaction.hasOwnProperty('senderSignature') === false) {
+            rVal.message += ', Missing senderSignature field';
+        }
+        if (transaction.hasOwnProperty('value') === false) {
+            rVal.message += ', Missing value field';
+        }
+
+        if (transaction.from === undefined || transaction.from == null) {
+            rVal.message += ', Field from does not have a value';
+        }
+        if (transaction.to === undefined || transaction.to == null) {
+            rVal.message += ', Field to does not have a value';
+        }
+        if (transaction.data === undefined || transaction.data == null) {
+            rVal.message += ', Field data does not have a value';
+        }
+        if (transaction.dateCreated === undefined || transaction.dateCreated == null) {
+            rVal.message += ', Field dateCreated does not have a value';
+        }
+        if (transaction.fee === undefined || transaction.fee == null) {
+            rVal.message += ', Field fee does not have a value';
+        }
+        if (transaction.senderPubKey === undefined || transaction.senderPubKey == null) {
+            rVal.message += ', Field senderPubKey does not have a value';
+        }
+        if (transaction.senderSignature === undefined || transaction.senderSignature == null) {
+            rVal.message += ', Field senderSignature does not have a value';
+        }
+        if (transaction.value === undefined || transaction.value == null) {
+            rVal.message += ', Field value does not have a value';
+        }
+        return rVal;
+    }
+
+    public validateReceivedTransaction(transaction: Transaction): { message: string; } {
+        /**
+         * Send Transactions
+            + For each received transaction the Node does the following:
+                o Checks for missing / invalid fields / invalid field values
+                o Calculates the transaction data hash (unique transaction
+                    o Checks for collisions  duplicated transactions are skipped
+                o Validates the transaction public key , validates the signature
+                o Checks the sender account balance to be >= value + fee
+                o Checks whether value >= 0 and fee > 10 (min fee)
+                o Puts the transaction in the "pending transactions " pool
+                o Sends the transaction to all peer nodes through the REST API
+                    o It goes from peer to peer until it reaches the entire network
+        */
+        let message: ValidationMessage = new ValidationMessage();
+        message.message = 'success';
+        let validateFields: ValidationMessage = this.validateTransactionFields(transaction);
+        if (validateFields.message !== 'success') {
+            return validateFields;
+        }
+        let validateDups: ValidationMessage = new ValidationMessage();
+        let _tranactionDataHash: string = this.calcTransactionDataHash(transaction);
+        for (let i = 0; i < this.getPendingTransactions().length; i++) {
+            if (this.getPendingTransactions()[i].transactionDataHash === _tranactionDataHash) {
+                validateDups.message = 'Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash;
+                return validateDups;
+            }
+        }
+
+        // TODO: Validates the transaction public key , validates the signature
+
+        let rBalance: Balance = this.getAccountBalance(transaction.from);
+        if (rBalance.confirmedBalance < transaction.value + transaction.fee) {
+            message.message = 'Sender does not have enough funds to complete the transaction';
+        }
+        if (transaction.value < 0) {
+            message.message = 'Transaction value must be greater than or equal to 0';
+        }
+        if (transaction.fee < 10) {
+            message.message = 'Transaction fee is not greater than or equal to 10 micro-coins';
+        }
+        return message;
+    }
+
 
     /**
      * @description - get the latest block in the blockchain
