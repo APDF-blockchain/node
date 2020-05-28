@@ -35,7 +35,7 @@ export class BlockChain {
      */
     private cumulativeDifficulty: number = this.difficulty;
     /**
-     * @description - a map fo the mining jobs keyed on the (miner address?)
+     * @description - a map fo the mining jobs keyed on the (blockDataHash)
      */
     private miningJobs: Map<string, Block> = new Map<string, Block>();
 
@@ -184,7 +184,7 @@ export class BlockChain {
     /**
      * @description - purge mining request map
      */
-    public purgeMiningRequest() {
+    public purgeMiningRequestMap() {
         for (let _blockDataHash of this.miningRequestsMap.keys()) {
             this.miningRequestsMap.delete(_blockDataHash);
         }

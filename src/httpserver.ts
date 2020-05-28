@@ -305,7 +305,7 @@ export class HttpServer {
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
             } else {
                 // Purge the mining request map.
-                this.blockchain.purgeMiningRequest();
+                this.blockchain.purgeMiningRequestMap();
                 // Add the new block to the mining request map.
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
             }
@@ -315,12 +315,30 @@ export class HttpServer {
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
-            console.log('body=',req.body);
+            let rVal: ValidationMessage = new ValidationMessage();
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
-            let rVal: any =  {"message": "Block accepted, reward paid: 5000350 microcoins"};
-            res.send(rVal);
-        });
+            console.log('body=',req.body);
 
+            /**
+             * find the mined block in the mining request map.
+             */
+            let minedBlock: Block = this.blockchain.getMiningRequestMap().get(req.body.blockDataHash);
+            if (minedBlock.blockDataHash === undefined) {
+                rVal.message = 'Block not found or already mined';
+                res.sendStatus(404).send(rVal);
+            } else {
+                // Append the mined block to the blockchain.
+                minedBlock.blockHash = req.body.blockHash;
+                minedBlock.dateCreated = req.body.dateCreated;
+                minedBlock.nonce = req.body.nonce;
+                // add the mined block to the blockchain.
+                this.blockchain.getBlockchain().push(minedBlock);
+                // purge the mining request map.
+                this.blockchain.purgeMiningRequestMap();
+                rVal.message = 'Block accepted, reward paid: ' + minedBlock.reward + ' microcoins';
+                res.send(rVal);
+            }
+        });
 
         app.listen(myHttpPort, () => {
             console.log('HttpServer listening http on port: ' + myHttpPort);
