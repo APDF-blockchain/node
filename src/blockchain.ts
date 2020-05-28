@@ -220,7 +220,7 @@ export class BlockChain {
         _tBlock.difficulty = block.difficulty;
         _tBlock.previousBlockHash = block.previousBlockHash;
         _tBlock.minedBy = block.minedBy;
-        let json: string = JSON.stringify(JSON.stringify(_tBlock));
+        let json: string = JSON.stringify(_tBlock);
         let hash: string = sha256(json)
         return hash;
     }
