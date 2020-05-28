@@ -433,7 +433,7 @@ export class BlockChain {
     }
 
     /**
-     * @description - handle received transaction
+     * @description - handle received transaction.  this is called by the P2P class.
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
