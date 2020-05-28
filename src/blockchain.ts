@@ -198,6 +198,7 @@ export class BlockChain {
         _unHashedString += trans.from +
             trans.to +
             trans.value +
+            trans.fee +
             trans.dateCreated +
             trans.data +
             trans.senderPubKey;
@@ -434,7 +435,7 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
-        transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
+        //transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
         this.transactionsPool.push(transaction);
     }
 
