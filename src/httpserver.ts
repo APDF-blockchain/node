@@ -296,24 +296,16 @@ export class HttpServer {
                     The last two values are set by the miner.
                 */
             //let myMap = this.blockchain.getMiningRequestMap();
-            // TODO: How do I tell if this is a new block.
             let myBlock: Block;
-            let tVar = this.blockchain.getMiningRequestMap().get(req.params.address);
             
-            if (this.blockchain.getMiningRequestMap().get(req.params.address) === undefined) {
+            let newBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
+            if (this.blockchain.getMiningRequestMap().get(newBlock.blockDataHash) === undefined) {
                 //let newBlock: Block = new Block();
-                let newBlock: Block = this.blockchain.createMinerBlock(req.params.address);
+                //let newBlock: Block = this.blockchain.createMinerBlock(req.params.address);
 
                 this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
                 myBlock = newBlock;
-            } else {
-                console.log('Need to update the block.')
-                // TODO: need to perform this logic.
-                myBlock = this.blockchain.getMiningRequestMap().get(req.params.address);
-                myBlock = this.blockchain.updateMinerBlock(req.params.address,myBlock);
-
-                this.blockchain.getMiningRequestMap().set(myBlock.blockDataHash, myBlock);
-            }
+            } 
             console.log('Returning: ', myBlock);
             res.send(myBlock);
         });

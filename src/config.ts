@@ -123,7 +123,7 @@ export class Config {
         this.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
-        this.startDifficulty = 4;
+        this.startDifficulty = 2; // SETTING THIS TO A LOW VALUE TO SPEED UP MINING.  RESET THIS LATER TO 4 OR 5.
         this.microCoin = 1;
         this.minTransactionFee = 10 * this.microCoin;
         this.maxTransactionFee = 1000000;

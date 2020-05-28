@@ -120,7 +120,7 @@ export class BlockChain {
             /**
              * hash the genesis block
              */
-            this.genesisBlock.blockHash = this.calcBlockHash(this.genesisBlock);
+            this.genesisBlock.blockHash = this.calcGenesisBlockHash(this.genesisBlock);
             this.blockchain.push(this.genesisBlock);
             /**
              * Set the chainId
@@ -134,48 +134,22 @@ export class BlockChain {
      * @param {string} minerAddress - address of the miner
      * @returns {Block} - new miner block
      */
-    public createMinerBlock(minerAddress: string): Block {
+    public createCandidateMinerBlock(minerAddress: string): Block {
         let block: Block = new Block();
         block.index = this.getLatestBlock().index + 1;
         block.timestamp = new Date().getTime();
         block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
-        block.transactions = block.transactions.concat(this.getTransactionPool()); // TODO: is there a restriction here?
+        block.transactions = block.transactions.concat(this.getTransactionPool()); 
         block.difficulty = this.getCurrentDifficulty();
         block.reward = this.config.blockReward;
-        //block.rewardAddress = 'some reward address that I do not know to get.'; // This is the address of miner.  The individual who has a mining rig.
         block.rewardAddress = minerAddress;
-        //block.minedBy = 'some miner address that I do not know how to get.'; // This is the address of miner.  The individual who has a mining rig.
         block.minedBy = minerAddress;
-        block.previousBlockHash = this.getLatestBlock().blockDataHash;
-        block.nonce = 0;// Where does this come from?
+        block.previousBlockHash = this.getLatestBlock().blockHash;
+        block.nonce = 0;
         block.blockDataHash = this.calcBlockDataHash(block);
-        block.blockHash = this.calcBlockHash(block); // TODO: Still need clarification of how to calculate this.
         return block
     }
 
-    /**
-     * @description - update the given miner block for the repeated request
-     * @param {string} minerAddress - address of the miner
-     * @param {Block} block - block to be updated for the miner.
-     * @returns {Block} - update miner block.
-     */
-    public updateMinerBlock(minerAddress: string, block: Block): Block {
-        block.index = this.getLatestBlock().index + 1;
-        block.timestamp = new Date().getTime();
-        block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
-        block.transactions = block.transactions.concat(this.getTransactionPool()); // TODO: is there a restriction here?
-        block.difficulty = this.getCurrentDifficulty();
-        block.reward = this.config.blockReward;
-        //block.rewardAddress = 'some reward address that I do not know to get.'; // This is the address of miner.  The individual who has a mining rig.
-        block.rewardAddress = minerAddress;
-        //block.minedBy = 'some miner address that I do not know how to get.'; // This is the address of miner.  The individual who has a mining rig.
-        block.minedBy = minerAddress;
-        block.previousBlockHash = this.getLatestBlock().blockDataHash;
-        block.nonce = 0;// Where does this come from?
-        block.blockDataHash = this.calcBlockDataHash(block);
-        block.blockHash = this.calcBlockHash(block); // TODO: Still need clarification of how to calculate this.
-        return block
-    }
     /**
      * @description - create a coinbase reward transaction for the miner.
      * @param {string} minerAddress - miner address
@@ -191,7 +165,7 @@ export class BlockChain {
         _trans.data = 'coinbase tx';
         _trans.senderPubKey = this.config.nullPubKey;
         _trans.senderSignature = _trans.senderSignature.concat(this.config.nullSignature);
-        _trans.minedInBlockIndex = 0;
+        _trans.minedInBlockIndex = this.getLatestBlock().index + 1;
         _trans.tranferSuccessful = false;
         rVal.push(_trans);
         return rVal;
@@ -224,12 +198,11 @@ export class BlockChain {
     }
 
     /**
-     * @description - calculate the block hash
+     * @description - calculate the genesis block hash
      * @param {block} block 
      * @return {string} hash
      */
-    public calcBlockHash(block: Block): string {
-        // TODDO: I am not sure how this supposed to be hashed.
+    private calcGenesisBlockHash(block: Block): string {
         let json: string = JSON.stringify(block);
         let hash: string = sha256(json);
         return hash;
@@ -241,28 +214,44 @@ export class BlockChain {
      * @return {string} hash
      */
     public calcBlockDataHash(block: Block): string {
-        let _unHashedString: string = "";
-        _unHashedString += block.index;
-        let _trans: Transaction[] = block.transactions;
-        for (let i = 0; i < _trans.length; i++) {
-            _unHashedString += _trans[i].from +
-                _trans[i].to +
-                _trans[i].value +
-                _trans[i].fee +
-                _trans[i].dateCreated +
-                _trans[i].data +
-                _trans[i].senderPubKey +
-                _trans[i].transactionDataHash +
-                _trans[i].senderSignature +
-                _trans[i].minedInBlockIndex;
-        }
-        _unHashedString += block.difficulty +
-            block.previousBlockHash +
-            block.minedBy;
-        let json: string = JSON.stringify(_unHashedString);
+        let _tBlock: Block = new Block();
+        _tBlock.index = block.index;
+        _tBlock.transactions = block.transactions;
+        _tBlock.difficulty = block.difficulty;
+        _tBlock.previousBlockHash = block.previousBlockHash;
+        _tBlock.minedBy = block.minedBy;
+        let json: string = JSON.stringify(JSON.stringify(_tBlock));
         let hash: string = sha256(json)
         return hash;
     }
+    // /**
+    //  * @description - calculate the block data hash.
+    //  * @param {block} block 
+    //  * @return {string} hash
+    //  */
+    // public calcBlockDataHash(block: Block): string {
+    //     let _unHashedString: string = "";
+    //     _unHashedString += block.index;
+    //     let _trans: Transaction[] = block.transactions;
+    //     for (let i = 0; i < _trans.length; i++) {
+    //         _unHashedString += _trans[i].from +
+    //             _trans[i].to +
+    //             _trans[i].value +
+    //             _trans[i].fee +
+    //             _trans[i].dateCreated +
+    //             _trans[i].data +
+    //             _trans[i].senderPubKey +
+    //             _trans[i].transactionDataHash +
+    //             _trans[i].senderSignature +
+    //             _trans[i].minedInBlockIndex;
+    //     }
+    //     _unHashedString += block.difficulty +
+    //         block.previousBlockHash +
+    //         block.minedBy;
+    //     let json: string = JSON.stringify(_unHashedString);
+    //     let hash: string = sha256(json)
+    //     return hash;
+    // }
 
     /**
      * @description - get balances
