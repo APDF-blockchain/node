@@ -261,7 +261,7 @@ export class HttpServer {
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
-            if( req.params.address === 'undefined') {
+            if (req.params.address === 'undefined') {
                 res.status(401).send("Bad address requested.");
                 return;
             }
@@ -298,26 +298,33 @@ export class HttpServer {
                     The last two values are set by the miner.
                 */
             let myBlock: Block;
-            
-            let newBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
-            if (this.blockchain.getMiningRequestMap().get(newBlock.blockDataHash) === undefined) {
-                // Add the new block to the mining request map.
-                this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+
+            // We should not send a block to be mined if there are no pending transactions.
+            if (this.blockchain.getTransactionPool().length > 0) {
+
+                let newBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
+                if (this.blockchain.getMiningRequestMap().get(newBlock.blockDataHash) === undefined) {
+                    // Add the new block to the mining request map.
+                    this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+                } else {
+                    // Purge the mining request map.
+                    this.blockchain.purgeMiningRequestMap();
+                    // Add the new block to the mining request map.
+                    this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+                }
+                myBlock = newBlock;
+                console.log('Returning: ', myBlock);
+                res.send(myBlock);
             } else {
-                // Purge the mining request map.
-                this.blockchain.purgeMiningRequestMap();
-                // Add the new block to the mining request map.
-                this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
+                console.log('No transactions for a block to mine.');
+                res.status(400).send('No transactions for a block to mine.');
             }
-            myBlock = newBlock;
-            console.log('Returning: ', myBlock);
-            res.send(myBlock);
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
             let rVal: ValidationMessage = new ValidationMessage();
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
-            console.log('body=',req.body);
+            console.log('body=', req.body);
 
             /**
              * find the mined block in the mining request map.
@@ -325,7 +332,7 @@ export class HttpServer {
             let minedBlock: Block = this.blockchain.getMiningRequestMap().get(req.body.blockDataHash);
             if (minedBlock.blockDataHash === undefined) {
                 rVal.message = 'Block not found or already mined';
-                res.sendStatus(404).send(rVal);
+                res.status(404).send(rVal);
             } else {
                 // Append the mined block to the blockchain.
                 minedBlock.blockHash = req.body.blockHash;
