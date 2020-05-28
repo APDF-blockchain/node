@@ -438,7 +438,15 @@ export class BlockChain {
      */
     public handleReceivedTransaction(transaction: Transaction): void {
         //transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
-        this.transactionsPool.push(transaction);
+        let _message: ValidationMessage = new ValidationMessage();
+        _message.message = 'success';
+        _message = this.validateReceivedTransaction(transaction);
+        if(_message.message === 'success') {
+            this.transactionsPool.push(transaction);
+        } else {
+            console.log(JSON.stringify(_message));
+            throw(_message.message);
+        }
     }
 
     private validateTransactionFields(transaction: Transaction): ValidationMessage {

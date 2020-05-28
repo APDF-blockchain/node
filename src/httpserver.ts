@@ -220,8 +220,8 @@ export class HttpServer {
             transaction.tranferSuccessful = false;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
-                this.blockchain.handleReceivedTransaction(transaction);
-                // TODO: broadcast transaction to all the peer nodes.
+                this.blockchain.getTransactionPool().push(transaction)
+                // broadcast transaction to all the peer nodes.
                 this.p2p.broadCastTransactionPool();
                 res.status(201).send(validation);
             } else {
