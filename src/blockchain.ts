@@ -615,10 +615,16 @@ export class BlockChain {
     /**
      * @description - add the given block to the blockchain
      * @param {Block} latestBlockReceived 
-     * @returns {booean}
+     * @returns {boolean}
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
-        return true;
+        if(latestBlockReceived.index !== this.getLatestBlock().index) {
+            this.blockchain.push(latestBlockReceived);
+            console.log('BlockChain.addBlockToChain(): added index=', latestBlockReceived.index );
+            return true;
+        }
+        console.log('BlockChain.addBlockToChain(): failed to add index=', latestBlockReceived.index );
+        return false;
     }
 
     /**

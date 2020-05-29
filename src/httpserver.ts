@@ -10,6 +10,9 @@ import { NodePeers } from './node-peers';
 import { Block } from './block';
 import { Balance } from './balance';
 import { ValidationMessage } from './validation-message';
+import { SendTransactionRequest } from './models/send-transaction-request';
+import { GetMiningJobRequest } from './models/get-mining-job-request';
+import { SubmitBlockRequest } from './models/submit-block-request';
 
 /**
  * @classdesc - contains the attributes and methods for the http server required by the blockchain
@@ -215,17 +218,30 @@ export class HttpServer {
                         o It goes from peer to peer until it reaches the entire network
             */
             console.log(this.myHttpPort + ':POST /transactions/send');
-            let transaction: Transaction = req.body;
-            console.log(transaction);
+            let sendTransRequest: SendTransactionRequest = req.body;
+            console.log(sendTransRequest);
+            let transaction: Transaction = new Transaction();
+            transaction.confirmationCount = 0;
+            transaction.data = sendTransRequest.data;
+            transaction.dateCreated = sendTransRequest.dateCreated;
+            transaction.fee = sendTransRequest.fee;
+            transaction.from = sendTransRequest.from;
+            transaction.minedInBlockIndex = -1;
+            transaction.senderPubKey = sendTransRequest.senderPubKey;
+            transaction.senderSignature = sendTransRequest.senderSignature;
+            transaction.value = sendTransRequest.value;
+            transaction.transactionDataHash = '';
             transaction.tranferSuccessful = false;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
                 this.blockchain.getTransactionPool().push(transaction)
                 // broadcast transaction to all the peer nodes.
                 this.p2p.broadCastTransactionPool();
-                res.status(201).send(validation);
+                res.status(201).send({'transactionDataHash': transaction.transactionDataHash});
             } else {
-                res.status(401).send(validation);
+                console.log(JSON.stringify(validation));
+                let errorMsg: string = validation.message;
+                res.status(400).send({'error': errorMsg});
             }
         });
 
@@ -238,7 +254,7 @@ export class HttpServer {
                 }
                 res.send(rVal);
             } else {
-                res.status(401).send("There currently no peers for this node.");
+                res.status(401).send({'error': "There currently no peers for this node."});
             }
         });
 
@@ -250,9 +266,9 @@ export class HttpServer {
             res.status(201).send("Peers connect requested.");
         });
 
-        app.post('/peers/notify-new-block', (req, res) => {
-            console.log(this.myHttpPort + ':POST /peers/notify-new-block');
-        });
+        // app.post('/peers/notify-new-block', (req, res) => {
+        //     console.log(this.myHttpPort + ':POST /peers/notify-new-block');
+        // });
 
         app.post('/stop', (req, res) => {
             res.send({ 'msg': 'stopping server' });
@@ -262,7 +278,7 @@ export class HttpServer {
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
             if (req.params.address === 'undefined') {
-                res.status(401).send("Bad address requested.");
+                res.status(401).send({'error': "Bad address requested."});
                 return;
             }
             /**
@@ -297,9 +313,10 @@ export class HttpServer {
                     }
                     The last two values are set by the miner.
                 */
-            let myBlock: Block;
+            let myBlock: GetMiningJobRequest = new GetMiningJobRequest();
 
             // We should not send a block to be mined if there are no pending transactions.
+            //if (this.blockchain.getTransactionPool().length === 0) {
             if (this.blockchain.getTransactionPool().length > 0) {
 
                 let newBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
@@ -312,13 +329,18 @@ export class HttpServer {
                     // Add the new block to the mining request map.
                     this.blockchain.getMiningRequestMap().set(newBlock.blockDataHash, newBlock);
                 }
-                myBlock = newBlock;
+                myBlock.blockDataHash = newBlock.blockDataHash;
+                myBlock.difficulty = newBlock.difficulty;
+                myBlock.expectedReward = newBlock.reward;
+                myBlock.rewardAddress = newBlock.rewardAddress;
+                myBlock.index = newBlock.index;
+                myBlock.transactionsIncluded = newBlock.transactions.length;
                 console.log('Returning: ', myBlock);
                 res.send(myBlock);
             } else {
                 console.log('No transactions for a block to mine.');
-                //res.status(401).send('No transactions for a block to mine.');
-                res.sendStatus(400);
+                res.status(400).send({'error':'No transactions for a block to mine.'});
+                //res.sendStatus(400);
             }
         });
 
@@ -326,6 +348,7 @@ export class HttpServer {
             let rVal: ValidationMessage = new ValidationMessage();
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
             console.log('body=', req.body);
+            let submitMinedBlock: SubmitBlockRequest = req.body;
 
             /**
              * find the mined block in the mining request map.
@@ -333,18 +356,21 @@ export class HttpServer {
             let minedBlock: Block = this.blockchain.getMiningRequestMap().get(req.body.blockDataHash);
             if (minedBlock.blockDataHash === undefined) {
                 rVal.message = 'Block not found or already mined';
-                res.status(404).send(rVal);
+                res.status(404).send({'error': rVal.message});
             } else {
                 // Append the mined block to the blockchain.
-                minedBlock.blockHash = req.body.blockHash;
-                minedBlock.dateCreated = req.body.dateCreated;
-                minedBlock.nonce = req.body.nonce;
+                minedBlock.blockHash = submitMinedBlock.blockHash;
+                minedBlock.dateCreated = submitMinedBlock.dateCreated;
+                minedBlock.nonce = submitMinedBlock.nonce;
                 // add the mined block to the blockchain.
                 this.blockchain.getBlockchain().push(minedBlock);
                 // purge the mining request map.
                 this.blockchain.purgeMiningRequestMap();
                 rVal.message = 'Block accepted, reward paid: ' + minedBlock.reward + ' microcoins';
                 res.send(rVal);
+                // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
+                this.p2p.broadcastLatestBlockToOtherNodes();
+
             }
         });
 
