@@ -318,7 +318,8 @@ export class HttpServer {
 
             // We should not send a block to be mined if there are no pending transactions.
             //if (this.blockchain.getTransactionPool().length === 0) {
-            if (this.blockchain.getTransactionPool().length > 0) {
+            if (this.blockchain.getTransactionPool().length === 0) {
+            //if (this.blockchain.getTransactionPool().length > 0) {
 
                 let candidateBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
                 if (this.blockchain.getMiningRequestMap().get(candidateBlock.blockDataHash) === undefined) {
@@ -388,7 +389,7 @@ export class HttpServer {
                 let verifyBlock: VerifyBlock = new VerifyBlock();
                 let verified: boolean = false;
 
-                verifyBlock.blockDataHash = candidateBlock.blockDataHash;
+                verifyBlock.blockDataHash = submitMinedBlock.blockDataHash;
                 verifyBlock.dateCreated = submitMinedBlock.dateCreated;
                 verifyBlock.nonce = submitMinedBlock.nonce;
                 let _hash: string = sha256(JSON.stringify(verifyBlock));
@@ -413,6 +414,9 @@ export class HttpServer {
                     /**
                      * Verification fails so chain gets extended.  What does this mean?
                      */
+                    return res.status(404).send({'error': "Block not found or already mined"});
+                    //res.status(404).send("Block not found or already mined");
+                    //res.status(400).send({ 'error': 'No transactions for a block to mine.' });
                 }
 
             }
