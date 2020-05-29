@@ -345,6 +345,18 @@ export class HttpServer {
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
+            /**
+             * Processing a Mined Block
+                Miners submit their mined block hash (+ date + nonce
+                    o Node builds the mined block and propagates it through the network
+                When a miner submits a proof of work hash (I believe this is the block.blockHash)
+                    o The node finds the block candidate by its blockDataHash
+                    o The node verifies the hash + its difficulty and builds the next block (How does one verify the hash?  What is meant by build the next block?)
+                        o The block candidate is merged with the nonce + timestamp + hash
+                Then if the block is still not mined , the chain is extended (What does this mean?)
+                    o Sometimes other miners can be faster -> the mined block is expired
+                Then all peers are notified about the new mined block
+             */
             let rVal: ValidationMessage = new ValidationMessage();
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
             console.log('body=', req.body);
