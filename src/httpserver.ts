@@ -367,18 +367,16 @@ export class HttpServer {
                 rVal.message = 'Block not found or already mined';
                 res.status(404).send({ 'error': rVal.message });
             } else {
-                // Append the mined block to the blockchain.
+                // Get the mined block request that came from the miner.
                 let fromMinerRequest: FromMinerRequest = req.body;
                 /**
-                 * TODO: The node verifies the hash + its difficulty and builds the next block (How does one verify the hash?  What is meant by build the next block?)
+                 * The node verifies the hash + its difficulty and builds the next block.
                  */
                 let verified: boolean = false;
 
-                //if( _hash === submitMinedBlock.blockHash && _strStart === maxZeroString.substr(0, candidateBlock.difficulty)) {
                 candidateBlock.blockHash = fromMinerRequest.blockHash;
                 candidateBlock.dateCreated = fromMinerRequest.dateCreated;
                 candidateBlock.nonce = fromMinerRequest.nonce;
-                //candidateBlock.transactions = fromMinerRequest.transactions;
                 console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
                 if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
@@ -391,14 +389,13 @@ export class HttpServer {
                     rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
                     res.send(rVal);
                     // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
+                    // The above call is not used.  Calling broadcast instead.
                     this.p2p.broadcastLatestBlockToOtherNodes();
                 } else {
                     /**
                      * Verification fails so chain gets extended.  What does this mean?
                      */
                     return res.status(404).send({'error': "Block not found or already mined"});
-                    //res.status(404).send("Block not found or already mined");
-                    //res.status(400).send({ 'error': 'No transactions for a block to mine.' });
                 }
 
             }

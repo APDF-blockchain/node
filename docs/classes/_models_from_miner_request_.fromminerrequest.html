@@ -69,6 +69,17 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>classdesc</dt>
+						<dd><ul>
+								<li>data the comes from the miner</li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -94,8 +105,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_from_miner_request_.fromminerrequest.html#blockhash" class="tsd-kind-icon">block<wbr>Hash</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_from_miner_request_.fromminerrequest.html#datecreated" class="tsd-kind-icon">date<wbr>Created</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_from_miner_request_.fromminerrequest.html#nonce" class="tsd-kind-icon">nonce</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_from_miner_request_.fromminerrequest.html#timestamp" class="tsd-kind-icon">timestamp</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_from_miner_request_.fromminerrequest.html#transactions" class="tsd-kind-icon">transactions</a></li>
 							</ul>
 						</section>
 					</div>
@@ -113,9 +122,11 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L9">models/from-miner-request.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/2322031/src/models/from-miner-request.ts#L21">models/from-miner-request.ts:21</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_models_from_miner_request_.fromminerrequest.html" class="tsd-signature-type">FromMinerRequest</a></h4>
 						</li>
 					</ul>
@@ -129,9 +140,18 @@
 					<div class="tsd-signature tsd-kind-icon">block<wbr>Data<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L4">models/from-miner-request.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/2322031/src/models/from-miner-request.ts#L9">models/from-miner-request.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>calculated by the node for the transactions</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="blockhash" class="tsd-anchor"></a>
@@ -139,9 +159,18 @@
 					<div class="tsd-signature tsd-kind-icon">block<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L8">models/from-miner-request.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/2322031/src/models/from-miner-request.ts#L21">models/from-miner-request.ts:21</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>set by the miner</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="datecreated" class="tsd-anchor"></a>
@@ -149,9 +178,18 @@
 					<div class="tsd-signature tsd-kind-icon">date<wbr>Created<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L5">models/from-miner-request.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/2322031/src/models/from-miner-request.ts#L13">models/from-miner-request.ts:13</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>set by the miner</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="nonce" class="tsd-anchor"></a>
@@ -159,29 +197,18 @@
 					<div class="tsd-signature tsd-kind-icon">nonce<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L7">models/from-miner-request.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/2322031/src/models/from-miner-request.ts#L17">models/from-miner-request.ts:17</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timestamp" class="tsd-anchor"></a>
-					<h3>timestamp</h3>
-					<div class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L6">models/from-miner-request.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="transactions" class="tsd-anchor"></a>
-					<h3>transactions</h3>
-					<div class="tsd-signature tsd-kind-icon">transactions<span class="tsd-signature-symbol">:</span> <a href="_transaction_.transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ffe27c9/src/models/from-miner-request.ts#L9">models/from-miner-request.ts:9</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>set by the miner</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -256,12 +283,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_models_from_miner_request_.fromminerrequest.html#nonce" class="tsd-kind-icon">nonce</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_models_from_miner_request_.fromminerrequest.html#timestamp" class="tsd-kind-icon">timestamp</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_models_from_miner_request_.fromminerrequest.html#transactions" class="tsd-kind-icon">transactions</a>
 							</li>
 						</ul>
 					</li>

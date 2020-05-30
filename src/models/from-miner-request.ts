@@ -1,13 +1,28 @@
-import { Transaction } from "../transaction";
-
+/**
+ * @classdesc - data the comes from the miner
+ * @class FromMinerRequest
+ */
 export class FromMinerRequest {
+    /**
+     * @description - calculated by the node for the transactions
+     */
     public blockDataHash: string;
+    /**
+     * @description - set by the miner
+     */
     public dateCreated: Date;
-    public timestamp: number;
+    /**
+     * @description - set by the miner
+     */
     public nonce: number;
+    /**
+     * @description - set by the miner
+     */
     public blockHash: string;
-    public transactions: Transaction[];
 
+    /**
+     * @constructor
+     */
     constructor() {
 
     }

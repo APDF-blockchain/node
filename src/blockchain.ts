@@ -163,6 +163,7 @@ export class BlockChain {
      */
     private verifyTransactions(block: Block, tranactions: Transaction[]): Transaction[] {
         // TODO Look at balances to see if the transfer can take place. Currently not doing this.
+        // This logic needs to be completed.
         for (let i = 0; i < tranactions.length; i++) {
             tranactions[i].transferSuccessful = true;
             tranactions[i].minedInBlockIndex = block.index;
@@ -254,34 +255,6 @@ export class BlockChain {
         let hash: string = CryptoJS.SHA256(json).toString();
         return hash;
     }
-    // /**
-    //  * @description - calculate the block data hash.
-    //  * @param {block} block 
-    //  * @return {string} hash
-    //  */
-    // public calcBlockDataHash(block: Block): string {
-    //     let _unHashedString: string = "";
-    //     _unHashedString += block.index;
-    //     let _trans: Transaction[] = block.transactions;
-    //     for (let i = 0; i < _trans.length; i++) {
-    //         _unHashedString += _trans[i].from +
-    //             _trans[i].to +
-    //             _trans[i].value +
-    //             _trans[i].fee +
-    //             _trans[i].dateCreated +
-    //             _trans[i].data +
-    //             _trans[i].senderPubKey +
-    //             _trans[i].transactionDataHash +
-    //             _trans[i].senderSignature +
-    //             _trans[i].minedInBlockIndex;
-    //     }
-    //     _unHashedString += block.difficulty +
-    //         block.previousBlockHash +
-    //         block.minedBy;
-    //     let json: string = JSON.stringify(_unHashedString);
-    //     let hash: string = sha256(json)
-    //     return hash;
-    // }
 
     /**
      * @description - Check the validity of the newly mined block  The code was take from https://github.com/lhartikk/naivecoin/blob/chapter5/src/blockchain.ts
@@ -742,7 +715,7 @@ export class BlockChain {
      * @param {Block[]} receivedBlocks 
      */
     public replaceChain(receivedBlocks: Block[]): void {
-
+        // TODO: Need to write this.
     }
 
     /**
@@ -758,6 +731,7 @@ export class BlockChain {
      * @returns {number} cumulative difficulty
      */
     public getCumulativeDifficulty(): number {
+        // TODO: How does this get calculated?
         return this.cumulativeDifficulty;
     }
 
@@ -766,10 +740,9 @@ export class BlockChain {
      * @param {string} address 
      * @returns {Balance} balance
      */
-    // TODO: Take a look at the genesis transaction
     public getAccountBalance(address: string): Balance {
         let balance: Balance = new Balance();
-        // TODO: calculate the balances for this account.
+        // calculate the balances for this account.
         balance.accountAddress = address;
         let myTrans: Transaction[] = this.getTransactions(address);
         if (myTrans === undefined) {
