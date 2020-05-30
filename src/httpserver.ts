@@ -331,7 +331,10 @@ export class HttpServer {
                 let myBlock: GetMiningJobRequest = new GetMiningJobRequest();
                 this.blockchain.getMiningRequestMap().set(candidateBlock.blockDataHash, candidateBlock);
                 myBlock.blockDataHash = candidateBlock.blockDataHash;
+                myBlock.previousBlockHash = candidateBlock.previousBlockHash;
                 myBlock.difficulty = candidateBlock.difficulty;
+                myBlock.timestamp = candidateBlock.timestamp;
+                myBlock.transactions = candidateBlock.transactions;
                 myBlock.expectedReward = candidateBlock.reward;
                 myBlock.rewardAddress = candidateBlock.rewardAddress;
                 myBlock.index = candidateBlock.index;
@@ -375,33 +378,16 @@ export class HttpServer {
                 /**
                  * TODO: The node verifies the hash + its difficulty and builds the next block (How does one verify the hash?  What is meant by build the next block?)
                  */
-                /**
-                 * Recalculate the block hash
-                 */
-                // blockCandidate.blockDataHash = _block.blockDataHash;
-                // blockCandidate.dateCreated = new Date();
-                // blockCandidate.nonce = nonce;
-                // while (done === false) {
-                //     console.log('MinerService.mineTheBloc(): nonce=', nonce);
-                //     blockCandidate.nonce = nonce;
-                //     minedBlockHash = sha256(JSON.stringify(blockCandidate))
-                let maxZeroString: string = "0".repeat(candidateBlock.difficulty + 1);
-                let verifyBlock: VerifyBlock = new VerifyBlock();
                 let verified: boolean = false;
 
-                verifyBlock.blockDataHash = submitMinedBlock.blockDataHash;
-                verifyBlock.dateCreated = submitMinedBlock.dateCreated;
-                verifyBlock.nonce = submitMinedBlock.nonce;
-                let _hash: string = sha256(JSON.stringify(verifyBlock));
-                let _strStart: string = _hash.substr(0, candidateBlock.difficulty);
-                console.log('HttpServer(): _strStart=', _strStart);
-                if( _hash === submitMinedBlock.blockHash && _strStart === maxZeroString.substr(0, candidateBlock.difficulty)) {
+                //if( _hash === submitMinedBlock.blockHash && _strStart === maxZeroString.substr(0, candidateBlock.difficulty)) {
+                candidateBlock.blockHash = submitMinedBlock.blockHash;
+                candidateBlock.dateCreated = submitMinedBlock.dateCreated;
+                candidateBlock.nonce = submitMinedBlock.nonce;
+                if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
                 }
                 if (verified) {
-                    candidateBlock.blockHash = submitMinedBlock.blockHash;
-                    candidateBlock.dateCreated = submitMinedBlock.dateCreated;
-                    candidateBlock.nonce = submitMinedBlock.nonce;
                     // add the mined block to the blockchain.
                     this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
                     // purge the mining request map.

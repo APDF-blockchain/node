@@ -265,6 +265,70 @@ export class BlockChain {
     //     return hash;
     // }
 
+    public isValidNewBlock(newBlock: Block, previousBlock: Block): boolean {
+        if (!this.isValidBlockStructure(newBlock)) {
+            console.log('invalid block structure: %s', JSON.stringify(newBlock));
+            return false;
+        }
+        if (previousBlock.index + 1 !== newBlock.index) {
+            console.log('invalid index');
+            return false;
+        } else if (previousBlock.blockHash !== newBlock.previousBlockHash) {
+            console.log('invalid previoushash');
+            return false;
+        } else if (!this.isValidTimestamp(newBlock, previousBlock)) {
+            console.log('invalid timestamp');
+            return false;
+        } else if (!this.hasValidHash(newBlock)) {
+            return false;
+        }
+        return true;
+    }
+
+    public isValidTimestamp(newBlock: Block, previousBlock: Block): boolean {
+        return true;
+        return ( previousBlock.timestamp - 60 < newBlock.timestamp )
+            && newBlock.timestamp - 60 < this.getCurrentTimestamp();
+    }
+
+    public getCurrentTimestamp(): number { 
+        return Math.round(new Date().getTime() / 1000);
+    }
+    
+    public hasValidHash(block: Block): boolean {
+    
+        if (!this.hashMatchesBlockContent(block)) {
+            console.log('invalid hash, got:' + block.blockHash);
+            return false;
+        }
+    
+        if (!this.hashMatchesDifficulty(block.blockHash, block.difficulty)) {
+            console.log('block difficulty not satisfied. Expected: ' + block.difficulty + 'got: ' + block.blockHash);
+        }
+        return true;
+    }
+
+    public hashMatchesBlockContent(block: Block): boolean {
+        const blockHash: string = this.calculateHashForBlock(block);
+        return blockHash === block.blockHash;
+    }
+
+    public calculateHashForBlock(block: Block): string {
+        let _hash: string = sha256(
+            block.index + 
+            block.previousBlockHash + 
+            block.timestamp + 
+            block.transactions +
+            block.difficulty + 
+            block.nonce);
+        return _hash;
+    }
+    
+    public hashMatchesDifficulty(hash: string, difficulty: number): boolean {
+        //const hashInBinary: string = hexToBinary(hash);
+        const requiredPrefix: string = '0'.repeat(difficulty);
+        return hash.startsWith(requiredPrefix);
+    }
     /**
      * @description - get balances
      * @returns {any[]} balances
