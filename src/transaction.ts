@@ -46,7 +46,7 @@ export class Transaction {
     /**
      * @description - boolean. Set by the miner.
      */
-    public tranferSuccessful: boolean;
+    public transferSuccessful: boolean;
 
     /**
      * @description - number of times transaction has been confirmed

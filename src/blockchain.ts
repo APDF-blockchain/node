@@ -73,7 +73,7 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
-            transaction.tranferSuccessful = true;
+            transaction.transferSuccessful = true;
 
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             let transactions: Transaction[] = [];
@@ -91,7 +91,7 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
-            transaction.tranferSuccessful = true;
+            transaction.transferSuccessful = true;
 
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             transactions.push(transaction);
@@ -108,7 +108,7 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
-            transaction.tranferSuccessful = true;
+            transaction.transferSuccessful = true;
 
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
             transactions.push(transaction);
@@ -144,6 +144,7 @@ export class BlockChain {
         block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
         block.transactions = block.transactions.concat(this.getTransactionPool());
         // TODO: verify balances and then set transacton.transferComplete = true and set transaction.blockIndex = block.index
+        block.transactions = this.verifyTransactions(block,block.transactions);
         block.difficulty = this.getCurrentDifficulty();
         block.reward = this.config.blockReward;
         block.rewardAddress = minerAddress;
@@ -152,6 +153,21 @@ export class BlockChain {
         block.nonce = 0;
         block.blockDataHash = this.calcBlockDataHash(block);
         return block
+    }
+
+    /**
+     * @description - verify the transactions for the candidate block.
+     * @param {Block} block - candidate block
+     * @param {Transaction[]} tranactions - transactions to verify for the block.
+     * @returns {Transaction[]} transactions
+     */
+    private verifyTransactions(block: Block, tranactions: Transaction[]): Transaction[] {
+        // TODO Look at balances to see if the transfer can take place. Currently not doing this.
+        for (let i = 0; i < tranactions.length; i++) {
+            tranactions[i].transferSuccessful = true;
+            tranactions[i].minedInBlockIndex = block.index;
+        }
+        return tranactions;
     }
 
     /**
@@ -170,7 +186,7 @@ export class BlockChain {
         _trans.senderPubKey = this.config.nullPubKey;
         _trans.senderSignature = _trans.senderSignature.concat(this.config.nullSignature);
         _trans.minedInBlockIndex = this.getLatestBlock().index + 1;
-        _trans.tranferSuccessful = false;
+        _trans.transferSuccessful = false;
         rVal.push(_trans);
         return rVal;
     }
@@ -284,9 +300,9 @@ export class BlockChain {
         } else if (previousBlock.blockHash !== newBlock.previousBlockHash) {
             console.log('invalid previoushash');
             return false;
-        // } else if (!this.isValidTimestamp(newBlock, previousBlock)) {
-        //     console.log('invalid timestamp');
-        //     return false;
+            // } else if (!this.isValidTimestamp(newBlock, previousBlock)) {
+            //     console.log('invalid timestamp');
+            //     return false;
         } else if (!this.hasValidHash(newBlock)) {
             return false;
         }
@@ -302,22 +318,22 @@ export class BlockChain {
      * @description - calculate the current time in seconds since the UNIX EPOC.
      * @returns {number} time in seconds.
      */
-    public getCurrentTimestamp(): number { 
+    public getCurrentTimestamp(): number {
         return Math.round(new Date().getTime() / 1000);
     }
-    
+
     /**
      * @description - validates the block hash set by the miner.
      * @param block - candidate block to petentially be added to the chain.
      * @returns {boolean} true or false
      */
     public hasValidHash(block: Block): boolean {
-    
+
         if (!this.hashMatchesBlockContent(block)) {
             console.log('invalid hash, got:' + block.blockHash);
             return false;
         }
-    
+
         if (!this.hashMatchesDifficulty(block.blockHash, block.difficulty)) {
             console.log('block difficulty not satisfied. Expected: ' + block.difficulty + 'got: ' + block.blockHash);
         }
@@ -341,12 +357,12 @@ export class BlockChain {
      */
     public calculateHashForBlock(block: Block): string {
         let _hash: string = CryptoJS.SHA256(
-            block.blockDataHash + 
+            block.blockDataHash +
             new Date(block.dateCreated).toISOString() +
             block.nonce).toString();
         return _hash;
     }
-    
+
     /**
      * @description - check to see if the difficulty is correct for the given hash 
      * @param hash - hash to be compared for difficulty
@@ -469,7 +485,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].tranferSuccessful === true && _aTrans[i].confirmationCount >= this.config.confirmCount) {
+            if (_aTrans[i].transferSuccessful === true && _aTrans[i].confirmationCount >= this.config.confirmCount) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -535,11 +551,11 @@ export class BlockChain {
         let _message: ValidationMessage = new ValidationMessage();
         _message.message = 'success';
         _message = this.validateReceivedTransaction(transaction);
-        if(_message.message === 'success') {
+        if (_message.message === 'success') {
             this.transactionsPool.push(transaction);
         } else {
             console.log(JSON.stringify(_message));
-            throw(_message.message);
+            throw (_message.message);
         }
     }
 
@@ -712,12 +728,12 @@ export class BlockChain {
      * @returns {boolean}
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
-        if(latestBlockReceived.index !== this.getLatestBlock().index) {
+        if (latestBlockReceived.index !== this.getLatestBlock().index) {
             this.blockchain.push(latestBlockReceived);
-            console.log('BlockChain.addBlockToChain(): added index=', latestBlockReceived.index );
+            console.log('BlockChain.addBlockToChain(): added index=', latestBlockReceived.index);
             return true;
         }
-        console.log('BlockChain.addBlockToChain(): failed to add index=', latestBlockReceived.index );
+        console.log('BlockChain.addBlockToChain(): failed to add index=', latestBlockReceived.index);
         return false;
     }
 
@@ -763,7 +779,7 @@ export class BlockChain {
         let confirmedOneSum: number = 0;
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
-            if (myTrans[i].tranferSuccessful === true) {
+            if (myTrans[i].transferSuccessful === true) {
                 if (myTrans[i].confirmationCount >= this.config.confirmCount && myTrans[i].confirmationCount < this.config.safeConfirmCount) {
                     if (myTrans[i].from === address) {
                         confirmedOneSum += myTrans[i].value - myTrans[i].fee;
