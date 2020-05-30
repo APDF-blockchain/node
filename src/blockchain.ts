@@ -265,6 +265,14 @@ export class BlockChain {
     //     return hash;
     // }
 
+    /**
+     * @description - This code validate the new block against the previous one.  The idea is to see if the latest block in the change is truly the
+     *                  previous block and that the hash for the new block is correct.
+     *                  This code and the supporting methods were taken from https://github.com/lhartikk/naivecoin/blob/chapter5/src/blockchain.ts
+     * @param {Block} newBlock - the newly mined block
+     * @param {Block} previousBlock - the pevious block
+     * @returns true or false.
+     */
     public isValidNewBlock(newBlock: Block, previousBlock: Block): boolean {
         if (!this.isValidBlockStructure(newBlock)) {
             console.log('invalid block structure: %s', JSON.stringify(newBlock));
@@ -285,16 +293,31 @@ export class BlockChain {
         return true;
     }
 
+    /**
+     * @description - this does a check for a valid timestamp that I don't understand.
+     * @param {Block} newBlock - the newly mined block
+     * @param {Block} previousBlock - the previous block maybe. 
+     * @returns true or false
+     */
     public isValidTimestamp(newBlock: Block, previousBlock: Block): boolean {
         return true;
         return ( previousBlock.timestamp - 60 < newBlock.timestamp )
             && newBlock.timestamp - 60 < this.getCurrentTimestamp();
     }
 
+    /**
+     * @description - gets the current time in seconds since the unix epoch.
+     * @returns {number} seconds.
+     */
     public getCurrentTimestamp(): number { 
         return Math.round(new Date().getTime() / 1000);
     }
     
+    /**
+     * @description - validates the blockHash of the block
+     * @param block - newly created block to be validated.
+     * @returns true or false
+     */
     public hasValidHash(block: Block): boolean {
     
         if (!this.hashMatchesBlockContent(block)) {
@@ -308,11 +331,21 @@ export class BlockChain {
         return true;
     }
 
+    /**
+     * @description - validates the block's blockHash
+     * @param {Block} block - block to validate for the hash
+     * @returns true or false
+     */
     public hashMatchesBlockContent(block: Block): boolean {
         const blockHash: string = this.calculateHashForBlock(block);
         return blockHash === block.blockHash;
     }
 
+    /**
+     * @description - calculate the blockHash for the given block. 
+     * @param {Block} block 
+     * @returns {string} hash value
+     */
     public calculateHashForBlock(block: Block): string {
         let _hash: string = sha256(
             block.index + 
@@ -324,6 +357,12 @@ export class BlockChain {
         return _hash;
     }
     
+    /**
+     * @description - checks to see if the hash has been calculated with the correct difficulty.
+     * @param {string} hash - hash for which the difficulty is checked
+     * @param {number} difficulty - the difficulty to compare
+     * @returns true or false
+     */
     public hashMatchesDifficulty(hash: string, difficulty: number): boolean {
         //const hashInBinary: string = hexToBinary(hash);
         const requiredPrefix: string = '0'.repeat(difficulty);
