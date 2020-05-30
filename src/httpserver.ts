@@ -316,8 +316,7 @@ export class HttpServer {
 
             // We should not send a block to be mined if there are no pending transactions.
             //if (this.blockchain.getTransactionPool().length === 0) {
-            if (this.blockchain.getTransactionPool().length === 0) {
-            //if (this.blockchain.getTransactionPool().length > 0) {
+            if (this.blockchain.getTransactionPool().length > 0) {
 
                 let newCandidateBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
                 if (this.blockchain.getMiningRequestMap().get(newCandidateBlock.blockDataHash) !== undefined) {

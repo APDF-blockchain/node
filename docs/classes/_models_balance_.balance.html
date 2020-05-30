@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NodePeers | node</title>
+	<title>Balance | node</title>
 	<meta name="description" content="Documentation for node">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_node_peers_.html">&quot;node-peers&quot;</a>
+					<a href="../modules/_models_balance_.html">&quot;models/balance&quot;</a>
 				</li>
 				<li>
-					<a href="_node_peers_.nodepeers.html">NodePeers</a>
+					<a href="_models_balance_.balance.html">Balance</a>
 				</li>
 			</ul>
-			<h1>Class NodePeers</h1>
+			<h1>Class Balance</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 					<dl class="tsd-comment-tags">
 						<dt>classdesc</dt>
 						<dd><ul>
-								<li>This class the peer information</li>
+								<li>This class contains the balance information for the accountAddress</li>
 							</ul>
 						</dd>
 					</dl>
@@ -84,7 +84,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">NodePeers</span>
+						<span class="target">Balance</span>
 					</li>
 				</ul>
 			</section>
@@ -95,14 +95,16 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_node_peers_.nodepeers.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_models_balance_.balance.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_peers_.nodepeers.html#peerurl" class="tsd-kind-icon">peer<wbr>Url</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_peers_.nodepeers.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_balance_.balance.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_balance_.balance.html#confirmedbalance" class="tsd-kind-icon">confirmed<wbr>Balance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_balance_.balance.html#pendingbalance" class="tsd-kind-icon">pending<wbr>Balance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_balance_.balance.html#safebalance" class="tsd-kind-icon">safe<wbr>Balance</a></li>
 							</ul>
 						</section>
 					</div>
@@ -114,13 +116,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Node<wbr>Peers<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_node_peers_.nodepeers.html" class="tsd-signature-type">NodePeers</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Balance<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_models_balance_.balance.html" class="tsd-signature-type">Balance</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a91a071/src/node-peers.ts#L13">node-peers.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6635a0/src/models/balance.ts#L21">models/balance.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -132,7 +134,7 @@
 									</dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="_node_peers_.nodepeers.html" class="tsd-signature-type">NodePeers</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_models_balance_.balance.html" class="tsd-signature-type">Balance</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -140,38 +142,76 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="peerurl" class="tsd-anchor"></a>
-					<h3>peer<wbr>Url</h3>
-					<div class="tsd-signature tsd-kind-icon">peer<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="accountaddress" class="tsd-anchor"></a>
+					<h3>account<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">account<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a91a071/src/node-peers.ts#L9">node-peers.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6635a0/src/models/balance.ts#L9">models/balance.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>peerUrl name</li>
+									<li>address of account holder</li>
 								</ul>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="url" class="tsd-anchor"></a>
-					<h3>url</h3>
-					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="confirmedbalance" class="tsd-anchor"></a>
+					<h3>confirmed<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">confirmed<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a91a071/src/node-peers.ts#L13">node-peers.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6635a0/src/models/balance.ts#L13">models/balance.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>the actual url</li>
+									<li>1 or more confirmations</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="pendingbalance" class="tsd-anchor"></a>
+					<h3>pending<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">pending<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6635a0/src/models/balance.ts#L21">models/balance.ts:21</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>expected balance (0 confirmations)</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="safebalance" class="tsd-anchor"></a>
+					<h3>safe<wbr>Balance</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Balance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a6635a0/src/models/balance.ts#L17">models/balance.ts:17</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>6 confirmations or more</li>
 								</ul>
 							</dd>
 						</dl>
@@ -186,12 +226,6 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_balance_.html">&quot;balance&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_block_.html">&quot;block&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
 						<a href="../modules/_blockchain_.html">&quot;blockchain&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -200,23 +234,29 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_httpserver_.html">&quot;httpserver&quot;</a>
 					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_models_balance_.html">&quot;models/balance&quot;</a>
+					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_models_get_mining_job_request_.html">&quot;models/get-<wbr>mining-<wbr>job-<wbr>request&quot;</a>
+						<a href="../modules/_models_block_.html">&quot;models/block&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_block_candidate_.html">&quot;models/block-<wbr>candidate&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_from_miner_request_.html">&quot;models/from-<wbr>miner-<wbr>request&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_node_peers_.html">&quot;models/node-<wbr>peers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_models_send_transaction_request_.html">&quot;models/send-<wbr>transaction-<wbr>request&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_models_submit_block_request_.html">&quot;models/submit-<wbr>block-<wbr>request&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_models_verify_block_.html">&quot;models/verify-<wbr>block&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_node_.html">&quot;node&quot;</a>
-					</li>
-					<li class="current tsd-kind-module">
-						<a href="../modules/_node_peers_.html">&quot;node-<wbr>peers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_p2p_.html">&quot;p2p&quot;</a>
@@ -234,16 +274,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_node_peers_.nodepeers.html" class="tsd-kind-icon">Node<wbr>Peers</a>
+						<a href="_models_balance_.balance.html" class="tsd-kind-icon">Balance</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_node_peers_.nodepeers.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_models_balance_.balance.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_peers_.nodepeers.html#peerurl" class="tsd-kind-icon">peer<wbr>Url</a>
+								<a href="_models_balance_.balance.html#accountaddress" class="tsd-kind-icon">account<wbr>Address</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_peers_.nodepeers.html#url" class="tsd-kind-icon">url</a>
+								<a href="_models_balance_.balance.html#confirmedbalance" class="tsd-kind-icon">confirmed<wbr>Balance</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_models_balance_.balance.html#pendingbalance" class="tsd-kind-icon">pending<wbr>Balance</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_models_balance_.balance.html#safebalance" class="tsd-kind-icon">safe<wbr>Balance</a>
 							</li>
 						</ul>
 					</li>

@@ -143,6 +143,7 @@ export class BlockChain {
         block.timestamp = new Date().getTime();
         block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
         block.transactions = block.transactions.concat(this.getTransactionPool());
+        // TODO: verify balances and then set transacton.transferComplete = true and set transaction.blockIndex = block.index
         block.difficulty = this.getCurrentDifficulty();
         block.reward = this.config.blockReward;
         block.rewardAddress = minerAddress;
@@ -267,40 +268,49 @@ export class BlockChain {
     // }
 
     /**
-     * 
+     * @description - Check the validity of the newly mined block  The code was take from https://github.com/lhartikk/naivecoin/blob/chapter5/src/blockchain.ts
      * @param newBlock - the newly mined block
      * @param previousBlock - the pevious block
+     * @returns {boolean} true or false
      */
     public isValidNewBlock(newBlock: Block, previousBlock: Block): boolean {
-        // if (!this.isValidBlockStructure(newBlock)) {
-        //     console.log('invalid block structure: %s', JSON.stringify(newBlock));
-        //     return false;
-        // }
+        if (!this.isValidBlockStructure(newBlock)) {
+            console.log('invalid block structure: %s', JSON.stringify(newBlock));
+            return false;
+        }
         if (previousBlock.index + 1 !== newBlock.index) {
             console.log('invalid index');
             return false;
         } else if (previousBlock.blockHash !== newBlock.previousBlockHash) {
             console.log('invalid previoushash');
             return false;
-        } else if (!this.isValidTimestamp(newBlock, previousBlock)) {
-            console.log('invalid timestamp');
-            return false;
+        // } else if (!this.isValidTimestamp(newBlock, previousBlock)) {
+        //     console.log('invalid timestamp');
+        //     return false;
         } else if (!this.hasValidHash(newBlock)) {
             return false;
         }
         return true;
     }
 
-    public isValidTimestamp(newBlock: Block, previousBlock: Block): boolean {
-        return true;
-        return ( previousBlock.timestamp - 60 < newBlock.timestamp )
-            && newBlock.timestamp - 60 < this.getCurrentTimestamp();
-    }
+    // public isValidTimestamp(newBlock: Block, previousBlock: Block): boolean {
+    //     return ( previousBlock.timestamp - 60 < newBlock.timestamp )
+    //         && newBlock.timestamp - 60 < this.getCurrentTimestamp();
+    // }
 
+    /**
+     * @description - calculate the current time in seconds since the UNIX EPOC.
+     * @returns {number} time in seconds.
+     */
     public getCurrentTimestamp(): number { 
         return Math.round(new Date().getTime() / 1000);
     }
     
+    /**
+     * @description - validates the block hash set by the miner.
+     * @param block - candidate block to petentially be added to the chain.
+     * @returns {boolean} true or false
+     */
     public hasValidHash(block: Block): boolean {
     
         if (!this.hashMatchesBlockContent(block)) {
@@ -314,11 +324,21 @@ export class BlockChain {
         return true;
     }
 
+    /**
+     * @description - check to see if the calculated hash matches the block.blockHash
+     * @param block - block candidate to pentially be added to the block chain.
+     * @returns {boolean} - true or false
+     */
     public hashMatchesBlockContent(block: Block): boolean {
         const blockHash: string = this.calculateHashForBlock(block);
         return blockHash === block.blockHash;
     }
 
+    /**
+     * @description - calculates the blockHash for the given block.
+     * @param block - block to be calculated
+     * @returns {string} - hash
+     */
     public calculateHashForBlock(block: Block): string {
         let _hash: string = CryptoJS.SHA256(
             block.blockDataHash + 
@@ -327,11 +347,18 @@ export class BlockChain {
         return _hash;
     }
     
+    /**
+     * @description - check to see if the difficulty is correct for the given hash 
+     * @param hash - hash to be compared for difficulty
+     * @param difficulty - the difficulty
+     * @returns {boolean} - true or false
+     */
     public hashMatchesDifficulty(hash: string, difficulty: number): boolean {
         //const hashInBinary: string = hexToBinary(hash);
         const requiredPrefix: string = '0'.repeat(difficulty);
         return hash.startsWith(requiredPrefix);
     }
+
     /**
      * @description - get balances
      * @returns {any[]} balances
