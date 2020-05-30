@@ -6,15 +6,13 @@ import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
 import { Config } from './config';
 import { Transaction } from './transaction';
-import { NodePeers } from './node-peers';
-import { Block } from './block';
-import { Balance } from './balance';
+import { NodePeers } from './models/node-peers';
+import { Block } from './models/block';
+import { Balance } from './models/balance';
 import { ValidationMessage } from './validation-message';
 import { SendTransactionRequest } from './models/send-transaction-request';
-import { GetMiningJobRequest } from './models/get-mining-job-request';
-import { SubmitBlockRequest } from './models/submit-block-request';
-import { sha256 } from 'js-sha256';
-import { VerifyBlock } from './models/verify-block';
+import { BlockCandidate } from './models/block-candidate';
+import { FromMinerRequest } from './models/from-miner-request';
 
 /**
  * @classdesc - contains the attributes and methods for the http server required by the blockchain
@@ -321,26 +319,26 @@ export class HttpServer {
             if (this.blockchain.getTransactionPool().length === 0) {
             //if (this.blockchain.getTransactionPool().length > 0) {
 
-                let candidateBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
-                if (this.blockchain.getMiningRequestMap().get(candidateBlock.blockDataHash) === undefined) {
+                let newCandidateBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
+                if (this.blockchain.getMiningRequestMap().get(newCandidateBlock.blockDataHash) !== undefined) {
                     // Add the new block to the mining request map.
                     console.log('HttpServer./mining/get-mining-job/:address is already in the mining request map.  Purge map.')
                     this.blockchain.purgeMiningRequestMap();
                 }
                 // Add the new block to the mining request map.
-                let myBlock: GetMiningJobRequest = new GetMiningJobRequest();
-                this.blockchain.getMiningRequestMap().set(candidateBlock.blockDataHash, candidateBlock);
-                myBlock.blockDataHash = candidateBlock.blockDataHash;
-                myBlock.previousBlockHash = candidateBlock.previousBlockHash;
-                myBlock.difficulty = candidateBlock.difficulty;
-                myBlock.timestamp = candidateBlock.timestamp;
-                myBlock.transactions = candidateBlock.transactions;
-                myBlock.expectedReward = candidateBlock.reward;
-                myBlock.rewardAddress = candidateBlock.rewardAddress;
-                myBlock.index = candidateBlock.index;
-                myBlock.transactionsIncluded = candidateBlock.transactions.length;
-                console.log('Returning: ', myBlock);
-                res.send(myBlock);
+                this.blockchain.getMiningRequestMap().set(newCandidateBlock.blockDataHash, newCandidateBlock);
+                let toMinerBlock: BlockCandidate = new BlockCandidate();
+                toMinerBlock.blockDataHash = newCandidateBlock.blockDataHash;
+                toMinerBlock.previousBlockHash = newCandidateBlock.previousBlockHash;
+                toMinerBlock.difficulty = newCandidateBlock.difficulty;
+                toMinerBlock.timestamp = newCandidateBlock.timestamp;
+                toMinerBlock.transactions = newCandidateBlock.transactions;
+                toMinerBlock.expectedReward = newCandidateBlock.reward;
+                toMinerBlock.rewardAddress = newCandidateBlock.rewardAddress;
+                toMinerBlock.index = newCandidateBlock.index;
+                toMinerBlock.transactionsIncluded = newCandidateBlock.transactions.length;
+                console.log('Returning: ', toMinerBlock);
+                res.send(toMinerBlock);
             } else {
                 console.log('No transactions for a block to mine.');
                 res.status(400).send({ 'error': 'No transactions for a block to mine.' });
@@ -374,20 +372,22 @@ export class HttpServer {
                 res.status(404).send({ 'error': rVal.message });
             } else {
                 // Append the mined block to the blockchain.
-                let submitMinedBlock: SubmitBlockRequest = req.body;
+                let fromMinerRequest: FromMinerRequest = req.body;
                 /**
                  * TODO: The node verifies the hash + its difficulty and builds the next block (How does one verify the hash?  What is meant by build the next block?)
                  */
                 let verified: boolean = false;
 
                 //if( _hash === submitMinedBlock.blockHash && _strStart === maxZeroString.substr(0, candidateBlock.difficulty)) {
-                candidateBlock.blockHash = submitMinedBlock.blockHash;
-                candidateBlock.dateCreated = submitMinedBlock.dateCreated;
-                candidateBlock.nonce = submitMinedBlock.nonce;
+                candidateBlock.blockHash = fromMinerRequest.blockHash;
+                candidateBlock.dateCreated = fromMinerRequest.dateCreated;
+                candidateBlock.nonce = fromMinerRequest.nonce;
+                console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
                 if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
                 }
                 if (verified) {
+                    candidateBlock.transactions = fromMinerRequest.transactions;
                     // add the mined block to the blockchain.
                     this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
                     // purge the mining request map.

@@ -1,7 +1,9 @@
-import { sha256, sha224 } from 'js-sha256';
+// import { sha256, sha224 } from 'js-sha256';
+//import sha256 from 'crypto-js/sha256';
+import * as CryptoJS from 'crypto-js';
 import { Transaction } from './transaction';
-import { Block } from './block';
-import { Balance } from './balance';
+import { Block } from './models/block';
+import { Balance } from './models/balance';
 import { Config } from './config';
 import { ValidationMessage } from './validation-message';
 
@@ -139,7 +141,7 @@ export class BlockChain {
     public createCandidateMinerBlock(minerAddress: string): Block {
         let block: Block = new Block();
         block.index = this.getLatestBlock().index + 1;
-        block.timestamp = new Date().getTime();
+        block.timestamp = this.getCurrentTimestamp();
         block.transactions = this.createCoinbaseRewardTransaction(minerAddress);
         block.transactions = block.transactions.concat(this.getTransactionPool());
         block.difficulty = this.getCurrentDifficulty();
@@ -205,7 +207,7 @@ export class BlockChain {
             trans.data +
             trans.senderPubKey;
         let json: string = JSON.stringify(_unHashedString);
-        let hash: string = sha256(json)
+        let hash: string = CryptoJS.SHA256(json).toString();
         return hash;
     }
 
@@ -216,7 +218,7 @@ export class BlockChain {
      */
     private calcGenesisBlockHash(block: Block): string {
         let json: string = JSON.stringify(block);
-        let hash: string = sha256(json);
+        let hash: string = CryptoJS.SHA256(json).toString();
         return hash;
     }
 
@@ -233,7 +235,7 @@ export class BlockChain {
         _tBlock.previousBlockHash = block.previousBlockHash;
         _tBlock.minedBy = block.minedBy;
         let json: string = JSON.stringify(_tBlock);
-        let hash: string = sha256(json)
+        let hash: string = CryptoJS.SHA256(json).toString();
         return hash;
     }
     // /**
@@ -347,13 +349,14 @@ export class BlockChain {
      * @returns {string} hash value
      */
     public calculateHashForBlock(block: Block): string {
-        let _hash: string = sha256(
+        let _hash: string = CryptoJS.SHA256(
             block.index + 
             block.previousBlockHash + 
             block.timestamp + 
             block.transactions +
             block.difficulty + 
-            block.nonce);
+            block.nonce).toString();
+        console.log('BlockChain.calculateHashForBlock(): _hash=',_hash);
         return _hash;
     }
     

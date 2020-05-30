@@ -1,6 +1,6 @@
 import { Transaction } from "../transaction";
 
-export class GetMiningJobRequest {
+export class BlockCandidate {
     public index: number;
     public transactionsIncluded: number;
     public difficulty: number;
