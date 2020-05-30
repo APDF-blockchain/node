@@ -329,10 +329,7 @@ export class HttpServer {
                 this.blockchain.getMiningRequestMap().set(newCandidateBlock.blockDataHash, newCandidateBlock);
                 let toMinerBlock: BlockCandidate = new BlockCandidate();
                 toMinerBlock.blockDataHash = newCandidateBlock.blockDataHash;
-                toMinerBlock.previousBlockHash = newCandidateBlock.previousBlockHash;
                 toMinerBlock.difficulty = newCandidateBlock.difficulty;
-                toMinerBlock.timestamp = newCandidateBlock.timestamp;
-                toMinerBlock.transactions = newCandidateBlock.transactions;
                 toMinerBlock.expectedReward = newCandidateBlock.reward;
                 toMinerBlock.rewardAddress = newCandidateBlock.rewardAddress;
                 toMinerBlock.index = newCandidateBlock.index;
@@ -382,12 +379,12 @@ export class HttpServer {
                 candidateBlock.blockHash = fromMinerRequest.blockHash;
                 candidateBlock.dateCreated = fromMinerRequest.dateCreated;
                 candidateBlock.nonce = fromMinerRequest.nonce;
+                //candidateBlock.transactions = fromMinerRequest.transactions;
                 console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
                 if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
                 }
                 if (verified) {
-                    candidateBlock.transactions = fromMinerRequest.transactions;
                     // add the mined block to the blockchain.
                     this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
                     // purge the mining request map.
