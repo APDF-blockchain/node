@@ -734,9 +734,9 @@ export class BlockChain {
         // TODO: How does this get calculated?
         /**
          * Calculating the Cumulative Difficulty
-            Difficulty 0 == 0 leading zeroes  every hash works well
-            Difficulty 1 == 1 leading zero  1/16 of hashes work
-            Difficulty 2 == 2 leading zero  1/256 of hashes work
+            Difficulty 0 == 0 leading zeroes -> every hash works well
+            Difficulty 1 == 1 leading zero -> 1/16 of hashes work
+            Difficulty 2 == 2 leading zero -> 1/256 of hashes work
             Conclusion: difficulty p is 16 times more difficult than p 1
             Cumulative difficulty == how much effort is spent to calculate it
                 cumulativeDifficulty == 16 ^ d 0 + 16 ^ d 1 + … 16 ^ d n
