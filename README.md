@@ -20,7 +20,7 @@ To run this application, run 'npm start' in the root directory of the project.
 2. To start a second node, run 'HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 npm start'.  This
     will start the second node and add the peer 'ws://localhost:6001' to its list of peers.    
 3. To connect the first node to the second node as a peer, run
-    curl -d '{"peerUrl":"http://localhost:6002"}' -H "Content-Type: application/json" -X POST http://localhost:3001/peers/connect
+    `curl -d '{"peerUrl":"http://localhost:6002"}' -H "Content-Type: application/json" -X POST http://localhost:3001/peers/connect`
 4. Now if you do GET: /peers for both http://localhost:3001 and and http://localhost:3002 via the browser
     you will get a list of the peers for each node.
 
@@ -31,8 +31,9 @@ curl -d '[{"from":"0000000000000000000000000000000000000000","to":"f3a1e69b61760
 ```
 
 ## This one connects the first node to its peer
-
+```
 curl -d '{"peerUrl":"http://localhost:6002"}' -H "Content-Type: application/json" -X POST http://localhost:3001/peers/connect
+```
 
 ## This one will stop the given node
 
