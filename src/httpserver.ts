@@ -5,11 +5,11 @@ import cors from 'cors';
 import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
 import { Config } from './config';
-import { Transaction } from './transaction';
+import { Transaction } from './models/transaction';
 import { NodePeers } from './models/node-peers';
 import { Block } from './models/block';
 import { Balance } from './models/balance';
-import { ValidationMessage } from './validation-message';
+import { ValidationMessage } from './models/validation-message';
 import { SendTransactionRequest } from './models/send-transaction-request';
 import { BlockCandidate } from './models/block-candidate';
 import { FromMinerRequest } from './models/from-miner-request';

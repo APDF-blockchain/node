@@ -1,10 +1,10 @@
 //import { sha256, sha224 } from 'js-sha256';
 import * as CryptoJS from 'crypto-js'
-import { Transaction } from './transaction';
+import { Transaction } from './models/transaction';
 import { Block } from './models/block';
 import { Balance } from './models/balance';
 import { Config } from './config';
-import { ValidationMessage } from './validation-message';
+import { ValidationMessage } from './models/validation-message';
 
 /**
  * @classdesc - This class contains all the elements of a complete blockchain

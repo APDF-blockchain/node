@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { Server } from 'ws';
 import { Block } from './models/block';
-import { Transaction } from './transaction';
+import { Transaction } from './models/transaction';
 import { BlockChain } from './blockchain';
 
 /**

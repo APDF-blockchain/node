@@ -1,4 +1,4 @@
-import { Transaction } from '../transaction';
+import { Transaction } from './transaction';
 
 /**
  * @classdesc - This class contains the attributes of a block in the blockchain.
