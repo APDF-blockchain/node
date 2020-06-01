@@ -50,7 +50,15 @@ export class Node {
         // }
         console.log(this.initialPeers);
         this.blockchain = new BlockChain();
+        /**
+         * The blockchain and the p2p call into each other.
+         */
         this.p2p = new P2P(this.blockchain);
+        this.blockchain.setP2PService(this.p2p);
+
+        /**
+         * The http server talks to both the blockchain and the p2p
+         */
         this.httpServer = new HttpServer(this.blockchain, this.p2p);
         //this.p2p.connectToPeers(this.initialPeers);
         this.httpServer.initHttpServer(this.httpPort);

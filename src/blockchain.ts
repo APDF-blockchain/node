@@ -5,6 +5,7 @@ import { Block } from './models/block';
 import { Balance } from './models/balance';
 import { Config } from './config';
 import { ValidationMessage } from './models/validation-message';
+import { P2P } from './p2p';
 
 /**
  * @classdesc - This class contains all the elements of a complete blockchain
@@ -30,11 +31,17 @@ export class BlockChain {
     /**
      * @description - the current difficulty
      */
-    private difficulty: number = this.config.startDifficulty;;
+    private difficulty: number = this.config.startDifficulty;
+    
     /**
-     * @description - the cumalative difficulty
+     * @description - p2p service
      */
-    private cumulativeDifficulty: number = this.difficulty;
+    private p2p: P2P;
+;
+    // /**
+    //  * @description - the cumalative difficulty
+    //  */
+    // private cumulativeDifficulty: number = this.difficulty;
     /**
      * @description - a map fo the mining jobs keyed on the (blockDataHash)
      */
@@ -131,6 +138,13 @@ export class BlockChain {
         }
     }
 
+    /**
+     * @description - sets the P2P service needed by this class.
+     * @param p2p - peer-to-peer service used by this class.
+     */
+    public setP2PService(p2p: P2P) {
+        this.p2p = p2p;
+    }
 
     /**
      * @description - creates a new block for the miner.
@@ -427,28 +441,31 @@ export class BlockChain {
     }
 
     /**
-     * @description - get the pending transactions for this blockchain
+     * @description - get the pending transactions from the transaction pool.
      * @returns {Transaction[]} pendingTransaction
      */
     public getPendingTransactions(): Transaction[] {
-        let rVal: Transaction[] = [];
-        // for (let i = 0; i < this.blockchain.length; i++) {
-        //     let _trans: Transaction[] = this.blockchain[i].transactions;
-        //     for (let j=0; j < _trans.length; j++ ) {
-        //         if(_trans[j].confirmationCount === 0 ) {
-        //             rVal.push(_trans[j]);
-        //         }
-        //     }
-        // }
-        let _aTrans: Transaction[] = this.getAllTransactions();
-        for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].confirmationCount == 0) {
-                rVal.push(_aTrans[i]);
-            }
-        }
-
-        return rVal;
+        return this.transactionsPool;
     }
+    // public getPendingTransactions(): Transaction[] {
+    //     let rVal: Transaction[] = [];
+    //     // for (let i = 0; i < this.blockchain.length; i++) {
+    //     //     let _trans: Transaction[] = this.blockchain[i].transactions;
+    //     //     for (let j=0; j < _trans.length; j++ ) {
+    //     //         if(_trans[j].confirmationCount === 0 ) {
+    //     //             rVal.push(_trans[j]);
+    //     //         }
+    //     //     }
+    //     // }
+    //     let _aTrans: Transaction[] = this.getAllTransactions();
+    //     for (let i = 0; i < _aTrans.length; i++) {
+    //         if (_aTrans[i].confirmationCount == 0) {
+    //             rVal.push(_aTrans[i]);
+    //         }
+    //     }
+
+    //     return rVal;
+    // }
 
     /**
      * @description - get the confirmed transactions
@@ -620,9 +637,9 @@ export class BlockChain {
             return validateFields;
         }
         let validateDups: ValidationMessage = new ValidationMessage();
-        let _tranactionDataHash: string = this.calcTransactionDataHash(transaction);
+        let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
         for (let i = 0; i < this.getPendingTransactions().length; i++) {
-            if (this.getPendingTransactions()[i].transactionDataHash === _tranactionDataHash) {
+            if (this.getPendingTransactions()[i].transactionDataHash === _transactionDataHash) {
                 validateDups.message = 'Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash;
                 return validateDups;
             }
@@ -695,6 +712,12 @@ export class BlockChain {
         return rVal;
     }
 
+    private getUnspentTransactionOuts(): Transaction[] {
+        //UnspentTxOut[] => _.cloneDeep(unspentTxOuts) ;
+        // TODO: write this logic
+        throw new Error("Method not implemented.");
+    }
+
     /**
      * @description - add the given block to the blockchain
      * @param {Block} latestBlockReceived 
@@ -702,12 +725,32 @@ export class BlockChain {
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
         if (latestBlockReceived.index !== this.getLatestBlock().index) {
-            this.blockchain.push(latestBlockReceived);
-            console.log('BlockChain.addBlockToChain(): added index=', latestBlockReceived.index);
-            return true;
+            if(this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
+                const _unspentTransactions: Transaction[] = this.processTransactions(latestBlockReceived, this.getUnspentTransactionOuts(), latestBlockReceived.index);
+                if( _unspentTransactions === null ) {
+                    console.log('BlockChain.addBlockToChain(): block is not valid in terms of transactions');
+                    return false;
+                } else {
+                    this.blockchain.push(latestBlockReceived);
+                    this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
+                    this.updateTransactionPool(_unspentTransactions);
+                    return true;
+                }
+            }
         }
-        console.log('BlockChain.addBlockToChain(): failed to add index=', latestBlockReceived.index);
-        return false;
+        return true;
+    }
+
+    updateTransactionPool(_unHashedString: Transaction[]) {
+        throw new Error("Method not implemented.");
+    }
+
+    setUnspentTransactionOuts(_unspentTransactions: Transaction[]) {
+        throw new Error("Method not implemented.");
+    }
+
+    processTransactions(latestBlockReceived: Block, arg1: Transaction[], index: number): Transaction[] {
+        throw new Error("Method not implemented.");
     }
 
     /**
@@ -715,9 +758,99 @@ export class BlockChain {
      * @param {Block[]} receivedBlocks 
      */
     public replaceChain(receivedBlocks: Block[]): void {
+        /**
+         * 
+        Synchronizing the Chain & Pending Txs
+            Synchronizing the chain from certain peer
+                First get /info and check the peer's chain cumulative difficulty
+                If the peer chain has bigger difficulty, download it from /blocks
+                Validate the downloaded peer chain (blocks, transactions, etc.)
+                If the peer chain is valid, replace the current chain with it
+                Notify all peers about the new chain
+            Synchronizing the pending transactions from certain peer
+                Download /transactions/pending and append the missing ones
+                Transactions with the same hash should never be duplicated
+
+        Validating a Chain
+            When a chain is downloaded from a peer, it needs be validated
+            Validate the genesis block -> should be exactly the same
+            Validate each block from the first to the last
+                Validate that all block fields are present and have valid values
+                Validate the transactions in the block
+                    Validate transaction fields and their values , recalculate the transaction data
+                    hash , validate the signature
+                Re-execute all transactions, re calculate the values of minedInBlockIndex and
+                transferSuccessful fields
+
+            Validate each block from the first to the last (cont.)
+                Re-calculate the block data hash and block hash for each block
+                Ensure the block hash matches the block difficulty
+                Validate that prevBlockHash == the hash of the previous block
+            Re-calculate the cumulative difficulty of the incoming chain
+            If the cumulative difficulty > current cumulative difficulty
+                Replace the current chain with the incoming chain
+                Clear all current mining jobs (because they are invalid)
+         */
         // TODO: Need to write this.
+        //let _cumulativeDifficulty: number = this.getCumulativeDifficulty(receivedBlocks);
+        const validChain: boolean = this.getUnspentTransactionOuts() !== null;
+        if (validChain && this.getCumulativeDifficulty(this.getBlockchain()) < this.getCumulativeDifficulty(receivedBlocks)) {
+            // Get ready to replace this node's blockchain.
+            /**
+             * Validate the peer chain (blocks, transactions, etc.)
+             * If valid, then replace the current chain with the peer's chain.
+             * Notify all the other peers about the new chain.
+             */
+            let _unspentTransactions: Transaction[];
+            _unspentTransactions = this.isValidPeerChain(receivedBlocks);
+            if (_unspentTransactions != null) {
+                this.blockchain = receivedBlocks;
+                this.setUnspentTransactionOuts(_unspentTransactions);
+                // // the unspent txOut of genesis block is set to unspentTxOuts on startup
+                // let unspentTxOuts: UnspentTxOut[] = processTransactions(blockchain[0].data, [], 0);
+                this.updateTransactionPool(this.getUnspentTransactionOuts());
+                this.p2p.broadcastLatestBlockToOtherNodes(); 
+            }
+        } else {
+            console.log('BlockChain.replaceChain(): Received blockchain is valid');
+        }
     }
 
+    /**
+     * @description - validate the peer genesis block against this blockchain's genesis block.
+     * @param {Block} peerGenesisBlock 
+     * @returns {boolean}
+     */
+    private isValidGenesisBlock(peerGenesisBlock: Block): boolean {
+        return JSON.stringify(peerGenesisBlock) === JSON.stringify(this.getGenesisBlock());
+    }
+
+    /**
+     * @description - validate the blocks in the given blockchain
+     * @param {Block[]} peerChain - peer block chain to validate.
+     * @returns {Transaction[]} - unspent transactions
+     */
+    private isValidPeerChain(peerChain: Block[]): Transaction[] {
+        if (this.isValidGenesisBlock(peerChain[0]) === false) {
+            return null;
+        }
+        let _unspentTransactions: Transaction[] = [];
+        for (let i = 0; i < peerChain.length; i++) {
+            const currentBlock: Block = peerChain[i];
+            if (i !== 0 && !this.isValidNewBlock(peerChain[i], peerChain[i - 1])) {
+                return null;
+            }
+
+            // TODO: process the transactions for the currentBlock.
+            // aUnspentTxOuts = processTransactions(currentBlock.data, aUnspentTxOuts, currentBlock.index);
+            // if (aUnspentTxOuts === null) {
+            //     console.log('invalid transactions in blockchain');
+            //     return null;
+            // }
+
+        }
+        return _unspentTransactions;
+    }
     /**
      * @description - get the current difficulty
      * @returns {number} current difficulty
@@ -730,7 +863,7 @@ export class BlockChain {
      * @description - get the cumulative difficulty
      * @returns {number} cumulative difficulty
      */
-    public getCumulativeDifficulty(): number {
+    public getCumulativeDifficulty(_blockchain: Block[]): number {
         // TODO: How does this get calculated?
         /**
          * Calculating the Cumulative Difficulty
@@ -742,10 +875,13 @@ export class BlockChain {
                 cumulativeDifficulty == 16 ^ d 0 + 16 ^ d 1 + … 16 ^ d n
                 where d 0 , d 1 , … d n are the individual difficulties of the blocks
         */
-        for (let i = 0; i < this.blockchain.length; i++) {
-            this.cumulativeDifficulty += 16 ** this.blockchain[i].difficulty;
+        let _cumulativeDifficulty: number = 0;
+        for (let i = 0; i < _blockchain.length; i++) {
+            //_cumulativeDifficulty += 16 ** _blockchain[i].difficulty;
+            _cumulativeDifficulty += Math.pow(16, _blockchain[i].difficulty);
+            //.map((difficulty) => Math.pow(2, difficulty))
         }
-        return this.cumulativeDifficulty;
+        return _cumulativeDifficulty;
     }
 
     /**

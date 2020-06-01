@@ -101,7 +101,7 @@ export class HttpServer {
                 'peers': this.p2p.getPeerCount(),
                 'currentDifficulty': this.blockchain.getCurrentDifficulty(),
                 'blockCount': this.blockchain.getBlocksCount(),
-                'cumulativeDifficulty': this.blockchain.getCumulativeDifficulty(),
+                'cumulativeDifficulty': this.blockchain.getCumulativeDifficulty(this.blockchain.getBlockchain()),
                 'confirmedTransactions': this.blockchain.getConfirmedTransactionsCount(),
                 'pendingTransactions': this.blockchain.getPendingTransactionsCount()
             };

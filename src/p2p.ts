@@ -327,7 +327,7 @@ export class P2P {
             } else {
                 console.log(this.mylistenerPort + ':Received blockchain is longer than current blockchain');
                 this.blockchain.replaceChain(receivedBlocks);
-            }
+             }
         } else {
             console.log(this.mylistenerPort + ':received blockchain is not longer than received blockchain. Do nothing');
         }
@@ -339,6 +339,14 @@ export class P2P {
     public broadcastLatestBlockToOtherNodes(): void {
         console.log('p2p.broadcastLatestBlockToOtherNodes(): call to broadcast the latest block.');
         this.broadcast(this.responseLatestBlockMsg());
+    }
+
+    /**
+     * @description - Broadcast the latest blockchain to the other nodes.
+     */
+    public broadcastNewBlockchainToOtherNodes(): void {
+        console.log('p2p.broadcastNewBlockchainToOtherNodes(): call to broadcast the latest blockchain.');
+        this.broadcast(this.responseChainMsg());
     }
 
     /**
