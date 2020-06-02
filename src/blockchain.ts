@@ -616,7 +616,7 @@ export class BlockChain {
         return rVal;
     }
 
-    public validateReceivedTransaction(transaction: Transaction): { message: string; } {
+    public validateReceivedTransaction(transaction: Transaction): ValidationMessage {
         /**
          * Send Transactions
             + For each received transaction the Node does the following:
@@ -724,32 +724,21 @@ export class BlockChain {
      * @returns {boolean}
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
-        if (latestBlockReceived.index !== this.getLatestBlock().index) {
+        if (latestBlockReceived.index !== this.getLatestBlock().index) { // Make sure the new block's index is not the same as the current block height
+            // It is not, so attempt to add it to this chain.
             if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
-                const _unspentTransactions: Transaction[] = this.processTransactions(latestBlockReceived, latestBlockReceived.index);
-                if (_unspentTransactions === null) {
-                    console.log('BlockChain.addBlockToChain(): block is not valid in terms of transactions');
-                    return false;
-                } else {
-                    this.blockchain.push(latestBlockReceived);
-                    this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
-                    this.updateTransactionPool(_unspentTransactions);
-                    return true;
-                }
+                this.processTransactions(latestBlockReceived);
+                this.blockchain.push(latestBlockReceived);
+                    // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
+                    // this.updateTransactionPool(_unspentTransactions);
+                return true;
             }
         }
-        return true;
+        console.log('BlockChain.addBlockToChain(): new block index is the same as the last block');
+        return false;
     }
 
-    updateTransactionPool(_unHashedString: Transaction[]) {
-        throw new Error("Method not implemented.");
-    }
-
-    setUnspentTransactionOuts(_unspentTransactions: Transaction[]) {
-        throw new Error("Method not implemented.");
-    }
-
-    processTransactions(latestBlockReceived: Block, index: number): Transaction[] {
+    processTransactions(latestBlockReceived: Block): void {
         //throw new Error("Method not implemented.");
         /**
          * Process transactions means.
@@ -758,15 +747,22 @@ export class BlockChain {
          * 3. remove from pending list. 
          * 
          */
-        let rVal: Transaction[] = [];
         let _blockTransactions: Transaction[] = latestBlockReceived.transactions;
         for (let i = 0; i < _blockTransactions.length; i++) {
-            _blockTransactions[i].value;
-            _blockTransactions[i].from;
-            _blockTransactions[i].to;
-            _blockTransactions[i].fee;
+            let message: ValidationMessage = this.validateReceivedTransaction(_blockTransactions[i]);
+            if (message.message === 'success') {
+                _blockTransactions[i].transferSuccessful = true;
+            } else {
+                _blockTransactions[i].transferSuccessful = false;
+            }
+            _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
+            // Removed this transaction from the pending transactions list.
+            for (let j = 0; this.getPendingTransactions().length; j++) {
+                if( _blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
+                    this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
+                }
+            }
         }
-        return rVal;
     }
 
     /**
@@ -817,15 +813,16 @@ export class BlockChain {
              * If valid, then replace the current chain with the peer's chain.
              * Notify all the other peers about the new chain.
              */
-            let _unspentTransactions: Transaction[];
-            _unspentTransactions = this.isValidPeerChain(receivedBlocks);
-            if (_unspentTransactions != null) {
+            let _success: boolean;
+            _success = this.isValidPeerChain(receivedBlocks);
+            if (_success !== false) {
+                for (let i = 0; i < receivedBlocks.length; i++) {
+                    this.processTransactions(receivedBlocks[i]);
+                }
                 this.blockchain = receivedBlocks;
-                this.setUnspentTransactionOuts(_unspentTransactions);
-                // // the unspent txOut of genesis block is set to unspentTxOuts on startup
-                // let unspentTxOuts: UnspentTxOut[] = processTransactions(blockchain[0].data, [], 0);
-                this.updateTransactionPool(this.getUnspentTransactionOuts());
                 this.p2p.broadcastLatestBlockToOtherNodes();
+            } else {
+                console.log('BlockChain.replaceChain(): Received blockchain did not validate');
             }
         } else {
             console.log('BlockChain.replaceChain(): Received blockchain is valid');
@@ -844,28 +841,19 @@ export class BlockChain {
     /**
      * @description - validate the blocks in the given blockchain
      * @param {Block[]} peerChain - peer block chain to validate.
-     * @returns {Transaction[]} - unspent transactions
+     * @returns {boolean} 
      */
-    private isValidPeerChain(peerChain: Block[]): Transaction[] {
+    private isValidPeerChain(peerChain: Block[]): boolean {
         if (this.isValidGenesisBlock(peerChain[0]) === false) {
             return null;
         }
-        let _unspentTransactions: Transaction[] = [];
         for (let i = 0; i < peerChain.length; i++) {
             const currentBlock: Block = peerChain[i];
-            if (i !== 0 && !this.isValidNewBlock(peerChain[i], peerChain[i - 1])) {
-                return null;
+            if (i !== 0 && !this.isValidNewBlock(currentBlock, peerChain[i - 1])) {
+                return false;
             }
-
-            // TODO: process the transactions for the currentBlock.
-            // aUnspentTxOuts = processTransactions(currentBlock.data, aUnspentTxOuts, currentBlock.index);
-            // if (aUnspentTxOuts === null) {
-            //     console.log('invalid transactions in blockchain');
-            //     return null;
-            // }
-
         }
-        return _unspentTransactions;
+        return true;
     }
     /**
      * @description - get the current difficulty
@@ -943,7 +931,7 @@ export class BlockChain {
                 }
             }
         }
-        if( addressExists === false ) {
+        if (addressExists === false) {
             return null;
         }
         balance.confirmedBalance = confirmedOneSum;
