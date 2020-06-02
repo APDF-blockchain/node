@@ -140,7 +140,7 @@ export class HttpServer {
             console.log(this.myHttpPort + ':GET /blocks/:' + req.params.index);
             let rVal: Block = this.blockchain.getBlockchain()[req.params.index];
             if (rVal == null) {
-                res.status(401).send("No block at index=" + req.params.index);
+                res.status(404).send("No block at index=" + req.params.index);
             } else {
                 res.send(rVal);
             }
@@ -164,7 +164,7 @@ export class HttpServer {
             if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no transaction for " + req.params.tranHash + ".");
+                res.status(404).send("There are no transaction for " + req.params.tranHash + ".");
             }
         });
 
@@ -175,7 +175,7 @@ export class HttpServer {
             if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no balances available");
+                res.status(404).send("There are no balances available");
             }
         });
 
@@ -185,7 +185,7 @@ export class HttpServer {
             if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no transaction for " + req.params.address + ".");
+                res.status(404).send("There are no transaction for " + req.params.address + ".");
             }
         });
 
@@ -195,9 +195,8 @@ export class HttpServer {
             if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no balances available for the address of " + req.params.address);
+                res.status(404).send("There are no balances available for the address of " + req.params.address);
             }
-
         });
 
         /**
@@ -254,7 +253,7 @@ export class HttpServer {
                 }
                 res.send(rVal);
             } else {
-                res.status(401).send({ 'error': "There currently no peers for this node." });
+                res.status(404).send({ 'error': "There currently no peers for this node." });
             }
         });
 
@@ -278,7 +277,7 @@ export class HttpServer {
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
             if (req.params.address === 'undefined') {
-                res.status(401).send({ 'error': "Bad address requested." });
+                res.status(404).send({ 'error': "Bad address requested." });
                 return;
             }
             /**
