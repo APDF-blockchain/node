@@ -32,12 +32,12 @@ export class BlockChain {
      * @description - the current difficulty
      */
     private difficulty: number = this.config.startDifficulty;
-    
+
     /**
      * @description - p2p service
      */
     private p2p: P2P;
-;
+    ;
     // /**
     //  * @description - the cumalative difficulty
     //  */
@@ -86,39 +86,39 @@ export class BlockChain {
             let transactions: Transaction[] = [];
             transactions.push(transaction);
 
-            transaction = new Transaction();
-            transaction.data = "genesis tx";
-            transaction.dateCreated = new Date();
-            transaction.fee = 0;
-            transaction.from = this.config.nullAddress;
-            transaction.to = this.config.faucetAddress;
-            transaction.value = 5000020;
-            transaction.confirmationCount = this.config.safeConfirmCount;
-            transaction.senderPubKey = senderPubKey;
-            transaction.senderSignature.push(signature);
-            transaction.senderSignature.push(signature);
-            transaction.minedInBlockIndex = 0;
-            transaction.transferSuccessful = true;
+            // transaction = new Transaction();
+            // transaction.data = "genesis tx";
+            // transaction.dateCreated = new Date();
+            // transaction.fee = 0;
+            // transaction.from = this.config.nullAddress;
+            // transaction.to = this.config.faucetAddress;
+            // transaction.value = 5000020;
+            // transaction.confirmationCount = this.config.safeConfirmCount;
+            // transaction.senderPubKey = senderPubKey;
+            // transaction.senderSignature.push(signature);
+            // transaction.senderSignature.push(signature);
+            // transaction.minedInBlockIndex = 0;
+            // transaction.transferSuccessful = true;
 
-            transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            transactions.push(transaction);
+            // transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
+            // transactions.push(transaction);
 
-            transaction = new Transaction();
-            transaction.data = "genesis tx";
-            transaction.dateCreated = new Date();
-            transaction.fee = 0;
-            transaction.from = this.config.nullAddress;
-            transaction.to = this.config.faucetAddress;
-            transaction.value = 5000040;
-            transaction.confirmationCount = 0;
-            transaction.senderPubKey = senderPubKey;
-            transaction.senderSignature.push(signature);
-            transaction.senderSignature.push(signature);
-            transaction.minedInBlockIndex = 0;
-            transaction.transferSuccessful = true;
+            // transaction = new Transaction();
+            // transaction.data = "genesis tx";
+            // transaction.dateCreated = new Date();
+            // transaction.fee = 0;
+            // transaction.from = this.config.nullAddress;
+            // transaction.to = this.config.faucetAddress;
+            // transaction.value = 5000040;
+            // transaction.confirmationCount = 0;
+            // transaction.senderPubKey = senderPubKey;
+            // transaction.senderSignature.push(signature);
+            // transaction.senderSignature.push(signature);
+            // transaction.minedInBlockIndex = 0;
+            // transaction.transferSuccessful = true;
 
-            transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            transactions.push(transaction);
+            // transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
+            // transactions.push(transaction);
             this.genesisBlock = new Block();
             this.genesisBlock.index = 0;
             this.genesisBlock.timestamp = new Date().getTime();
@@ -725,9 +725,9 @@ export class BlockChain {
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
         if (latestBlockReceived.index !== this.getLatestBlock().index) {
-            if(this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
-                const _unspentTransactions: Transaction[] = this.processTransactions(latestBlockReceived, this.getUnspentTransactionOuts(), latestBlockReceived.index);
-                if( _unspentTransactions === null ) {
+            if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
+                const _unspentTransactions: Transaction[] = this.processTransactions(latestBlockReceived, latestBlockReceived.index);
+                if (_unspentTransactions === null) {
                     console.log('BlockChain.addBlockToChain(): block is not valid in terms of transactions');
                     return false;
                 } else {
@@ -749,8 +749,24 @@ export class BlockChain {
         throw new Error("Method not implemented.");
     }
 
-    processTransactions(latestBlockReceived: Block, arg1: Transaction[], index: number): Transaction[] {
-        throw new Error("Method not implemented.");
+    processTransactions(latestBlockReceived: Block, index: number): Transaction[] {
+        //throw new Error("Method not implemented.");
+        /**
+         * Process transactions means.
+         * 1. mark successfull if good signature and the from balance > value + fee -- call this.validateRecievedTransaction()
+         * 2. push into this.blockchain.blockchain.
+         * 3. remove from pending list. 
+         * 
+         */
+        let rVal: Transaction[] = [];
+        let _blockTransactions: Transaction[] = latestBlockReceived.transactions;
+        for (let i = 0; i < _blockTransactions.length; i++) {
+            _blockTransactions[i].value;
+            _blockTransactions[i].from;
+            _blockTransactions[i].to;
+            _blockTransactions[i].fee;
+        }
+        return rVal;
     }
 
     /**
@@ -809,7 +825,7 @@ export class BlockChain {
                 // // the unspent txOut of genesis block is set to unspentTxOuts on startup
                 // let unspentTxOuts: UnspentTxOut[] = processTransactions(blockchain[0].data, [], 0);
                 this.updateTransactionPool(this.getUnspentTransactionOuts());
-                this.p2p.broadcastLatestBlockToOtherNodes(); 
+                this.p2p.broadcastLatestBlockToOtherNodes();
             }
         } else {
             console.log('BlockChain.replaceChain(): Received blockchain is valid');
@@ -890,10 +906,11 @@ export class BlockChain {
      * @returns {Balance} balance
      */
     public getAccountBalance(address: string): Balance {
+        let addressExists: boolean = false;
         let balance: Balance = new Balance();
         // calculate the balances for this account.
         balance.accountAddress = address;
-        let myTrans: Transaction[] = this.getTransactions(address);
+        let myTrans: Transaction[] = this.getAllTransactions();
         if (myTrans === undefined) {
             return null;
         }
@@ -901,27 +918,33 @@ export class BlockChain {
         let confirmedOneSum: number = 0;
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
-            if (myTrans[i].transferSuccessful === true) {
+            if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
+                addressExists = true;
+            }
+            if (myTrans[i].transferSuccessful === true && addressExists) {
                 if (myTrans[i].confirmationCount >= this.config.confirmCount && myTrans[i].confirmationCount < this.config.safeConfirmCount) {
-                    if (myTrans[i].from === address) {
-                        confirmedOneSum += myTrans[i].value - myTrans[i].fee;
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        confirmedOneSum -= myTrans[i].value - myTrans[i].fee;
                     } else {
-                        confirmedOneSum -= myTrans[i].value;
+                        confirmedOneSum += myTrans[i].value;
                     }
                 } else if (myTrans[i].confirmationCount >= this.config.safeConfirmCount) {
-                    if (myTrans[i].from === address) {
-                        confirmedSum += myTrans[i].value - myTrans[i].fee;
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        confirmedSum -= myTrans[i].value - myTrans[i].fee;
                     } else {
-                        confirmedSum -= myTrans[i].value;
+                        confirmedSum += myTrans[i].value;
                     }
                 } else {
-                    if (myTrans[i].from === address) {
-                        pendingSum += myTrans[i].value - myTrans[i].fee;
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        pendingSum -= myTrans[i].value - myTrans[i].fee;
                     } else {
-                        pendingSum -= myTrans[i].value;
+                        pendingSum += myTrans[i].value;
                     }
                 }
             }
+        }
+        if( addressExists === false ) {
+            return null;
         }
         balance.confirmedBalance = confirmedOneSum;
         balance.safeBalance = confirmedSum;
