@@ -660,7 +660,6 @@ export class BlockChain {
         return message;
     }
 
-
     /**
      * @description - get the latest block in the blockchain
      * @returns {Block} latestBlock
@@ -712,12 +711,6 @@ export class BlockChain {
         return rVal;
     }
 
-    private getUnspentTransactionOuts(): Transaction[] {
-        //UnspentTxOut[] => _.cloneDeep(unspentTxOuts) ;
-        // TODO: write this logic
-        throw new Error("Method not implemented.");
-    }
-
     /**
      * @description - add the given block to the blockchain
      * @param {Block} latestBlockReceived 
@@ -738,6 +731,10 @@ export class BlockChain {
         return false;
     }
 
+    /**
+     * @description - process the transaction for the given block
+     * @param latestBlockReceived - block to have the transactions processed
+     */
     processTransactions(latestBlockReceived: Block): void {
         //throw new Error("Method not implemented.");
         /**
@@ -804,9 +801,7 @@ export class BlockChain {
                 Clear all current mining jobs (because they are invalid)
          */
         // TODO: Need to write this.
-        //let _cumulativeDifficulty: number = this.getCumulativeDifficulty(receivedBlocks);
-        const validChain: boolean = this.getUnspentTransactionOuts() !== null;
-        if (validChain && this.getCumulativeDifficulty(this.getBlockchain()) < this.getCumulativeDifficulty(receivedBlocks)) {
+        if (this.getCumulativeDifficulty(this.getBlockchain()) < this.getCumulativeDifficulty(receivedBlocks)) {
             // Get ready to replace this node's blockchain.
             /**
              * Validate the peer chain (blocks, transactions, etc.)
