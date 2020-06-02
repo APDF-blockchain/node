@@ -147,6 +147,28 @@ export class BlockChain {
     }
 
     /**
+     * @description - adjust the block mining difficulty
+     */
+    public adjustMiningDifficulty(): void {
+        // I believe the times are in millseconds.
+        let _blocks: Block[] = this.getBlockchain();
+        let pTime: number = this.getGenesisBlock().timestamp;
+        let cTime: number = this.getGenesisBlock().timestamp;
+        let sTime: number = 0;
+        for (let i = 0; i < _blocks.length; i++) {
+            cTime = _blocks[i].timestamp;
+            sTime += cTime - pTime;
+            pTime = cTime;
+        }
+        let average: number = sTime / this.getBlocksCount();
+        if (average <= this.config.targetBlockTime) {
+            this.difficulty++;
+        } else {
+            this.difficulty--;
+        }
+    }
+
+    /**
      * @description - creates a new block for the miner.
      * @param {string} minerAddress - address of the miner
      * @returns {Block} - new miner block
@@ -722,8 +744,8 @@ export class BlockChain {
             if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
                 this.processTransactions(latestBlockReceived);
                 this.blockchain.push(latestBlockReceived);
-                    // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
-                    // this.updateTransactionPool(_unspentTransactions);
+                // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
+                // this.updateTransactionPool(_unspentTransactions);
                 return true;
             }
         }
@@ -755,7 +777,7 @@ export class BlockChain {
             _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
             // Removed this transaction from the pending transactions list.
             for (let j = 0; this.getPendingTransactions().length; j++) {
-                if( _blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
+                if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
                     this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
                 }
             }

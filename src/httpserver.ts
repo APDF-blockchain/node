@@ -390,6 +390,7 @@ export class HttpServer {
                     // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
                     // The above call is not used.  Calling broadcast instead.
                     this.p2p.broadcastLatestBlockToOtherNodes();
+                    this.blockchain.adjustMiningDifficulty();
                 } else {
                     /**
                      * Verification fails so chain gets extended.  What does this mean?

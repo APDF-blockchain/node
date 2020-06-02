@@ -108,6 +108,11 @@ export class Config {
     public confirmCount: number;
 
     /**
+     * @description - target block time in milliseconds.
+     */
+    public targetBlockTime: number;
+
+    /**
      * @description - Class constructor initializes the configuration attributes for the entire Node/blockchain.
      * @constructor
      */
@@ -135,5 +140,6 @@ export class Config {
         this.oneCoin = 1000 * this.milliCoin;
         this.confirmCount = 1;
         this.safeConfirmCount = 6;
+        this.targetBlockTime = 5000; // 5 seconds.
     }
 }
