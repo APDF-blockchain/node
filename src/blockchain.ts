@@ -577,12 +577,13 @@ export class BlockChain {
         rVal.message = 'success';
         structureValid = typeof transaction.from === 'string'
             && typeof transaction.data === 'string'
-            && transaction.dateCreated instanceof Date
+            && typeof new Date(transaction.dateCreated).toISOString() === 'string'
             && typeof transaction.fee === 'number'
             && typeof transaction.senderPubKey === 'string'
             && transaction.senderSignature instanceof Array
             && typeof transaction.to === 'string'
             && typeof transaction.value === 'number';
+
         if (structureValid === false) {
             rVal.message = 'The structure of the transaction is invalid';
         }
@@ -670,6 +671,10 @@ export class BlockChain {
         // TODO: Validates the transaction public key , validates the signature
 
         let rBalance: Balance = this.getAccountBalance(transaction.from);
+        if (rBalance === null) {
+            message.message = 'Sender address is invalid';
+            return message;
+        }
         if (rBalance.confirmedBalance < transaction.value + transaction.fee) {
             message.message = 'Sender does not have enough funds to complete the transaction';
         }

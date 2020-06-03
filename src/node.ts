@@ -48,7 +48,7 @@ export class Node {
         // if (peer !== null) {
         //     this.initialPeers.push(peer);
         // }
-        console.log(this.initialPeers);
+        //console.log(this.initialPeers);
         this.blockchain = new BlockChain();
         /**
          * The blockchain and the p2p call into each other.
@@ -89,6 +89,6 @@ function getArgs() {
     return args;
 }
 const args = getArgs();
-console.log(args);
+//console.log(args);
 //http://localhost:6001
 let run = new Node(args);

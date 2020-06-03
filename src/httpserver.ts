@@ -225,6 +225,7 @@ export class HttpServer {
             transaction.dateCreated = sendTransRequest.dateCreated;
             transaction.fee = sendTransRequest.fee;
             transaction.from = sendTransRequest.from;
+            transaction.to = sendTransRequest.to;
             transaction.minedInBlockIndex = -1;
             transaction.senderPubKey = sendTransRequest.senderPubKey;
             transaction.senderSignature = sendTransRequest.senderSignature;
