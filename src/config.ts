@@ -1,10 +1,33 @@
-import { Block } from "./block";
+import { Block } from "./models/block";
 
 /**
  * @classdesc - This class contains the configuration for the Node.
  * @class Config
  */
 export class Config {
+    /**
+     * Coins and Rewards
+        o Coins are 64 bit integers (no real numbers!)
+            o 1 coin = 1 000 milli coins = 1 000 000 micro coins
+        o All transfers, fees, block awards are defined in micro coins
+        o The block reward (per mined block) is static
+            o 5,000,000 micro coins
+        o The minimum transaction fee (to avoid spam) is
+            o 10 micro coins
+     */
+
+    /**
+     * @description - 1 coin = 1000 milli-coins = 1,000,000 micro-coins
+     */
+    public oneCoin: number;
+    /**
+     * @description - 1 milli-coin = 1000 micro-coins
+     */
+    public milliCoin: number;
+    /**
+     * @description - 1 micro-coin
+     */
+    public microCoin: number;
     /**
      * @description - default http server host
      */
@@ -74,7 +97,20 @@ export class Config {
      */
     public genesisBlock: Block;
 
+    /**
+     * @description - the chain id for the block chain.
+     */
     public chainId: string;
+
+    /**
+     * @description - the count indicating the number of confirmations required for a confirmed balance.
+     */
+    public confirmCount: number;
+
+    /**
+     * @description - target block time in milliseconds.
+     */
+    public targetBlockTime: number;
 
     /**
      * @description - Class constructor initializes the configuration attributes for the entire Node/blockchain.
@@ -85,19 +121,25 @@ export class Config {
         this.defaultP2pHost = 'localhost';
         this.defaultServerPort = 3001;
         this.defaultP2pPort = 6001;
-        this.faucetPrivateKey = "838ff8634c41ba62467cc874ca156830ba55efe3e41ceeeeae5f3e77238f4eef";
-        this.faucetPublicKey = '8c4431db61e9095d5794ff53a3ae4171c766cadef015f2e11bec22b98a80f74a0';
-        this.faucetAddress = 'f3a1e69b6176052fcc4a3248f1c5a91dea308ca9';
+        this.faucetPrivateKey = "00000000000000000000000000000000000000000000000000000000000000000"; // TODO: where does the faucet come from.
+        this.faucetPublicKey = '00000000000000000000000000000000000000000000000000000000000000000';
+        this.faucetAddress = '0000000000000000000000000000000000000000';
         this.nullAddress = '0000000000000000000000000000000000000000';
         this.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
-        this.startDifficulty = 4;
-        this.minTransactionFee = 10;
+        this.startDifficulty = 1; // SETTING THIS TO A LOW VALUE TO SPEED UP MINING.  RESET THIS LATER TO 4 OR 5.
+        this.microCoin = 1;
+        this.minTransactionFee = 10 * this.microCoin;
         this.maxTransactionFee = 1000000;
-        this.blockReward = 5000000;
-        this.maxTransferValue = 10000000000000;
+        this.blockReward = 5000000 * this.microCoin;
+        this.maxTransferValue = 10000000000000 * this.microCoin;
         this.safeConfirmCount = 3;
-        this.chainId = '5967d641bed609abf11933204e3c8d87b9969ee8aea9f1568d1b23bb30453981';
+        this.chainId = '0000000000000000000000000000000000000000000000000000000000000000';
+        this.milliCoin = 1000 * this.microCoin;
+        this.oneCoin = 1000 * this.milliCoin;
+        this.confirmCount = 1;
+        this.safeConfirmCount = 6;
+        this.targetBlockTime = 5000; // 5 seconds.
     }
 }

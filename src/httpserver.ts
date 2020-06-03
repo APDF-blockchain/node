@@ -1,13 +1,18 @@
 import express = require('express');
 import * as  bodyParser from 'body-parser';
+import cors from 'cors';
 
 import { BlockChain } from './blockchain'
 import { P2P } from './p2p';
 import { Config } from './config';
-import { Transaction } from './transaction';
-import { NodePeers } from './node-peers';
-import { Block } from './block';
-import { Balance } from './balance';
+import { Transaction } from './models/transaction';
+import { NodePeers } from './models/node-peers';
+import { Block } from './models/block';
+import { Balance } from './models/balance';
+import { ValidationMessage } from './models/validation-message';
+import { SendTransactionRequest } from './models/send-transaction-request';
+import { BlockCandidate } from './models/block-candidate';
+import { FromMinerRequest } from './models/from-miner-request';
 
 /**
  * @classdesc - contains the attributes and methods for the http server required by the blockchain
@@ -62,6 +67,7 @@ export class HttpServer {
         this.nodeId = (myHttpPort + Math.random()).toString();
         const app: express.Application = express();
         app.use(bodyParser.json());
+        app.use(cors());
 
         /**
          * @description - http use request
@@ -95,7 +101,7 @@ export class HttpServer {
                 'peers': this.p2p.getPeerCount(),
                 'currentDifficulty': this.blockchain.getCurrentDifficulty(),
                 'blockCount': this.blockchain.getBlocksCount(),
-                'cumulativeDifficulty': this.blockchain.getCumulativeDifficulty(),
+                'cumulativeDifficulty': this.blockchain.getCumulativeDifficulty(this.blockchain.getBlockchain()),
                 'confirmedTransactions': this.blockchain.getConfirmedTransactionsCount(),
                 'pendingTransactions': this.blockchain.getPendingTransactionsCount()
             };
@@ -134,7 +140,7 @@ export class HttpServer {
             console.log(this.myHttpPort + ':GET /blocks/:' + req.params.index);
             let rVal: Block = this.blockchain.getBlockchain()[req.params.index];
             if (rVal == null) {
-                res.status(401).send("No block at index=" + req.params.index);
+                res.status(404).send("No block at index=" + req.params.index);
             } else {
                 res.send(rVal);
             }
@@ -155,10 +161,10 @@ export class HttpServer {
         app.get('/transactions/:tranHash', (req, res) => {
             console.log(this.myHttpPort + ':GET /transactions/:' + req.params.tranHash);
             let rVal: Transaction[] = this.blockchain.getTransactionsByTxHash(req.params.tranHash);
-            if(rVal !== null){
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no transaction for " + req.params.tranHash + ".");
+                res.status(404).send("There are no transaction for " + req.params.tranHash + ".");
             }
         });
 
@@ -166,49 +172,76 @@ export class HttpServer {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
             let rVal: any[] = this.blockchain.getBalances();
-            if( rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no balances available");
+                res.status(404).send("There are no balances available");
             }
         });
 
         app.get('/address/:address/transactions', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/transactions');
             let rVal: Transaction[] = this.blockchain.getTransactions(req.params.address);
-            if( rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no transaction for " + req.params.address + ".");
+                res.status(404).send("There are no transaction for " + req.params.address + ".");
             }
         });
 
         app.get('/address/:address/balance', (req, res) => {
             console.log(this.myHttpPort + ':GET /address/:' + req.params.address + '/balance');
             let rVal: Balance = this.blockchain.getAccountBalance(req.params.address);
-            if(rVal !== null) {
+            if (rVal !== null) {
                 res.send(rVal);
             } else {
-                res.status(401).send("There are no balances available for the address of " + req.params.address);
+                res.status(404).send("There are no balances available for the address of " + req.params.address);
             }
-
         });
 
         /**
          * @description - add transactions to the transaction pool.
          */
         app.post('/transactions/send', (req, res) => {
+            /**
+             * Send Transactions
+                + For each received transaction the Node does the following:
+                    o Checks for missing / invalid fields / invalid field values
+                    o Calculates the transaction data hash (unique transaction
+                        o Checks for collisions  duplicated transactions are skipped
+                    o Validates the transaction public key , validates the signature
+                    o Checks the sender account balance to be >= value + fee
+                    o Checks whether value >= 0 and fee > 10 (min fee)
+                    o Puts the transaction in the "pending transactions " pool
+                    o Sends the transaction to all peer nodes through the REST API
+                        o It goes from peer to peer until it reaches the entire network
+            */
             console.log(this.myHttpPort + ':POST /transactions/send');
-            let body: Transaction[] = req.body;
-            console.log(body);
-            for (let i = 0; i < body.length; i++) {
-                body[i].tranferSuccessful = false;
-                this.blockchain.handleReceivedTransaction(body[i]);
-            }
-            if (body !== null) {
-                res.status(201).send("Transaction send complete.");
+            let sendTransRequest: SendTransactionRequest = req.body;
+            console.log(sendTransRequest);
+            let transaction: Transaction = new Transaction();
+            transaction.confirmationCount = 0;
+            transaction.data = sendTransRequest.data;
+            transaction.dateCreated = sendTransRequest.dateCreated;
+            transaction.fee = sendTransRequest.fee;
+            transaction.from = sendTransRequest.from;
+            transaction.to = sendTransRequest.to;
+            transaction.minedInBlockIndex = -1;
+            transaction.senderPubKey = sendTransRequest.senderPubKey;
+            transaction.senderSignature = sendTransRequest.senderSignature;
+            transaction.value = sendTransRequest.value;
+            transaction.transactionDataHash = '';
+            transaction.transferSuccessful = false;
+            let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
+            if (validation.message === 'success') {
+                this.blockchain.getTransactionPool().push(transaction)
+                // broadcast transaction to all the peer nodes.
+                this.p2p.broadCastTransactionPool();
+                res.status(201).send({ 'transactionDataHash': transaction.transactionDataHash });
             } else {
-                res.status(401).send("No transactions were received.");
+                console.log(JSON.stringify(validation));
+                let errorMsg: string = validation.message;
+                res.status(400).send({ 'error': errorMsg });
             }
         });
 
@@ -221,7 +254,7 @@ export class HttpServer {
                 }
                 res.send(rVal);
             } else {
-                res.status(401).send("There currently no peers for this node.");
+                res.status(404).send({ 'error': "There currently no peers for this node." });
             }
         });
 
@@ -233,9 +266,9 @@ export class HttpServer {
             res.status(201).send("Peers connect requested.");
         });
 
-        app.post('/peers/notify-new-block', (req, res) => {
-            console.log(this.myHttpPort + ':POST /peers/notify-new-block');
-        });
+        // app.post('/peers/notify-new-block', (req, res) => {
+        //     console.log(this.myHttpPort + ':POST /peers/notify-new-block');
+        // });
 
         app.post('/stop', (req, res) => {
             res.send({ 'msg': 'stopping server' });
@@ -244,12 +277,130 @@ export class HttpServer {
 
         app.get('/mining/get-mining-job/:address', (req, res) => {
             console.log(this.myHttpPort + ':GET /mining/get-mining-job/:' + req.params.address);
+            if (req.params.address === 'undefined') {
+                res.status(404).send({ 'error': "Bad address requested." });
+                return;
+            }
+            /**
+             * KINGSLAND SCHOOL OF BLOCKCHAIN | ENSURING THE FUTURE OF BLOCKCHAIN
+                The Mining Process: Preparation
+                    When a Miner requests a block for mining , the node prepares
+                    o Creates the next block candidate : executes all pending transactions
+                    and adds them in the block candidate + inserts a coinbase tx
+                    o Calculates the block data hash and provides it to the miner
+                    o The Node keeps a separate block candidate for each mining request
+                        It holds map< blockDataHash  block>
+                    o If a miner requests a block candidate again , the Node sends an
+                    updated block (eventually holding more
+                    o The Node will always return the latest block for mining , holding the
+                    latest pending transactions (to collect maximum
+
+                The Coinbase Transaction (Reward)
+                    A special coinbase transaction is inserted before all transactions
+                    in the candidate block, to transfer the block reward + fees
+                        o The sender address, sender public key and signature are zeroes
+                    { "from": "0000000000000000000000000000000000000000",
+                      "to": "9a9f082f37270ff54c5ca4204a0e4da6951fe917",
+                      "value": 5000350, 
+                      "fee": 0 , 
+                      "dateCreated": "2018 02 10T17:53:48.972Z",
+                      "data": "coinbase tx",
+                      "senderPubKey": "000000000000000000000000000000000000…0000",
+                      "transactionDataHash": "4dfc3e0ef89ed603ed54e47435a18b…176a",
+                      "senderSignature": ["0000 000000 …0000", "0 00 000 0000 …0000"],
+                      "minedInBlockIndex": 35, 
+                      "transferSuccessful": true
+                    }
+                    The last two values are set by the miner.
+                */
+
+            // We should not send a block to be mined if there are no pending transactions.
+            //if (this.blockchain.getTransactionPool().length === 0) {
+            if (this.blockchain.getTransactionPool().length > 0) {
+
+                let newCandidateBlock: Block = this.blockchain.createCandidateMinerBlock(req.params.address);
+                if (this.blockchain.getMiningRequestMap().get(newCandidateBlock.blockDataHash) !== undefined) {
+                    // Add the new block to the mining request map.
+                    console.log('HttpServer./mining/get-mining-job/:address is already in the mining request map.  Purge map.')
+                    this.blockchain.purgeMiningRequestMap();
+                }
+                // Add the new block to the mining request map.
+                this.blockchain.getMiningRequestMap().set(newCandidateBlock.blockDataHash, newCandidateBlock);
+                let toMinerBlock: BlockCandidate = new BlockCandidate();
+                toMinerBlock.blockDataHash = newCandidateBlock.blockDataHash;
+                toMinerBlock.difficulty = newCandidateBlock.difficulty;
+                toMinerBlock.expectedReward = newCandidateBlock.reward;
+                toMinerBlock.rewardAddress = newCandidateBlock.rewardAddress;
+                toMinerBlock.index = newCandidateBlock.index;
+                toMinerBlock.transactionsIncluded = newCandidateBlock.transactions.length;
+                console.log('Returning: ', toMinerBlock);
+                res.send(toMinerBlock);
+            } else {
+                console.log('No transactions for a block to mine.');
+                res.status(400).send({ 'error': 'No transactions for a block to mine.' });
+                //res.sendStatus(400);
+            }
         });
 
         app.post('/mining/submit-mined-block', (req, res) => {
+            /**
+             * Processing a Mined Block
+                Miners submit their mined block hash (+ date + nonce
+                    o Node builds the mined block and propagates it through the network
+                When a miner submits a proof of work hash (I believe this is the block.blockHash)
+                    o The node finds the block candidate by its blockDataHash
+                    o The node verifies the hash + its difficulty and builds the next block (How does one verify the hash?  What is meant by build the next block?)
+                        o The block candidate is merged with the nonce + timestamp + hash
+                Then if the block is still not mined , the chain is extended (What does this mean?)
+                    o Sometimes other miners can be faster -> the mined block is expired
+                Then all peers are notified about the new mined block
+             */
+            let rVal: ValidationMessage = new ValidationMessage();
             console.log(this.myHttpPort + ':POST /mining/submit-mined-block');
-        });
+            console.log('body=', req.body);
 
+            /**
+             * find the mined block in the mining request map.
+             */
+            let candidateBlock: Block = this.blockchain.getMiningRequestMap().get(req.body.blockDataHash);
+            if (candidateBlock.blockDataHash === undefined) {
+                rVal.message = 'Block not found or already mined';
+                res.status(404).send({ 'error': rVal.message });
+            } else {
+                // Get the mined block request that came from the miner.
+                let fromMinerRequest: FromMinerRequest = req.body;
+                /**
+                 * The node verifies the hash + its difficulty and builds the next block.
+                 */
+                let verified: boolean = false;
+
+                candidateBlock.blockHash = fromMinerRequest.blockHash;
+                candidateBlock.dateCreated = fromMinerRequest.dateCreated;
+                candidateBlock.nonce = fromMinerRequest.nonce;
+                console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
+                if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
+                    verified = true;
+                }
+                if (verified) {
+                    // add the mined block to the blockchain.
+                    this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
+                    // purge the mining request map.
+                    this.blockchain.purgeMiningRequestMap();
+                    rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
+                    res.send(rVal);
+                    // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
+                    // The above call is not used.  Calling broadcast instead.
+                    this.p2p.broadcastLatestBlockToOtherNodes();
+                    this.blockchain.adjustMiningDifficulty();
+                } else {
+                    /**
+                     * Verification fails so chain gets extended.  What does this mean?
+                     */
+                    return res.status(404).send({'error': "Block not found or already mined"});
+                }
+
+            }
+        });
 
         app.listen(myHttpPort, () => {
             console.log('HttpServer listening http on port: ' + myHttpPort);

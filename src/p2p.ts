@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { Server } from 'ws';
-import { Block } from './block';
-import { Transaction } from './transaction';
+import { Block } from './models/block';
+import { Transaction } from './models/transaction';
 import { BlockChain } from './blockchain';
 
 /**
@@ -165,7 +165,7 @@ export class P2P {
                 // console.log('DEBUG 2 Remote address='+tstring)
                 switch (message.type) {
                     case MessageType.QUERY_LATEST:
-                        this.write(ws, this.responseLatestMsg());
+                        this.write(ws, this.responseLatestBlockMsg());
                         break;
                     case MessageType.QUERY_ALL:
                         this.write(ws, this.responseChainMsg());
@@ -255,10 +255,10 @@ export class P2P {
     }
 
     /**
-     * @description - Gets the Message object for the RESPONSE_BLCOKCHAIN.
+     * @description - Gets the Message object for the RESPONSE_BLOCKCHAIN.
      * @returns {Message} - message Object for the lastest block.
      */
-    public responseLatestMsg(): Message {
+    public responseLatestBlockMsg(): Message {
         return ({
             'type': MessageType.RESPONSE_BLOCKCHAIN,
             'data': JSON.stringify([this.blockchain.getLatestBlock()])
@@ -319,7 +319,7 @@ export class P2P {
                 + latestBlockHeld.index + ' Peer got: ' + latestBlockReceived.index);
             if (latestBlockHeld.blockHash === latestBlockReceived.blockHash) { // TODO: Not sure if this is right.
                 if (this.blockchain.addBlockToChain(latestBlockReceived)) {
-                    this.broadcast(this.responseLatestMsg());
+                    this.broadcast(this.responseLatestBlockMsg());
                 }
             } else if (receivedBlocks.length === 1) {
                 console.log(this.mylistenerPort + ':We have to query the chain from our peer');
@@ -327,17 +327,26 @@ export class P2P {
             } else {
                 console.log(this.mylistenerPort + ':Received blockchain is longer than current blockchain');
                 this.blockchain.replaceChain(receivedBlocks);
-            }
+             }
         } else {
             console.log(this.mylistenerPort + ':received blockchain is not longer than received blockchain. Do nothing');
         }
     }
 
     /**
-     * @description - Broadcast the latest message.
+     * @description - Broadcast the latest block to the other nodes..
      */
-    public broadcastLatest(): void {
-        this.broadcast(this.responseLatestMsg());
+    public broadcastLatestBlockToOtherNodes(): void {
+        console.log('p2p.broadcastLatestBlockToOtherNodes(): call to broadcast the latest block.');
+        this.broadcast(this.responseLatestBlockMsg());
+    }
+
+    /**
+     * @description - Broadcast the latest blockchain to the other nodes.
+     */
+    public broadcastNewBlockchainToOtherNodes(): void {
+        console.log('p2p.broadcastNewBlockchainToOtherNodes(): call to broadcast the latest blockchain.');
+        this.broadcast(this.responseChainMsg());
     }
 
     /**
@@ -391,6 +400,7 @@ export class P2P {
      * @description - Broadcast the transaction pool message.
      */
     public broadCastTransactionPool() {
+        console.log('p2p.broaCastTransactionPool(): called...');
         this.broadcast(this.responseTransactionPoolMsg());
     }
 }
