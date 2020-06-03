@@ -7,7 +7,7 @@ export class SendTransactionRequest {
     public data: string;
     public senderPubKey: string;
     public senderSignature: string[];
-
+    public transferSuccessful: boolean;
     constructor() {
 
     }

@@ -231,7 +231,7 @@ export class HttpServer {
             transaction.senderSignature = sendTransRequest.senderSignature;
             transaction.value = sendTransRequest.value;
             transaction.transactionDataHash = this.blockchain.calcTransactionDataHash(transaction);
-            transaction.transferSuccessful = false;
+            transaction.transferSuccessful = sendTransRequest.transferSuccessful;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
                 this.blockchain.getTransactionPool().push(transaction)
@@ -377,27 +377,29 @@ export class HttpServer {
                 candidateBlock.blockHash = fromMinerRequest.blockHash;
                 candidateBlock.dateCreated = fromMinerRequest.dateCreated;
                 candidateBlock.nonce = fromMinerRequest.nonce;
-                console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
-                if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
+                console.log('HttpServer.POSTminedBlock: condidateBlock=' + JSON.stringify(candidateBlock));
+                if (this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
                 }
                 if (verified) {
                     // add the mined block to the blockchain.
                     //this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
-                    this.blockchain.addBlockToChain(candidateBlock);
+                    let _success: boolean = this.blockchain.addBlockToChain(candidateBlock);
                     // delete from the mining request map.
                     this.blockchain.deleteMiningRequest(candidateBlock.blockDataHash);
-                    rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
-                    res.send(rVal);
-                    // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
-                    // The above call is not used.  Calling broadcast instead.
-                    this.p2p.broadcastLatestBlockToOtherNodes();
-                    this.blockchain.adjustMiningDifficulty();
+                    if (_success === true) {
+                        rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
+                        res.send(rVal);
+                        // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
+                        // The above call is not used.  Calling broadcast instead.
+                        this.p2p.broadcastLatestBlockToOtherNodes();
+                        this.blockchain.adjustMiningDifficulty();
+                    }
                 } else {
                     /**
                      * Verification fails so chain gets extended.  What does this mean?
                      */
-                    return res.status(404).send({'error': "Block not found or already mined"});
+                    return res.status(404).send({ 'error': "Block not found or already mined" });
                 }
 
             }
