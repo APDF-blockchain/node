@@ -171,7 +171,7 @@ export class HttpServer {
         app.get('/balances', (req, res) => {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
-            let rVal: any[] = this.blockchain.getBalances();
+            let rVal: any = this.blockchain.getBalances();
             if (rVal !== null) {
                 res.send(rVal);
             } else {
@@ -289,7 +289,7 @@ export class HttpServer {
                     and adds them in the block candidate + inserts a coinbase tx
                     o Calculates the block data hash and provides it to the miner
                     o The Node keeps a separate block candidate for each mining request
-                        It holds map< blockDataHash  block>
+                        It holds map< blockDataHash -> block>
                     o If a miner requests a block candidate again , the Node sends an
                     updated block (eventually holding more
                     o The Node will always return the latest block for mining , holding the
