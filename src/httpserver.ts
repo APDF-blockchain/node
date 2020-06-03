@@ -230,7 +230,7 @@ export class HttpServer {
             transaction.senderPubKey = sendTransRequest.senderPubKey;
             transaction.senderSignature = sendTransRequest.senderSignature;
             transaction.value = sendTransRequest.value;
-            transaction.transactionDataHash = '';
+            transaction.transactionDataHash = this.blockchain.calcTransactionDataHash(transaction);
             transaction.transferSuccessful = false;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
@@ -383,9 +383,10 @@ export class HttpServer {
                 }
                 if (verified) {
                     // add the mined block to the blockchain.
-                    this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
-                    // purge the mining request map.
-                    this.blockchain.purgeMiningRequestMap();
+                    //this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
+                    this.blockchain.addBlockToChain(candidateBlock);
+                    // delete from the mining request map.
+                    this.blockchain.deleteMiningRequest(candidateBlock.blockDataHash);
                     rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
                     res.send(rVal);
                     // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.

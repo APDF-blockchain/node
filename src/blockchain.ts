@@ -163,7 +163,7 @@ export class BlockChain {
         let average: number = sTime / this.getBlocksCount();
         if (average <= this.config.targetBlockTime) {
             this.difficulty++;
-        } else {
+        } else if(this.difficulty > 1){
             this.difficulty--;
         }
     }
@@ -224,6 +224,10 @@ export class BlockChain {
         _trans.senderSignature = _trans.senderSignature.concat(this.config.nullSignature);
         _trans.minedInBlockIndex = this.getLatestBlock().index + 1;
         _trans.transferSuccessful = false;
+        _trans.transactionDataHash = this.calcTransactionDataHash(_trans);
+        _trans.confirmationCount = 0;
+        _trans.senderPubKey = this.config.nullPubKey;
+        _trans.senderSignature = this.config.nullSignature;
         rVal.push(_trans);
         return rVal;
     }
@@ -243,6 +247,14 @@ export class BlockChain {
         for (let _blockDataHash of this.miningRequestsMap.keys()) {
             this.miningRequestsMap.delete(_blockDataHash);
         }
+    }
+
+    /**
+     * @description - delete the blockDataHash from the mining request map
+     * @param _blockDataHash blockDataHash to delete
+     */
+    public deleteMiningRequest(_blockDataHash: string): void {
+        this.miningRequestsMap.delete(_blockDataHash);
     }
 
     /**
@@ -380,6 +392,10 @@ export class BlockChain {
      */
     public hashMatchesDifficulty(hash: string, difficulty: number): boolean {
         //const hashInBinary: string = hexToBinary(hash);
+        if(difficulty < this.config.startDifficulty) {
+            console.log('BlockChain.hashMatchesDifficulty(): difficulty=' + difficulty + " is not valid");
+            return false;
+        }
         const requiredPrefix: string = '0'.repeat(difficulty);
         return hash.startsWith(requiredPrefix);
     }
@@ -577,7 +593,7 @@ export class BlockChain {
         rVal.message = 'success';
         structureValid = typeof transaction.from === 'string'
             && typeof transaction.data === 'string'
-            && typeof new Date(transaction.dateCreated).toISOString() === 'string'
+            //&& typeof new Date(transaction.dateCreated).toISOString() === 'string'
             && typeof transaction.fee === 'number'
             && typeof transaction.senderPubKey === 'string'
             && transaction.senderSignature instanceof Array
@@ -681,7 +697,7 @@ export class BlockChain {
         if (transaction.value < 0) {
             message.message = 'Transaction value must be greater than or equal to 0';
         }
-        if (transaction.fee < 10) {
+        if (transaction.from !== this.config.nullAddress && transaction.fee < 10) {
             message.message = 'Transaction fee is not greater than or equal to 10 micro-coins';
         }
         return message;
@@ -781,7 +797,9 @@ export class BlockChain {
             }
             _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
             // Removed this transaction from the pending transactions list.
-            for (let j = 0; this.getPendingTransactions().length; j++) {
+            for (let j = 0; j < this.getPendingTransactions().length; j++) {
+                console.log('BlockChain.processTransactions(): _blockTransactions[' + i + '].transactionDataHash=' + _blockTransactions[i].transactionDataHash);
+                console.log('BlockChain.processTransactions(): pendingTransactions[' + j + '].transactionDataHash=' + this.getPendingTransactions()[j].transactionDataHash);
                 if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
                     this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
                 }

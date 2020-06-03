@@ -24,7 +24,7 @@ export class BlockCandidate {
      */
     public rewardAddress: string;
     /**
-     * @description - address of the miner
+     * @description - calculated by the miner.
      */
     public blockDataHash: string;
 
