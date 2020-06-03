@@ -427,54 +427,12 @@ export class BlockChain {
             const fromBalanceAfter = fromBalanceBefore - value - fee;
             const toBalanceAfter = toBalanceBefore + value;
 
-            //balances.set(from, fromBalanceAfter);
-            //balances.set(to, toBalanceAfter);
             balances[from] = fromBalanceAfter;
             balances[to] = toBalanceAfter;
         }
 
         return balances;
     }
-
-    // public getBalances(): any[] {
-    //     let rval: any[] = [];
-
-    //     /**
-    //      * First let's get the confirmed balances
-    //      */
-    //     //let mytrans: Transaction[] = this.getConfirmedTransactions();
-    //     let mytrans: Transaction[] = this.getAllTransactions();
-    //     if (mytrans.length === 0) {
-    //         return null;
-    //     }
-
-    //     /**
-    //      * Create Map to prevent duplicates of addressess and set the values to 0
-    //      */
-    //     let addressmap: Map<string, number> = new Map<string, number>();
-    //     for (let i = 0; i < mytrans.length; i++) {
-    //         addressmap.set(mytrans[i].from, 0);
-    //     }
-
-    //     /**
-    //      * Loop through the transactions array and set the correct values in the map
-    //      */
-    //     for (let i = 0; i < mytrans.length; i++) {
-    //         let _value = addressmap.get(mytrans[i].from);
-    //         _value += mytrans[i].value - mytrans[i].fee;
-    //         addressmap.set(mytrans[i].from, _value);
-    //     }
-
-    //     /**
-    //      * Now push the unique results from the address map to result array rval.
-    //      */
-    //     for (let accountAddress of addressmap.keys()) {
-    //         let balance = addressmap.get(accountAddress);
-    //         rval.push({ accountAddress, balance });
-    //     }
-
-    //     return rval;
-    // }
 
     /**
      * @description - get all the transactions in all blocks
