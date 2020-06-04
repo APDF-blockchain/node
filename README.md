@@ -33,7 +33,7 @@ curl -d '[{"from":"0000000000000000000000000000000000000000","to":"f3a1e69b61760
 ## Use this one for a transactions/send instead
 The one above used to work, but now the /transaction/send does not do an array.
 ```
-curl -d '{"from":"f3a1e69b6176052fcc4a3248f1c5a91dea308ca9","to":"a1de0763f26176c6d68cc77e0a1c2c42045f2314","value":500000,"fee":10,"dateCreated":"2020-05-19T12:25:35.919Z","data":"Faucet -> Alice","senderPubKey":"8c4431db61e9095d5794ff53a3ae4171c766cadef015f2e11bec22b98a80f74a0","senderSignature":["81e15a8f8baa63eb1964f215f15a46d413e7eed2e68b9cd66a8048827b083ac1","db1fe10f246403c393f198e1265fe9f3602de6719ebb1ff9567a9730d5e87efc"]}' -H "Content-Type: application/json" -X POST http://localhost:3001/transactions/send
+curl -d '{"from":"0000000000000000000000000000000000000000","to":"a1de0763f26176c6d68cc77e0a1c2c42045f2314","value":500,"fee":10,"dateCreated":"2020-05-19T12:25:35.919Z","data":"Faucet -> Alice","senderPubKey":"8c4431db61e9095d5794ff53a3ae4171c766cadef015f2e11bec22b98a80f74a0","senderSignature":["81e15a8f8baa63eb1964f215f15a46d413e7eed2e68b9cd66a8048827b083ac1","db1fe10f246403c393f198e1265fe9f3602de6719ebb1ff9567a9730d5e87efc"]}' -H "Content-Type: application/json" -X POST http://localhost:3001/transactions/send
 ```
 
 ## This one connects the first node to its peer
