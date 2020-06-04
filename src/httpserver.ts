@@ -230,7 +230,7 @@ export class HttpServer {
             transaction.senderSignature = sendTransRequest.senderSignature;
             transaction.value = sendTransRequest.value;
             transaction.transactionDataHash = this.blockchain.calcTransactionDataHash(transaction);
-            transaction.transferSuccessful = sendTransRequest.transferSuccessful;
+            //transaction.transferSuccessful = sendTransRequest.transferSuccessful;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
                 this.blockchain.getTransactionPool().push(transaction)

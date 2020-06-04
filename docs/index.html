@@ -110,7 +110,7 @@
 					<h2>Use this one for a transactions/send instead</h2>
 				</a>
 				<p>The one above used to work, but now the /transaction/send does not do an array.</p>
-				<pre><code>curl -d '{"from":"f3a1e69b<span class="hljs-number">617605</span>2fcc4a<span class="hljs-number">3248</span>f1c5a91dea308ca9","to":"a1de<span class="hljs-number">0763</span>f<span class="hljs-number">2617</span>6c6d68cc77e0a1c2c<span class="hljs-number">4204</span>5f<span class="hljs-number">2314</span>","value":<span class="hljs-number">500000</span>,"fee":10,"dateCreated":"<span class="hljs-number">2020-05-19</span>T12:25:35.919Z","data":"Faucet -&gt; Alice","senderPubKey":"8c<span class="hljs-number">4431</span>db61e<span class="hljs-number">9095</span>d<span class="hljs-number">5794</span>ff53a3ae<span class="hljs-number">4171</span>c766cadef015f2e11bec22b98a80f74a0","senderSignature":["81e15a8f8baa63eb<span class="hljs-number">1964</span>f215f15a46d413e7eed2e68b9cd66a<span class="hljs-number">804882</span>7b083ac1","db1fe10f<span class="hljs-number">246403</span>c393f198e<span class="hljs-number">1265</span>fe9f<span class="hljs-number">3602</span>de<span class="hljs-number">6719</span>ebb1ff<span class="hljs-number">9567</span>a<span class="hljs-number">9730</span>d5e87efc"]}' -H <span class="hljs-string">"Content-Type: application/json"</span> -X POST http:<span class="hljs-comment">//localhost:3001/transactions/send</span></code></pre>
+				<pre><code>curl -d '{"from":"<span class="hljs-number">00000000000000</span><span class="hljs-number">00000000000000</span><span class="hljs-number">000000000000</span>","to":"a1de<span class="hljs-number">0763</span>f<span class="hljs-number">2617</span>6c6d68cc77e0a1c2c<span class="hljs-number">4204</span>5f<span class="hljs-number">2314</span>","value":500,"fee":10,"dateCreated":"<span class="hljs-number">2020-05-19</span>T12:25:35.919Z","data":"Faucet -&gt; Alice","senderPubKey":"8c<span class="hljs-number">4431</span>db61e<span class="hljs-number">9095</span>d<span class="hljs-number">5794</span>ff53a3ae<span class="hljs-number">4171</span>c766cadef015f2e11bec22b98a80f74a0","senderSignature":["81e15a8f8baa63eb<span class="hljs-number">1964</span>f215f15a46d413e7eed2e68b9cd66a<span class="hljs-number">804882</span>7b083ac1","db1fe10f<span class="hljs-number">246403</span>c393f198e<span class="hljs-number">1265</span>fe9f<span class="hljs-number">3602</span>de<span class="hljs-number">6719</span>ebb1ff<span class="hljs-number">9567</span>a<span class="hljs-number">9730</span>d5e87efc"]}' -H <span class="hljs-string">"Content-Type: application/json"</span> -X POST http:<span class="hljs-comment">//localhost:3001/transactions/send</span></code></pre>
 				<a href="#this-one-connects-the-first-node-to-its-peer" id="this-one-connects-the-first-node-to-its-peer" style="color: inherit; text-decoration: none;">
 					<h2>This one connects the first node to its peer</h2>
 				</a>
@@ -162,9 +162,6 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_models_validation_message_.html">&quot;models/validation-<wbr>message&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_models_verify_block_.html">&quot;models/verify-<wbr>block&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_node_.html">&quot;node&quot;</a>
