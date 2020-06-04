@@ -125,6 +125,7 @@ export class BlockChain {
             this.genesisBlock.transactions = transactions;
             this.genesisBlock.difficulty = 0;
             this.genesisBlock.nonce = 0;
+            this.genesisBlock.minedBy = this.config.nullAddress;
             this.genesisBlock.blockDataHash = this.calcBlockDataHash(this.genesisBlock);
             /**
              * hash the genesis block

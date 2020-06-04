@@ -311,6 +311,7 @@ export class P2P {
         const latestBlockReceived: Block = receivedBlocks[receivedBlocks.length - 1];
         if (!this.blockchain.isValidBlockStructure(latestBlockReceived)) {
             console.log(this.mylistenerPort + ':block structuture not valid');
+            console.log('P2P.handleBlockchainRespons(): receivedBlock='+JSON.stringify(latestBlockReceived));
             return;
         }
         const latestBlockHeld: Block = this.blockchain.getLatestBlock();
