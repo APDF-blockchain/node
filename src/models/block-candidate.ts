@@ -4,14 +4,6 @@
  */
 export class BlockCandidate {
     /**
-     * @description - index of the candidate block
-     */
-    public index: number;
-    /**
-     * @description - number of transactions included in the block.
-     */
-    public transactionsIncluded: number;
-    /**
      * @description - difficulty of this block
      */
     public difficulty: number;
@@ -24,7 +16,7 @@ export class BlockCandidate {
      */
     public rewardAddress: string;
     /**
-     * @description - address of the miner
+     * @description - calculated by the miner.
      */
     public blockDataHash: string;
 

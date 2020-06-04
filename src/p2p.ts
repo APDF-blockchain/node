@@ -194,7 +194,7 @@ export class P2P {
                                 // let's broadcast transaction pool
                                 this.broadCastTransactionPool();
                             } catch (e) {
-                                console.log(e.message);
+                                console.log(this.mylistenerPort + '"P2P.RESPONSE_TRANSACTION_POOL got: ',e.message);
                             }
                         });
                         break;
@@ -311,6 +311,7 @@ export class P2P {
         const latestBlockReceived: Block = receivedBlocks[receivedBlocks.length - 1];
         if (!this.blockchain.isValidBlockStructure(latestBlockReceived)) {
             console.log(this.mylistenerPort + ':block structuture not valid');
+            console.log('P2P.handleBlockchainRespons(): receivedBlock='+JSON.stringify(latestBlockReceived));
             return;
         }
         const latestBlockHeld: Block = this.blockchain.getLatestBlock();

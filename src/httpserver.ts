@@ -171,7 +171,7 @@ export class HttpServer {
         app.get('/balances', (req, res) => {
             console.log(this.myHttpPort + ':GET /balances');
             // TODO fake for now.
-            let rVal: any[] = this.blockchain.getBalances();
+            let rVal: any = this.blockchain.getBalances();
             if (rVal !== null) {
                 res.send(rVal);
             } else {
@@ -220,7 +220,6 @@ export class HttpServer {
             let sendTransRequest: SendTransactionRequest = req.body;
             console.log(sendTransRequest);
             let transaction: Transaction = new Transaction();
-            transaction.confirmationCount = 0;
             transaction.data = sendTransRequest.data;
             transaction.dateCreated = sendTransRequest.dateCreated;
             transaction.fee = sendTransRequest.fee;
@@ -230,8 +229,8 @@ export class HttpServer {
             transaction.senderPubKey = sendTransRequest.senderPubKey;
             transaction.senderSignature = sendTransRequest.senderSignature;
             transaction.value = sendTransRequest.value;
-            transaction.transactionDataHash = '';
-            transaction.transferSuccessful = false;
+            transaction.transactionDataHash = this.blockchain.calcTransactionDataHash(transaction);
+            transaction.transferSuccessful = sendTransRequest.transferSuccessful;
             let validation: ValidationMessage = this.blockchain.validateReceivedTransaction(transaction);
             if (validation.message === 'success') {
                 this.blockchain.getTransactionPool().push(transaction)
@@ -289,7 +288,7 @@ export class HttpServer {
                     and adds them in the block candidate + inserts a coinbase tx
                     o Calculates the block data hash and provides it to the miner
                     o The Node keeps a separate block candidate for each mining request
-                        It holds map< blockDataHash  block>
+                        It holds map< blockDataHash -> block>
                     o If a miner requests a block candidate again , the Node sends an
                     updated block (eventually holding more
                     o The Node will always return the latest block for mining , holding the
@@ -331,8 +330,6 @@ export class HttpServer {
                 toMinerBlock.difficulty = newCandidateBlock.difficulty;
                 toMinerBlock.expectedReward = newCandidateBlock.reward;
                 toMinerBlock.rewardAddress = newCandidateBlock.rewardAddress;
-                toMinerBlock.index = newCandidateBlock.index;
-                toMinerBlock.transactionsIncluded = newCandidateBlock.transactions.length;
                 console.log('Returning: ', toMinerBlock);
                 res.send(toMinerBlock);
             } else {
@@ -377,26 +374,28 @@ export class HttpServer {
                 candidateBlock.blockHash = fromMinerRequest.blockHash;
                 candidateBlock.dateCreated = fromMinerRequest.dateCreated;
                 candidateBlock.nonce = fromMinerRequest.nonce;
-                console.log('HttpServer.POSTminedBlock: condidateBlock='+JSON.stringify(candidateBlock));
-                if( this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
+                console.log('HttpServer.POSTminedBlock: condidateBlock=' + JSON.stringify(candidateBlock));
+                if (this.blockchain.isValidNewBlock(candidateBlock, this.blockchain.getLatestBlock())) {
                     verified = true;
                 }
                 if (verified) {
                     // add the mined block to the blockchain.
-                    this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
-                    // purge the mining request map.
+                    let _success: boolean = this.blockchain.addBlockToChain(candidateBlock);
+                    // delete from the mining request map.
                     this.blockchain.purgeMiningRequestMap();
-                    rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
-                    res.send(rVal);
-                    // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
-                    // The above call is not used.  Calling broadcast instead.
-                    this.p2p.broadcastLatestBlockToOtherNodes();
-                    this.blockchain.adjustMiningDifficulty();
+                    if (_success === true) {
+                        rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
+                        res.send(rVal);
+                        // call the  `/peers/notify-new-block` to tell the other nodes that a new block has been mined.
+                        // The above call is not used.  Calling broadcast instead.
+                        this.p2p.broadcastLatestBlockToOtherNodes();
+                        this.blockchain.adjustMiningDifficulty();
+                    }
                 } else {
                     /**
                      * Verification fails so chain gets extended.  What does this mean?
                      */
-                    return res.status(404).send({'error': "Block not found or already mined"});
+                    return res.status(404).send({ 'error': "Block not found or already mined" });
                 }
 
             }
