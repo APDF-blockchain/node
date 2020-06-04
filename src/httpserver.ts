@@ -220,7 +220,6 @@ export class HttpServer {
             let sendTransRequest: SendTransactionRequest = req.body;
             console.log(sendTransRequest);
             let transaction: Transaction = new Transaction();
-            transaction.confirmationCount = 0;
             transaction.data = sendTransRequest.data;
             transaction.dateCreated = sendTransRequest.dateCreated;
             transaction.fee = sendTransRequest.fee;

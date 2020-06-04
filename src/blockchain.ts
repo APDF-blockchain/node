@@ -73,7 +73,6 @@ export class BlockChain {
             transaction.from = this.config.nullAddress;
             transaction.to = this.config.faucetAddress;
             transaction.value = 1000000000000;
-            transaction.confirmationCount = this.config.confirmCount;
             let signature: string = "0000000000000000000000000000000000000000000000000000000000000000";
             let senderPubKey: string = "00000000000000000000000000000000000000000000000000000000000000000";
             transaction.senderPubKey = senderPubKey;
@@ -81,7 +80,6 @@ export class BlockChain {
             transaction.senderSignature.push(signature);
             transaction.minedInBlockIndex = 0;
             transaction.transferSuccessful = true;
-            transaction.confirmationCount = 1;
             transaction.dateCreated = new Date();
 
             transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
@@ -227,7 +225,6 @@ export class BlockChain {
         _trans.minedInBlockIndex = this.getLatestBlock().index + 1;
         _trans.transferSuccessful = false;
         _trans.transactionDataHash = this.calcTransactionDataHash(_trans);
-        _trans.confirmationCount = 1;
         _trans.senderPubKey = this.config.nullPubKey;
         _trans.senderSignature = this.config.nullSignature;
         _trans.dateCreated = new Date();
@@ -503,7 +500,7 @@ export class BlockChain {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
-            if (_aTrans[i].transferSuccessful === true && _aTrans[i].confirmationCount >= this.config.confirmCount) {
+            if (_aTrans[i].transferSuccessful === true && this.calculateConfirmationCount(_aTrans[i]) >= this.config.confirmCount) {
                 rVal.push(_aTrans[i]);
             }
         }
@@ -789,7 +786,6 @@ export class BlockChain {
             let message: ValidationMessage = this.validateReceivedTransaction(_blockTransactions[i]);
             console.log('BlockChain.processTransactions(): message=', message.message);
             if (message.message === 'success') {
-                _blockTransactions[i].confirmationCount = 1;
                 _blockTransactions[i].transferSuccessful = true;
                 _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
             } else {

@@ -44,14 +44,9 @@ export class Transaction {
      */
     public minedInBlockIndex: number; 
     /**
-     * @description - boolean. Set by the miner.
+     * @description - boolean.
      */
     public transferSuccessful: boolean;
-
-    /**
-     * @description - number of times transaction has been confirmed
-     */
-    public confirmationCount: number;
 
     /**
      * @description - default empty constructor
