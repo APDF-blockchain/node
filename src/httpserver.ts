@@ -331,8 +331,6 @@ export class HttpServer {
                 toMinerBlock.difficulty = newCandidateBlock.difficulty;
                 toMinerBlock.expectedReward = newCandidateBlock.reward;
                 toMinerBlock.rewardAddress = newCandidateBlock.rewardAddress;
-                toMinerBlock.index = newCandidateBlock.index;
-                toMinerBlock.transactionsIncluded = newCandidateBlock.transactions.length;
                 console.log('Returning: ', toMinerBlock);
                 res.send(toMinerBlock);
             } else {
@@ -383,10 +381,9 @@ export class HttpServer {
                 }
                 if (verified) {
                     // add the mined block to the blockchain.
-                    //this.blockchain.getBlockchain().push(candidateBlock); // This is build the next block
                     let _success: boolean = this.blockchain.addBlockToChain(candidateBlock);
                     // delete from the mining request map.
-                    this.blockchain.deleteMiningRequest(candidateBlock.blockDataHash);
+                    this.blockchain.purgeMiningRequestMap();
                     if (_success === true) {
                         rVal.message = 'Block accepted, reward paid: ' + candidateBlock.reward + ' microcoins';
                         res.send(rVal);

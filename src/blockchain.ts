@@ -667,10 +667,12 @@ export class BlockChain {
         }
         let validateDups: ValidationMessage = new ValidationMessage();
         let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
-        for (let i = 0; i < this.getPendingTransactions().length; i++) {
-            if (this.getPendingTransactions()[i].transactionDataHash === _transactionDataHash) {
+        let allTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < allTrans.length; i++) {
+            let _ltransactionDataHash: string = allTrans[i].transactionDataHash;
+            if (_ltransactionDataHash === _transactionDataHash) {
                 console.log('BlockChain.validateReceivedTransactions(): Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash);
-                validateDups.message = 'duplicate';
+                validateDups.message = 'Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash;
                 return validateDups;
             }
         }
@@ -754,10 +756,11 @@ export class BlockChain {
         if (latestBlockReceived.index !== this.getLatestBlock().index) { // Make sure the new block's index is not the same as the current block height
             // It is not, so attempt to add it to this chain.
             if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
-                if (this.processTransactions(latestBlockReceived) === false) {
-                    console.log('BlockChain.addBlockToChain(): prcessTransactions() failed');
-                    return false;
-                }
+                this.processTransactions(latestBlockReceived);
+                // if (this.processTransactions(latestBlockReceived) === false) {
+                //     console.log('BlockChain.addBlockToChain(): prcessTransactions() failed');
+                //     return false;
+                // }
                 this.blockchain.push(latestBlockReceived);
                 // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
                 // this.updateTransactionPool(_unspentTransactions);
@@ -772,7 +775,7 @@ export class BlockChain {
      * @description - process the transaction for the given block
      * @param latestBlockReceived - block to have the transactions processed
      */
-    processTransactions(latestBlockReceived: Block): boolean {
+    public processTransactions(latestBlockReceived: Block): void {
         //throw new Error("Method not implemented.");
         /**
          * Process transactions means.
@@ -781,28 +784,26 @@ export class BlockChain {
          * 3. remove from pending list. 
          * 
          */
-        let rVal: boolean = false;
         let _blockTransactions: Transaction[] = latestBlockReceived.transactions;
         for (let i = 0; i < _blockTransactions.length; i++) {
             let message: ValidationMessage = this.validateReceivedTransaction(_blockTransactions[i]);
             console.log('BlockChain.processTransactions(): message=', message.message);
-            if (message.message === 'success' || message.message === 'duplicate') {
+            if (message.message === 'success') {
                 _blockTransactions[i].confirmationCount = 1;
+                _blockTransactions[i].transferSuccessful = true;
                 _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
-                // Removed this transaction from the pending transactions list.
-                for (let j = 0; j < this.getPendingTransactions().length; j++) {
-                    console.log('BlockChain.processTransactions(): _blockTransactions[' + i + '].transactionDataHash=' + _blockTransactions[i].transactionDataHash);
-                    console.log('BlockChain.processTransactions(): pendingTransactions[' + j + '].transactionDataHash=' + this.getPendingTransactions()[j].transactionDataHash);
-                    if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
-                        this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
-                        rVal = true;
-                    }
-                }
             } else {
                 console.log('BlockChain.processTransactions(): transaction did not validate for transaction=', _blockTransactions[i].data);
             }
+            // Removed this transaction from the pending transactions list.
+            for (let j = 0; j < this.getPendingTransactions().length; j++) {
+                console.log('BlockChain.processTransactions(): _blockTransactions[' + i + '].transactionDataHash=' + _blockTransactions[i].transactionDataHash);
+                console.log('BlockChain.processTransactions(): pendingTransactions[' + j + '].transactionDataHash=' + this.getPendingTransactions()[j].transactionDataHash);
+                if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
+                    this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
+                }
+            }
         }
-        return rVal;
     }
 
     /**
@@ -855,11 +856,12 @@ export class BlockChain {
             _success = this.isValidPeerChain(receivedBlocks);
             if (_success !== false) {
                 for (let i = 0; i < receivedBlocks.length; i++) {
-                    _success = this.processTransactions(receivedBlocks[i]);
-                    if (_success === false) {
-                        console.log('BlockChain.replaceChain(): unable to process transactions');
-                        return;
-                    }
+                    this.processTransactions(receivedBlocks[i]);
+                    // _success = this.processTransactions(receivedBlocks[i]);
+                    // if (_success === false) {
+                    //     console.log('BlockChain.replaceChain(): unable to process transactions');
+                    //     return;
+                    // }
                 }
                 this.blockchain = receivedBlocks;
                 this.p2p.broadcastLatestBlockToOtherNodes();
@@ -931,6 +933,19 @@ export class BlockChain {
     }
 
     /**
+     * @description - calculate the confirmation count
+     * @param {Transaction} _transaction 
+     * @returns {number} confirmation count
+     */
+    private calculateConfirmationCount(_transaction: Transaction): number {
+        let rVal: number = 1;
+        let currentBlockHeight: number = this.getBlocksCount();
+        let transactionBlockIndex: number = _transaction.minedInBlockIndex;
+        rVal = currentBlockHeight - transactionBlockIndex + 1;
+        return rVal;
+    }
+
+    /**
      * @description - get the account balances for the given account address 
      * @param {string} address 
      * @returns {Balance} balance
@@ -952,13 +967,14 @@ export class BlockChain {
                 addressExists = true;
             }
             if (myTrans[i].transferSuccessful === true && addressExists) {
-                if (myTrans[i].confirmationCount >= this.config.confirmCount && myTrans[i].confirmationCount < this.config.safeConfirmCount) {
+                let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
+                if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
                     if (myTrans[i].from === address && myTrans[i].to !== address) {
                         confirmedOneSum -= myTrans[i].value - myTrans[i].fee;
                     } else {
                         confirmedOneSum += myTrans[i].value;
                     }
-                } else if (myTrans[i].confirmationCount >= this.config.safeConfirmCount) {
+                } else if (_comfirmationCount >= this.config.safeConfirmCount) {
                     if (myTrans[i].from === address && myTrans[i].to !== address) {
                         confirmedSum -= myTrans[i].value - myTrans[i].fee;
                     } else {
