@@ -194,7 +194,7 @@ export class P2P {
                                 // let's broadcast transaction pool
                                 this.broadCastTransactionPool();
                             } catch (e) {
-                                console.log(e.message);
+                                console.log(this.mylistenerPort + '"P2P.RESPONSE_TRANSACTION_POOL got: ',e.message);
                             }
                         });
                         break;

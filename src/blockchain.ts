@@ -559,12 +559,32 @@ export class BlockChain {
     }
 
     /**
+     * @description - checks to see if the given transaction is already in the pool.
+     * @param {Transaction} tranaction 
+     * @returns {boolean}
+     */
+    private isTransactionInTransactionPool(tranaction: Transaction): boolean {
+        let _trans: Transaction[] = this.getTransactionPool();
+        for (let i = 0; _trans.length; i++) {
+            if (tranaction.transactionDataHash === _trans[i].transactionDataHash) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @description - handle received transaction.  this is called by the P2P class.
      * @param {Transaction} transaction 
      */
     public handleReceivedTransaction(transaction: Transaction): void {
         //transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
         let _message: ValidationMessage = new ValidationMessage();
+        if (this.isTransactionInTransactionPool(transaction) === true ) {
+            _message.message = "Transaction already exists in the transaction pool " + transaction.transactionDataHash;
+            console.log('BlockChain.handleReceivedTransaction(): ', _message.message);
+            throw(_message.message);
+        }
         _message.message = 'success';
         _message = this.validateReceivedTransaction(transaction);
         if (_message.message === 'success') {
@@ -649,7 +669,7 @@ export class BlockChain {
             + For each received transaction the Node does the following:
                 o Checks for missing / invalid fields / invalid field values
                 o Calculates the transaction data hash (unique transaction
-                    o Checks for collisions  duplicated transactions are skipped
+                    o Checks for collisions -> duplicated transactions are skipped
                 o Validates the transaction public key , validates the signature
                 o Checks the sender account balance to be >= value + fee
                 o Checks whether value >= 0 and fee > 10 (min fee)
