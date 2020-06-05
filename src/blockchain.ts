@@ -1,4 +1,5 @@
 //import { sha256, sha224 } from 'js-sha256';
+import { ec } from 'elliptic';
 import * as CryptoJS from 'crypto-js'
 import { Transaction } from './models/transaction';
 import { Block } from './models/block';
@@ -12,6 +13,10 @@ import { P2P } from './p2p';
  * @class BlockChain
  */
 export class BlockChain {
+    /**
+     * @description - used to verify transaction signatures
+     */
+    private EC = new ec('secp256k1');
     /**
      * @description - all the blocks in the blockchain
      */
@@ -580,10 +585,10 @@ export class BlockChain {
     public handleReceivedTransaction(transaction: Transaction): void {
         //transaction.transactionDataHash = this.calcTransactionDataHash(transaction); // Done on the wallet side, maybe?
         let _message: ValidationMessage = new ValidationMessage();
-        if (this.isTransactionInTransactionPool(transaction) === true ) {
+        if (this.isTransactionInTransactionPool(transaction) === true) {
             _message.message = "Transaction already exists in the transaction pool " + transaction.transactionDataHash;
             console.log('BlockChain.handleReceivedTransaction(): ', _message.message);
-            throw(_message.message);
+            throw (_message.message);
         }
         _message.message = 'success';
         _message = this.validateReceivedTransaction(transaction);
@@ -595,6 +600,10 @@ export class BlockChain {
         }
     }
 
+    /**
+     * @description - validate the given transaction's fields.
+     * @param {Transaction} transaction 
+     */
     private validateTransactionFields(transaction: Transaction): ValidationMessage {
         let rVal: ValidationMessage = new ValidationMessage();
         let structureValid: boolean = true;
@@ -663,6 +672,25 @@ export class BlockChain {
         return rVal;
     }
 
+    /**
+     * @description - verify the signature of the given transaction
+     * @param {Transaction} transaction 
+     */
+    private isValidSignature(transaction: Transaction): boolean {
+        try {
+            let validSig = this.EC.verify(transaction.transactionDataHash, transaction.senderSignature, transaction.senderPubKey);
+            return validSig;
+        } catch (e) {
+            console.log('BlockChain.isValidSignature(): got the exception');
+            return false;
+        }
+    }
+
+    /**
+     * @description - validate the given transaction
+     * @param {Transaction} transaction 
+     * @returns {ValidationMessage} - a message of success if good.
+     */
     public validateReceivedTransaction(transaction: Transaction): ValidationMessage {
         /**
          * Send Transactions
@@ -696,6 +724,10 @@ export class BlockChain {
         }
 
         // TODO: Validates the transaction public key , validates the signature
+        if (this.isValidSignature(transaction) === false) {
+            message.message = 'Invalid signature for transaction ' + transaction.transactionDataHash;
+            return message;
+        }
 
         let rBalance: Balance = this.getAccountBalance(transaction.from);
         if (rBalance === null) {
