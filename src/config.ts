@@ -117,13 +117,20 @@ export class Config {
      * @constructor
      */
     constructor() {
+        /**
+         * {
+      address: 'd0618a61161d600c993093970ca4e75c56c978c41e0f85605bdf5c3fc24fe0c5',
+      privateKey: 'cb3aabb88a7d00b2370558897b1f1e7a69a22815a5133da4db9d1d69d8ffbad2',
+      publicKey: '0381753f1277e0c01302d7f4f3a474c78b3831bb9a3ab4c4619bbb3e4fcf3fd240'
+    }
+         */
         this.defaultServerHost = 'localhost';
         this.defaultP2pHost = 'localhost';
         this.defaultServerPort = 3001;
         this.defaultP2pPort = 6001;
-        this.faucetPrivateKey = "00000000000000000000000000000000000000000000000000000000000000000"; // TODO: get this from the faucet once it is implemented.
-        this.faucetPublicKey = '00000000000000000000000000000000000000000000000000000000000000000'; //TODO: get this from the faucet once it is implemented. 
-        this.faucetAddress = '0000000000000000000000000000000000000000'; //TODO: get this from the faucet once it is implemented. 
+        this.faucetPrivateKey = "cb3aabb88a7d00b2370558897b1f1e7a69a22815a5133da4db9d1d69d8ffbad2"; // TODO: get this from the faucet once it is implemented.
+        this.faucetPublicKey = '0381753f1277e0c01302d7f4f3a474c78b3831bb9a3ab4c4619bbb3e4fcf3fd240'; //TODO: get this from the faucet once it is implemented. 
+        this.faucetAddress = 'd0618a61161d600c993093970ca4e75c56c978c41e0f85605bdf5c3fc24fe0c5'; //TODO: get this from the faucet once it is implemented. 
         this.nullAddress = '0000000000000000000000000000000000000000';
         this.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
