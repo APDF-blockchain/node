@@ -725,7 +725,7 @@ export class BlockChain {
 
         // TODO: Validates the transaction public key , validates the signature
         if (this.isValidSignature(transaction) === false) {
-            message.message = 'Invalid signature for transaction ' + transaction.transactionDataHash;
+            message.message = 'Invalid signature for transaction ' + transaction.transactionDataHash + ' contents:' + JSON.stringify(transaction);
             return message;
         }
 
