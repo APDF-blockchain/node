@@ -91,39 +91,6 @@ export class BlockChain {
             let transactions: Transaction[] = [];
             transactions.push(transaction);
 
-            // transaction = new Transaction();
-            // transaction.data = "genesis tx";
-            // transaction.dateCreated = new Date();
-            // transaction.fee = 0;
-            // transaction.from = this.config.nullAddress;
-            // transaction.to = this.config.faucetAddress;
-            // transaction.value = 5000020;
-            // transaction.confirmationCount = this.config.safeConfirmCount;
-            // transaction.senderPubKey = senderPubKey;
-            // transaction.senderSignature.push(signature);
-            // transaction.senderSignature.push(signature);
-            // transaction.minedInBlockIndex = 0;
-            // transaction.transferSuccessful = true;
-
-            // transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            // transactions.push(transaction);
-
-            // transaction = new Transaction();
-            // transaction.data = "genesis tx";
-            // transaction.dateCreated = new Date();
-            // transaction.fee = 0;
-            // transaction.from = this.config.nullAddress;
-            // transaction.to = this.config.faucetAddress;
-            // transaction.value = 5000040;
-            // transaction.confirmationCount = 0;
-            // transaction.senderPubKey = senderPubKey;
-            // transaction.senderSignature.push(signature);
-            // transaction.senderSignature.push(signature);
-            // transaction.minedInBlockIndex = 0;
-            // transaction.transferSuccessful = true;
-
-            // transaction.transactionDataHash = this.calcTransactionDataHash(transaction);
-            // transactions.push(transaction);
             this.genesisBlock = new Block();
             this.genesisBlock.index = 0;
             this.genesisBlock.timestamp = new Date().getTime();

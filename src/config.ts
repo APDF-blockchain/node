@@ -121,9 +121,9 @@ export class Config {
         this.defaultP2pHost = 'localhost';
         this.defaultServerPort = 3001;
         this.defaultP2pPort = 6001;
-        this.faucetPrivateKey = "00000000000000000000000000000000000000000000000000000000000000000"; // TODO: where does the faucet come from.
-        this.faucetPublicKey = '00000000000000000000000000000000000000000000000000000000000000000';
-        this.faucetAddress = '0000000000000000000000000000000000000000';
+        this.faucetPrivateKey = "00000000000000000000000000000000000000000000000000000000000000000"; // TODO: get this from the faucet once it is implemented.
+        this.faucetPublicKey = '00000000000000000000000000000000000000000000000000000000000000000'; //TODO: get this from the faucet once it is implemented. 
+        this.faucetAddress = '0000000000000000000000000000000000000000'; //TODO: get this from the faucet once it is implemented. 
         this.nullAddress = '0000000000000000000000000000000000000000';
         this.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
         this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
