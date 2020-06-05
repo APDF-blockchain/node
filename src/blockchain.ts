@@ -677,13 +677,10 @@ export class BlockChain {
      * @param {Transaction} transaction 
      */
     private isValidSignature(transaction: Transaction): boolean {
-        try {
-            let validSig = this.EC.verify(transaction.transactionDataHash, transaction.senderSignature, transaction.senderPubKey);
-            return validSig;
-        } catch (e) {
-            console.log('BlockChain.isValidSignature(): got the exception');
-            return false;
-        }
+        var signature = { r: transaction.senderSignature[0], s: transaction.senderSignature[1] };
+        var key = this.EC.keyFromPublic(transaction.senderPubKey, 'hex');
+        let validSig = key.verify(transaction.transactionDataHash, signature);
+        return validSig;
     }
 
     /**
@@ -731,7 +728,7 @@ export class BlockChain {
 
         let rBalance: Balance = this.getAccountBalance(transaction.from);
         if (rBalance === null) {
-            message.message = 'Sender address is invalid';
+            message.message = 'Sender address has no balance.';
             return message;
         }
         if (rBalance.confirmedBalance < transaction.value + transaction.fee) {

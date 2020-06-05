@@ -37,6 +37,11 @@ export class SendTransactionRequest {
     public senderSignature: string[];
 
     /**
+     * @description - tranascation data hash calculated by the sender.
+     */
+    public transactionDataHash: string;
+
+    /**
      * @constructor
      */
     constructor() {
