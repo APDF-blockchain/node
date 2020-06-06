@@ -115,6 +115,16 @@ export class BlockChain {
         transaction.minedInBlockIndex = 0;
         sig.rVal = '0000000000000000000000000000000000000000000000000000000000000000';
         sig.sVal = '0000000000000000000000000000000000000000000000000000000000000000';
+        transaction.transactionDataHash = CryptoJS.SHA256(
+            JSON.stringify(
+                transaction.from
+                + transaction.to
+                + transaction.value
+                + transaction.fee
+                + transaction.data
+                + transaction.senderPubKey
+                )
+            ).toString();
         sigArr.push(sig.rVal, sig.sVal);
         transaction.senderSignature = sigArr
         // transaction = this.signTransaction(transaction, this.config.nullPrivateKey);
@@ -1037,20 +1047,20 @@ export class BlockChain {
             let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
             if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
                 if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    confirmedOneSum -= myTrans[i].value - myTrans[i].fee;
-                } else {
+                    confirmedOneSum -= (myTrans[i].value + myTrans[i].fee);
+                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
                     confirmedOneSum += myTrans[i].value;
                 }
             } else if (_comfirmationCount >= this.config.safeConfirmCount) {
                 if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    confirmedSum -= myTrans[i].value - myTrans[i].fee;
-                } else {
+                    confirmedSum -= (myTrans[i].value + myTrans[i].fee);
+                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
                     confirmedSum += myTrans[i].value;
                 }
             } else {
                 if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    pendingSum -= myTrans[i].value - myTrans[i].fee;
-                } else {
+                    pendingSum -= (myTrans[i].value + myTrans[i].fee);
+                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
                     pendingSum += myTrans[i].value;
                 }
             }
