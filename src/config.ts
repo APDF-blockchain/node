@@ -64,6 +64,9 @@ export class Config {
      * @description - null public key
      */
     public nullPubKey: string;
+    
+    public nullPrivateKey: string;
+
     /**
      * @description - null signature array
      */
@@ -133,8 +136,10 @@ export class Config {
         this.faucetAddress = 'd0618a61161d600c993093970ca4e75c56c978c41e0f85605bdf5c3fc24fe0c5'; //TODO: get this from the faucet once it is implemented. 
         this.nullAddress = '0000000000000000000000000000000000000000';
         this.nullPubKey = '00000000000000000000000000000000000000000000000000000000000000000';
-        this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
-        this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
+        this.nullPrivateKey = '00000000000000000000000000000000000000000000000000000000000000000';
+        this.nullSignature = [];
+        // this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
+        // this.nullSignature.push('0000000000000000000000000000000000000000000000000000000000000000');
         this.startDifficulty = 1; // SETTING THIS TO A LOW VALUE TO SPEED UP MINING.  RESET THIS LATER TO 4 OR 5.
         this.microCoin = 1;
         this.minTransactionFee = 10 * this.microCoin;
@@ -147,6 +152,6 @@ export class Config {
         this.oneCoin = 1000 * this.milliCoin;
         this.confirmCount = 1;
         this.safeConfirmCount = 6;
-        this.targetBlockTime = 5000; // 5 seconds.
+        this.targetBlockTime = 10000; // 10 seconds.
     }
 }
