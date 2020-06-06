@@ -24,6 +24,9 @@ To run this application, run 'npm start' in the root directory of the project.
 4. Now if you do GET: /peers for both http://localhost:3001 and and http://localhost:3002 via the browser
     you will get a list of the peers for each node.
 
+# For signature validate
+https://github.com/indutny/elliptic/blob/master/README.md
+
 # Some useful curl commands
 ## This one performs the POST: /transactions/send 
 Don't use this one.  The send no longer works with an array of transactions.
