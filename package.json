@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "npm run build && node dist/node.js"
+    "start": "npm run build && node dist/node.js",
+    "postinstall": "npm run build"
   },
   "engines": {
     "node": "^=4.3.2"
