@@ -102,8 +102,10 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#blockchain" class="tsd-kind-icon">blockchain</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#listenerport" class="tsd-kind-icon">listener<wbr>Port</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#peers" class="tsd-kind-icon">peers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#mylistenerhost" class="tsd-kind-icon">mylistener<wbr>Host</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#mylistenerport" class="tsd-kind-icon">mylistener<wbr>Port</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#mylistenerurl" class="tsd-kind-icon">mylistener<wbr>Url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#peersmap" class="tsd-kind-icon">peers<wbr>Map</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_p2p_.p2p.html#sockets" class="tsd-kind-icon">sockets</a></li>
 							</ul>
 						</section>
@@ -111,9 +113,11 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_p2p_.p2p.html#jsontoobject" class="tsd-kind-icon">JSONTo<wbr>Object</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#addpeer" class="tsd-kind-icon">add<wbr>Peer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#broadcasttransactionpool" class="tsd-kind-icon">broad<wbr>Cast<wbr>Transaction<wbr>Pool</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#broadcast" class="tsd-kind-icon">broadcast</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#broadcastlatest" class="tsd-kind-icon">broadcast<wbr>Latest</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#broadcastlatestblocktoothernodes" class="tsd-kind-icon">broadcast<wbr>Latest<wbr>Block<wbr>ToOther<wbr>Nodes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#broadcastnewblockchaintoothernodes" class="tsd-kind-icon">broadcast<wbr>New<wbr>Blockchain<wbr>ToOther<wbr>Nodes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#connecttopeer" class="tsd-kind-icon">connect<wbr>ToPeer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#connecttopeers" class="tsd-kind-icon">connect<wbr>ToPeers</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#getpeercount" class="tsd-kind-icon">get<wbr>Peer<wbr>Count</a></li>
@@ -127,8 +131,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#queryallmsg" class="tsd-kind-icon">query<wbr>All<wbr>Msg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#querychainlengthmsg" class="tsd-kind-icon">query<wbr>Chain<wbr>Length<wbr>Msg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#querytransactionpoolmsg" class="tsd-kind-icon">query<wbr>Transaction<wbr>Pool<wbr>Msg</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#removepeer" class="tsd-kind-icon">remove<wbr>Peer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#responsechainmsg" class="tsd-kind-icon">response<wbr>Chain<wbr>Msg</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#responselatestmsg" class="tsd-kind-icon">response<wbr>Latest<wbr>Msg</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#responselatestblockmsg" class="tsd-kind-icon">response<wbr>Latest<wbr>Block<wbr>Msg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#responsetransactionpoolmsg" class="tsd-kind-icon">response<wbr>Transaction<wbr>Pool<wbr>Msg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_p2p_.p2p.html#write" class="tsd-kind-icon">write</a></li>
 							</ul>
@@ -148,7 +153,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L44">p2p.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L57">p2p.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -184,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L51">p2p.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L64">p2p.ts:64</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -194,38 +199,76 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="listenerport" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listener<wbr>Port</h3>
-					<div class="tsd-signature tsd-kind-icon">listener<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="mylistenerhost" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mylistener<wbr>Host</h3>
+					<div class="tsd-signature tsd-kind-icon">mylistener<wbr>Host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L44">p2p.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L52">p2p.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>listener port of this peer.</li>
+									<li>my listener host</li>
 								</ul>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="peers" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> peers</h3>
-					<div class="tsd-signature tsd-kind-icon">peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<a name="mylistenerport" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mylistener<wbr>Port</h3>
+					<div class="tsd-signature tsd-kind-icon">mylistener<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L40">p2p.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L47">p2p.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>array of peer url&#39;s</li>
+									<li>mylistener port of this peer.</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mylistenerurl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mylistener<wbr>Url</h3>
+					<div class="tsd-signature tsd-kind-icon">mylistener<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L57">p2p.ts:57</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>my listener url</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="peersmap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> peers<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">peers<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, boolean&gt;()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L42">p2p.ts:42</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><ul>
+									<li>map of my peers.</li>
 								</ul>
 							</dd>
 						</dl>
@@ -237,7 +280,7 @@
 					<div class="tsd-signature tsd-kind-icon">sockets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebSocket</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L36">p2p.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L37">p2p.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -263,7 +306,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L60">p2p.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L73">p2p.ts:73</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -298,6 +341,40 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="addpeer" class="tsd-anchor"></a>
+					<h3>add<wbr>Peer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Peer<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L357">p2p.ts:357</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>add a peer to me.</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>url: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="broadcasttransactionpool" class="tsd-anchor"></a>
 					<h3>broad<wbr>Cast<wbr>Transaction<wbr>Pool</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -307,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L336">p2p.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L403">p2p.ts:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -333,7 +410,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L190">p2p.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L227">p2p.ts:227</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -359,23 +436,49 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="broadcastlatest" class="tsd-anchor"></a>
-					<h3>broadcast<wbr>Latest</h3>
+					<a name="broadcastlatestblocktoothernodes" class="tsd-anchor"></a>
+					<h3>broadcast<wbr>Latest<wbr>Block<wbr>ToOther<wbr>Nodes</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">broadcast<wbr>Latest<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">broadcast<wbr>Latest<wbr>Block<wbr>ToOther<wbr>Nodes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L301">p2p.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L340">p2p.ts:340</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<dl class="tsd-comment-tags">
 									<dt>description</dt>
 									<dd><ul>
-											<li>Broadcast the latest message.</li>
+											<li>Broadcast the latest block to the other nodes..</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="broadcastnewblockchaintoothernodes" class="tsd-anchor"></a>
+					<h3>broadcast<wbr>New<wbr>Blockchain<wbr>ToOther<wbr>Nodes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">broadcast<wbr>New<wbr>Blockchain<wbr>ToOther<wbr>Nodes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L348">p2p.ts:348</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>Broadcast the latest blockchain to the other nodes.</li>
 										</ul>
 									</dd>
 								</dl>
@@ -394,7 +497,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L309">p2p.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L373">p2p.ts:373</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,7 +532,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L326">p2p.ts:326</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L393">p2p.ts:393</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -464,7 +567,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L96">p2p.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L114">p2p.ts:114</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -491,9 +594,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L100">p2p.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L121">p2p.ts:121</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>get all my peers.</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -508,7 +620,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L88">p2p.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L106">p2p.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -529,13 +641,13 @@
 					<a name="handleblockchainresponse" class="tsd-anchor"></a>
 					<h3>handle<wbr>Blockchain<wbr>Response</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">handle<wbr>Blockchain<wbr>Response<span class="tsd-signature-symbol">(</span>receivedBlocks<span class="tsd-signature-symbol">: </span><a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Blockchain<wbr>Response<span class="tsd-signature-symbol">(</span>receivedBlocks<span class="tsd-signature-symbol">: </span><a href="_models_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L268">p2p.ts:268</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L306">p2p.ts:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -550,7 +662,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>receivedBlocks: <a href="_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>receivedBlocks: <a href="_models_block_.block.html" class="tsd-signature-type">Block</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>array of received blocks.</p>
 									</div>
@@ -570,7 +682,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L109">p2p.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L136">p2p.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -605,7 +717,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L255">p2p.ts:255</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L292">p2p.ts:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -639,7 +751,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L125">p2p.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L152">p2p.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,14 +786,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L74">p2p.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L87">p2p.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<dl class="tsd-comment-tags">
 									<dt>description</dt>
 									<dd><ul>
-											<li>Initialize the listener for this peer-to-peer server</li>
+											<li>Initialize the mylistener for this peer-to-peer server</li>
 										</ul>
 									</dd>
 								</dl>
@@ -709,7 +821,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L206">p2p.ts:206</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L243">p2p.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -738,7 +850,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L198">p2p.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L235">p2p.ts:235</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -767,7 +879,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L235">p2p.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L272">p2p.ts:272</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -787,6 +899,40 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removepeer" class="tsd-anchor"></a>
+					<h3>remove<wbr>Peer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Peer<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L365">p2p.ts:365</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>description</dt>
+									<dd><ul>
+											<li>Remove a peer from me</li>
+										</ul>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>url: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="responsechainmsg" class="tsd-anchor"></a>
 					<h3>response<wbr>Chain<wbr>Msg</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -796,7 +942,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L214">p2p.ts:214</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L251">p2p.ts:251</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -816,23 +962,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="responselatestmsg" class="tsd-anchor"></a>
-					<h3>response<wbr>Latest<wbr>Msg</h3>
+					<a name="responselatestblockmsg" class="tsd-anchor"></a>
+					<h3>response<wbr>Latest<wbr>Block<wbr>Msg</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">response<wbr>Latest<wbr>Msg<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_p2p_.message.html" class="tsd-signature-type">Message</a></li>
+						<li class="tsd-signature tsd-kind-icon">response<wbr>Latest<wbr>Block<wbr>Msg<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_p2p_.message.html" class="tsd-signature-type">Message</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L224">p2p.ts:224</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L261">p2p.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<dl class="tsd-comment-tags">
 									<dt>description</dt>
 									<dd><ul>
-											<li>Gets the Message object for the RESPONSE_BLCOKCHAIN.</li>
+											<li>Gets the Message object for the RESPONSE_BLOCKCHAIN.</li>
 										</ul>
 									</dd>
 								</dl>
@@ -854,7 +1000,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L246">p2p.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L283">p2p.ts:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -883,7 +1029,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/ca204a2/src/p2p.ts#L182">p2p.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/p2p.ts#L219">p2p.ts:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -923,12 +1069,6 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_balance_.html">&quot;balance&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_block_.html">&quot;block&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
 						<a href="../modules/_blockchain_.html">&quot;blockchain&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -938,16 +1078,37 @@
 						<a href="../modules/_httpserver_.html">&quot;httpserver&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_node_.html">&quot;node&quot;</a>
+						<a href="../modules/_models_balance_.html">&quot;models/balance&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_node_peers_.html">&quot;node-<wbr>peers&quot;</a>
+						<a href="../modules/_models_block_.html">&quot;models/block&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_block_candidate_.html">&quot;models/block-<wbr>candidate&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_from_miner_request_.html">&quot;models/from-<wbr>miner-<wbr>request&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_node_peers_.html">&quot;models/node-<wbr>peers&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_send_transaction_request_.html">&quot;models/send-<wbr>transaction-<wbr>request&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_signature_.html">&quot;models/signature&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_transaction_.html">&quot;models/transaction&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_models_validation_message_.html">&quot;models/validation-<wbr>message&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_node_.html">&quot;node&quot;</a>
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/_p2p_.html">&quot;p2p&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_transaction_.html">&quot;transaction&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -971,10 +1132,16 @@
 								<a href="_p2p_.p2p.html#blockchain" class="tsd-kind-icon">blockchain</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_p2p_.p2p.html#listenerport" class="tsd-kind-icon">listener<wbr>Port</a>
+								<a href="_p2p_.p2p.html#mylistenerhost" class="tsd-kind-icon">mylistener<wbr>Host</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_p2p_.p2p.html#peers" class="tsd-kind-icon">peers</a>
+								<a href="_p2p_.p2p.html#mylistenerport" class="tsd-kind-icon">mylistener<wbr>Port</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_p2p_.p2p.html#mylistenerurl" class="tsd-kind-icon">mylistener<wbr>Url</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_p2p_.p2p.html#peersmap" class="tsd-kind-icon">peers<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_p2p_.p2p.html#sockets" class="tsd-kind-icon">sockets</a>
@@ -983,13 +1150,19 @@
 								<a href="_p2p_.p2p.html#jsontoobject" class="tsd-kind-icon">JSONTo<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_p2p_.p2p.html#addpeer" class="tsd-kind-icon">add<wbr>Peer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_p2p_.p2p.html#broadcasttransactionpool" class="tsd-kind-icon">broad<wbr>Cast<wbr>Transaction<wbr>Pool</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_p2p_.p2p.html#broadcast" class="tsd-kind-icon">broadcast</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_p2p_.p2p.html#broadcastlatest" class="tsd-kind-icon">broadcast<wbr>Latest</a>
+								<a href="_p2p_.p2p.html#broadcastlatestblocktoothernodes" class="tsd-kind-icon">broadcast<wbr>Latest<wbr>Block<wbr>ToOther<wbr>Nodes</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_p2p_.p2p.html#broadcastnewblockchaintoothernodes" class="tsd-kind-icon">broadcast<wbr>New<wbr>Blockchain<wbr>ToOther<wbr>Nodes</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_p2p_.p2p.html#connecttopeer" class="tsd-kind-icon">connect<wbr>ToPeer</a>
@@ -1031,10 +1204,13 @@
 								<a href="_p2p_.p2p.html#querytransactionpoolmsg" class="tsd-kind-icon">query<wbr>Transaction<wbr>Pool<wbr>Msg</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_p2p_.p2p.html#removepeer" class="tsd-kind-icon">remove<wbr>Peer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_p2p_.p2p.html#responsechainmsg" class="tsd-kind-icon">response<wbr>Chain<wbr>Msg</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_p2p_.p2p.html#responselatestmsg" class="tsd-kind-icon">response<wbr>Latest<wbr>Msg</a>
+								<a href="_p2p_.p2p.html#responselatestblockmsg" class="tsd-kind-icon">response<wbr>Latest<wbr>Block<wbr>Msg</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_p2p_.p2p.html#responsetransactionpoolmsg" class="tsd-kind-icon">response<wbr>Transaction<wbr>Pool<wbr>Msg</a>
@@ -1062,6 +1238,7 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

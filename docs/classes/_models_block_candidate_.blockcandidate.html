@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Node | node</title>
+	<title>BlockCandidate | node</title>
 	<meta name="description" content="Documentation for node">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_node_.html">&quot;node&quot;</a>
+					<a href="../modules/_models_block_candidate_.html">&quot;models/block-candidate&quot;</a>
 				</li>
 				<li>
-					<a href="_node_.node.html">Node</a>
+					<a href="_models_block_candidate_.blockcandidate.html">BlockCandidate</a>
 				</li>
 			</ul>
-			<h1>Class Node</h1>
+			<h1>Class BlockCandidate</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 					<dl class="tsd-comment-tags">
 						<dt>classdesc</dt>
 						<dd><ul>
-								<li>This class is the main of the entire blockchain.  Many of these can be run as peers.</li>
+								<li>contains the fields expected by the miner</li>
 							</ul>
 						</dd>
 					</dl>
@@ -84,7 +84,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Node</span>
+						<span class="target">BlockCandidate</span>
 					</li>
 				</ul>
 			</section>
@@ -95,19 +95,16 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_node_.node.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_models_block_candidate_.blockcandidate.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#blockchain" class="tsd-kind-icon">blockchain</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#config" class="tsd-kind-icon">config</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#httpport" class="tsd-kind-icon">http<wbr>Port</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#httpserver" class="tsd-kind-icon">http<wbr>Server</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#initialpeers" class="tsd-kind-icon">initial<wbr>Peers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#p2p" class="tsd-kind-icon">p2p</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_node_.node.html#p2pport" class="tsd-kind-icon">p2p<wbr>Port</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_block_candidate_.blockcandidate.html#blockdatahash" class="tsd-kind-icon">block<wbr>Data<wbr>Hash</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_block_candidate_.blockcandidate.html#difficulty" class="tsd-kind-icon">difficulty</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_block_candidate_.blockcandidate.html#expectedreward" class="tsd-kind-icon">expected<wbr>Reward</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_models_block_candidate_.blockcandidate.html#rewardaddress" class="tsd-kind-icon">reward<wbr>Address</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,31 +116,18 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Node<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_node_.node.html" class="tsd-signature-type">Node</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Block<wbr>Candidate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_models_block_candidate_.blockcandidate.html" class="tsd-signature-type">BlockCandidate</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L39">node.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/models/block-candidate.ts#L21">models/block-candidate.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>description</dt>
-									<dd><ul>
-											<li>This constructor sets up the http and p2p servers and listens on their respective ports</li>
-										</ul>
-									</dd>
-								</dl>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>args: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_node_.node.html" class="tsd-signature-type">Node</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_models_block_candidate_.blockcandidate.html" class="tsd-signature-type">BlockCandidate</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -151,133 +135,76 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="blockchain" class="tsd-anchor"></a>
-					<h3>blockchain</h3>
-					<div class="tsd-signature tsd-kind-icon">blockchain<span class="tsd-signature-symbol">:</span> <a href="_blockchain_.blockchain.html" class="tsd-signature-type">BlockChain</a></div>
+					<a name="blockdatahash" class="tsd-anchor"></a>
+					<h3>block<wbr>Data<wbr>Hash</h3>
+					<div class="tsd-signature tsd-kind-icon">block<wbr>Data<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L15">node.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/models/block-candidate.ts#L21">models/block-candidate.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>the entire blockchain</li>
+									<li>calculated by the miner.</li>
 								</ul>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="config" class="tsd-anchor"></a>
-					<h3>config</h3>
-					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="_config_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol"> = new Config()</span></div>
+					<a name="difficulty" class="tsd-anchor"></a>
+					<h3>difficulty</h3>
+					<div class="tsd-signature tsd-kind-icon">difficulty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L27">node.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/models/block-candidate.ts#L9">models/block-candidate.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>configuration object</li>
+									<li>difficulty of this block</li>
 								</ul>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="httpport" class="tsd-anchor"></a>
-					<h3>http<wbr>Port</h3>
-					<div class="tsd-signature tsd-kind-icon">http<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.HTTP_PORT) || this.config.defaultServerPort</span></div>
+					<a name="expectedreward" class="tsd-anchor"></a>
+					<h3>expected<wbr>Reward</h3>
+					<div class="tsd-signature tsd-kind-icon">expected<wbr>Reward<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L31">node.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/models/block-candidate.ts#L13">models/block-candidate.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>http port for the http server</li>
+									<li>expected reward.</li>
 								</ul>
 							</dd>
 						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="httpserver" class="tsd-anchor"></a>
-					<h3>http<wbr>Server</h3>
-					<div class="tsd-signature tsd-kind-icon">http<wbr>Server<span class="tsd-signature-symbol">:</span> <a href="_httpserver_.httpserver.html" class="tsd-signature-type">HttpServer</a></div>
+					<a name="rewardaddress" class="tsd-anchor"></a>
+					<h3>reward<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">reward<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L23">node.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/models/block-candidate.ts#L17">models/block-candidate.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>description</dt>
 							<dd><ul>
-									<li>the http server that responds to http requests</li>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="initialpeers" class="tsd-anchor"></a>
-					<h3>initial<wbr>Peers</h3>
-					<div class="tsd-signature tsd-kind-icon">initial<wbr>Peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = process.env.PEERS ? process.env.PEERS.split(&#x27;,&#x27;) : []</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L39">node.ts:39</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>description</dt>
-							<dd><ul>
-									<li>comma separated list of peer urls.</li>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="p2p" class="tsd-anchor"></a>
-					<h3>p2p</h3>
-					<div class="tsd-signature tsd-kind-icon">p2p<span class="tsd-signature-symbol">:</span> <a href="_p2p_.p2p.html" class="tsd-signature-type">P2P</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L19">node.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>description</dt>
-							<dd><ul>
-									<li>the peer-to-peer server</li>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="p2pport" class="tsd-anchor"></a>
-					<h3>p2p<wbr>Port</h3>
-					<div class="tsd-signature tsd-kind-icon">p2p<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/APDF-blockchain/node/blob/a26da1a/src/node.ts#L35">node.ts:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>description</dt>
-							<dd><ul>
-									<li>p2p port number for the p2p server</li>
+									<li>reward address</li>
 								</ul>
 							</dd>
 						</dl>
@@ -306,7 +233,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_models_block_.html">&quot;models/block&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_models_block_candidate_.html">&quot;models/block-<wbr>candidate&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -327,7 +254,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_models_validation_message_.html">&quot;models/validation-<wbr>message&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_node_.html">&quot;node&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -340,45 +267,27 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_node_.node.html" class="tsd-kind-icon">Node</a>
+						<a href="_models_block_candidate_.blockcandidate.html" class="tsd-kind-icon">Block<wbr>Candidate</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_node_.node.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_models_block_candidate_.blockcandidate.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#blockchain" class="tsd-kind-icon">blockchain</a>
+								<a href="_models_block_candidate_.blockcandidate.html#blockdatahash" class="tsd-kind-icon">block<wbr>Data<wbr>Hash</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#config" class="tsd-kind-icon">config</a>
+								<a href="_models_block_candidate_.blockcandidate.html#difficulty" class="tsd-kind-icon">difficulty</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#httpport" class="tsd-kind-icon">http<wbr>Port</a>
+								<a href="_models_block_candidate_.blockcandidate.html#expectedreward" class="tsd-kind-icon">expected<wbr>Reward</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#httpserver" class="tsd-kind-icon">http<wbr>Server</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#initialpeers" class="tsd-kind-icon">initial<wbr>Peers</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#p2p" class="tsd-kind-icon">p2p</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_node_.node.html#p2pport" class="tsd-kind-icon">p2p<wbr>Port</a>
+								<a href="_models_block_candidate_.blockcandidate.html#rewardaddress" class="tsd-kind-icon">reward<wbr>Address</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_node_.html#args" class="tsd-kind-icon">args</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_node_.html#run" class="tsd-kind-icon">run</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_node_.html#getargs" class="tsd-kind-icon">get<wbr>Args</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
