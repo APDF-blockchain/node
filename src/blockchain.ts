@@ -794,13 +794,13 @@ export class BlockChain {
 
     /**
      * @description - get all the transctions for the from address.
-     * @param {string} fromAddress 
+     * @param {string} address 
      */
-    public getTransactions(fromAddress: string): Transaction[] {
+    public getTransactions(address: string): Transaction[] {
     let rVal: Transaction[] = [];
     let _aTrans: Transaction[] = this.getAllTransactions();
     for (let i = 0; i < _aTrans.length; i++) {
-        if (_aTrans[i].from === fromAddress) {
+        if (_aTrans[i].from === address || _aTrans[i].to === address) {
             rVal.push(_aTrans[i]);
         }
     }
