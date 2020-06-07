@@ -22,7 +22,7 @@ class Node {
         /**
          * @description - http port for the http server
          */
-        this.httpPort = parseInt(process.env.HTTP_PORT) || this.config.defaultServerPort;
+        this.httpPort = parseInt(process.env.PORT) || this.config.defaultServerPort;
         /**
          * @description - p2p port number for the p2p server
          */

@@ -1,1 +1,1 @@
-web: HTTP_PORT=3001 P2P_PORT=6001 node dist/node.js
+web: node dist/node.js
