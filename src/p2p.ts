@@ -62,7 +62,7 @@ export class P2P {
     * @param {Block[]} blockchain - The blockchain.
     */
     constructor(private blockchain: BlockChain) {
-        this.mylistenerHost = 'localhost';
+        this.mylistenerHost = process.env.NODE_ENV === 'production' ? 'https://awesome-blockchain-node.herokuapp.com' : 'localhost';
     }
 
     /**
