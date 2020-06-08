@@ -1022,7 +1022,8 @@ export class BlockChain {
         let _cumulativeDifficulty: number = 0;
         for (let i = 0; i < _blockchain.length; i++) {
             //_cumulativeDifficulty += 16 ** _blockchain[i].difficulty;
-            _cumulativeDifficulty += Math.pow(16, _blockchain[i].difficulty);
+            //_cumulativeDifficulty += Math.pow(16, _blockchain[i].difficulty);
+            _cumulativeDifficulty += Math.pow(2, _blockchain[i].difficulty);
             //.map((difficulty) => Math.pow(2, difficulty))
         }
         return _cumulativeDifficulty;
