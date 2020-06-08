@@ -86,7 +86,7 @@ export class P2P {
      */
     public initP2PServer(p2pPort: number) {
         this.mylistenerPort = p2pPort;
-        this.mylistenerUrl = 'ws://' + this.mylistenerHost + '/stream';
+        this.mylistenerUrl = 'ws://' + this.mylistenerHost + ':' + '6001';
         console.log('*************************************** ', this.mylistenerUrl);
         const server: Server = new WebSocket.Server({ host: this.mylistenerHost, port: p2pPort });
         server.on('connection', (ws: WebSocket, req: Request) => {
