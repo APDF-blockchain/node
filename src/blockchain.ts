@@ -123,8 +123,8 @@ export class BlockChain {
                 + transaction.fee
                 + transaction.data
                 + transaction.senderPubKey
-                )
-            ).toString();
+            )
+        ).toString();
         sigArr.push(sig.rVal, sig.sVal);
         transaction.senderSignature = sigArr
         // transaction = this.signTransaction(transaction, this.config.nullPrivateKey);
@@ -161,28 +161,6 @@ export class BlockChain {
      */
     public setP2PService(p2p: P2P) {
         this.p2p = p2p;
-    }
-
-    /**
-     * @description - adjust the block mining difficulty
-     */
-    public adjustMiningDifficulty(): void {
-        // I believe the times are in millseconds.
-        let _blocks: Block[] = this.getBlockchain();
-        let pTime: number = this.getGenesisBlock().timestamp;
-        let cTime: number = this.getGenesisBlock().timestamp;
-        let sTime: number = 0;
-        for (let i = 0; i < _blocks.length; i++) {
-            cTime = _blocks[i].timestamp;
-            sTime += cTime - pTime;
-            pTime = cTime;
-        }
-        let average: number = sTime / this.getBlocksCount();
-        if (average <= this.config.targetBlockTime) {
-            this.difficulty++;
-        } else if (this.difficulty > 1) {
-            this.difficulty--;
-        }
     }
 
     /**
@@ -720,92 +698,92 @@ export class BlockChain {
      * @returns {ValidationMessage} - a message of success if good.
      */
     public validateReceivedTransaction(transaction: Transaction): ValidationMessage {
-    /**
-     * Send Transactions
-        + For each received transaction the Node does the following:
-            o Checks for missing / invalid fields / invalid field values
-            o Calculates the transaction data hash (unique transaction
-                o Checks for collisions -> duplicated transactions are skipped
-            o Validates the transaction public key , validates the signature
-            o Checks the sender account balance to be >= value + fee
-            o Checks whether value >= 0 and fee > 10 (min fee)
-            o Puts the transaction in the "pending transactions " pool
-            o Sends the transaction to all peer nodes through the REST API
-                o It goes from peer to peer until it reaches the entire network
-    */
-    let message: ValidationMessage = new ValidationMessage();
-    message.message = 'success';
-    let validateFields: ValidationMessage = this.validateTransactionFields(transaction);
-    if (validateFields.message !== 'success') {
-        return validateFields;
-    }
-    let validateDups: ValidationMessage = new ValidationMessage();
-    let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
-    let allTrans: Transaction[] = this.getAllTransactions();
-    for (let i = 0; i < allTrans.length; i++) {
-        let _ltransactionDataHash: string = allTrans[i].transactionDataHash;
-        if (_ltransactionDataHash === _transactionDataHash) {
-            console.log('BlockChain.validateReceivedTransactions(): Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash);
-            validateDups.message = 'Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash;
-            return validateDups;
+        /**
+         * Send Transactions
+            + For each received transaction the Node does the following:
+                o Checks for missing / invalid fields / invalid field values
+                o Calculates the transaction data hash (unique transaction
+                    o Checks for collisions -> duplicated transactions are skipped
+                o Validates the transaction public key , validates the signature
+                o Checks the sender account balance to be >= value + fee
+                o Checks whether value >= 0 and fee > 10 (min fee)
+                o Puts the transaction in the "pending transactions " pool
+                o Sends the transaction to all peer nodes through the REST API
+                    o It goes from peer to peer until it reaches the entire network
+        */
+        let message: ValidationMessage = new ValidationMessage();
+        message.message = 'success';
+        let validateFields: ValidationMessage = this.validateTransactionFields(transaction);
+        if (validateFields.message !== 'success') {
+            return validateFields;
         }
-    }
+        let validateDups: ValidationMessage = new ValidationMessage();
+        let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
+        let allTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < allTrans.length; i++) {
+            let _ltransactionDataHash: string = allTrans[i].transactionDataHash;
+            if (_ltransactionDataHash === _transactionDataHash) {
+                console.log('BlockChain.validateReceivedTransactions(): Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash);
+                validateDups.message = 'Duplicate tranaction skipped for transactionDataHash=' + transaction.transactionDataHash;
+                return validateDups;
+            }
+        }
 
-    // TODO: Validates the transaction public key , validates the signature
-    if (this.isValidSignature(transaction) === false) {
-        message.message = 'Invalid signature for transaction ' + transaction.transactionDataHash + ' contents:' + JSON.stringify(transaction);
+        // TODO: Validates the transaction public key , validates the signature
+        if (this.isValidSignature(transaction) === false) {
+            message.message = 'Invalid signature for transaction ' + transaction.transactionDataHash + ' contents:' + JSON.stringify(transaction);
+            return message;
+        }
+
+        let rBalance: Balance = this.getAccountBalance(transaction.from);
+        if (rBalance === null) {
+            message.message = 'Sender address has no balance.';
+            return message;
+        }
+        if (transaction.from !== this.config.nullAddress && (rBalance.confirmedBalance + rBalance.safeBalance) < transaction.value + transaction.fee) {
+            message.message = 'Sender does not have enough funds to complete the transaction';
+        }
+        if (transaction.value < 0) {
+            message.message = 'Transaction value must be greater than or equal to 0';
+        }
+        if (transaction.from !== this.config.nullAddress && transaction.fee < 10) {
+            message.message = 'Transaction fee is not greater than or equal to 10 micro-coins';
+        }
         return message;
     }
-
-    let rBalance: Balance = this.getAccountBalance(transaction.from);
-    if (rBalance === null) {
-        message.message = 'Sender address has no balance.';
-        return message;
-    }
-    if (rBalance.confirmedBalance < transaction.value + transaction.fee) {
-        message.message = 'Sender does not have enough funds to complete the transaction';
-    }
-    if (transaction.value < 0) {
-        message.message = 'Transaction value must be greater than or equal to 0';
-    }
-    if (transaction.from !== this.config.nullAddress && transaction.fee < 10) {
-        message.message = 'Transaction fee is not greater than or equal to 10 micro-coins';
-    }
-    return message;
-}
 
     /**
      * @description - get the latest block in the blockchain
      * @returns {Block} latestBlock
      */
     public getLatestBlock(): Block {
-    let latestBlock: Block = this.getBlockchain()[this.getBlockchain().length - 1];
-    return latestBlock;
-}
+        let latestBlock: Block = this.getBlockchain()[this.getBlockchain().length - 1];
+        return latestBlock;
+    }
 
     /**
      * @description - get the array of pending transactions
      * @returns {Transaction[]} transactions
      */
     public getTransactionPool(): Transaction[] {
-    let rVal: Transaction[] = this.transactionsPool;
-    return rVal;
-}
+        let rVal: Transaction[] = this.transactionsPool;
+        return rVal;
+    }
 
     /**
      * @description - get all the transctions for the from address.
      * @param {string} address 
      */
     public getTransactions(address: string): Transaction[] {
-    let rVal: Transaction[] = [];
-    let _aTrans: Transaction[] = this.getAllTransactions();
-    for (let i = 0; i < _aTrans.length; i++) {
-        if (_aTrans[i].from === address || _aTrans[i].to === address) {
-            rVal.push(_aTrans[i]);
+        let rVal: Transaction[] = [];
+        let _aTrans: Transaction[] = this.getAllTransactions();
+        for (let i = 0; i < _aTrans.length; i++) {
+            if (_aTrans[i].from === address || _aTrans[i].to === address) {
+                rVal.push(_aTrans[i]);
+            }
         }
+        return rVal;
     }
-    return rVal;
-}
 
     /**
      * @description - check to see if the block structure is valid
@@ -813,17 +791,17 @@ export class BlockChain {
      * @returns {boolean}
      */
     public isValidBlockStructure(latestBlockReceived: Block): boolean {
-    let rVal: boolean = false;
-    rVal = typeof latestBlockReceived.blockDataHash === 'string'
-        && typeof latestBlockReceived.blockHash === 'string'
-        && typeof latestBlockReceived.difficulty === 'number'
-        && typeof latestBlockReceived.index === 'number'
-        && typeof latestBlockReceived.minedBy === 'string'
-        && typeof latestBlockReceived.nonce === 'number'
-        && typeof latestBlockReceived.timestamp === 'number'
-        && typeof latestBlockReceived.transactions === 'object';
-    return rVal;
-}
+        let rVal: boolean = false;
+        rVal = typeof latestBlockReceived.blockDataHash === 'string'
+            && typeof latestBlockReceived.blockHash === 'string'
+            && typeof latestBlockReceived.difficulty === 'number'
+            && typeof latestBlockReceived.index === 'number'
+            && typeof latestBlockReceived.minedBy === 'string'
+            && typeof latestBlockReceived.nonce === 'number'
+            && typeof latestBlockReceived.timestamp === 'number'
+            && typeof latestBlockReceived.transactions === 'object';
+        return rVal;
+    }
 
     /**
      * @description - add the given block to the blockchain
@@ -831,56 +809,56 @@ export class BlockChain {
      * @returns {boolean}
      */
     public addBlockToChain(latestBlockReceived: Block): boolean {
-    if (latestBlockReceived.index !== this.getLatestBlock().index) { // Make sure the new block's index is not the same as the current block height
-        // It is not, so attempt to add it to this chain.
-        if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
-            this.processTransactions(latestBlockReceived);
-            // if (this.processTransactions(latestBlockReceived) === false) {
-            //     console.log('BlockChain.addBlockToChain(): prcessTransactions() failed');
-            //     return false;
-            // }
-            this.blockchain.push(latestBlockReceived);
-            // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
-            // this.updateTransactionPool(_unspentTransactions);
-            return true;
+        if (latestBlockReceived.index !== this.getLatestBlock().index) { // Make sure the new block's index is not the same as the current block height
+            // It is not, so attempt to add it to this chain.
+            if (this.isValidNewBlock(latestBlockReceived, this.getLatestBlock())) {
+                this.processTransactions(latestBlockReceived);
+                // if (this.processTransactions(latestBlockReceived) === false) {
+                //     console.log('BlockChain.addBlockToChain(): prcessTransactions() failed');
+                //     return false;
+                // }
+                this.blockchain.push(latestBlockReceived);
+                // this.setUnspentTransactionOuts(this.getUnspentTransactionOuts());
+                // this.updateTransactionPool(_unspentTransactions);
+                return true;
+            }
         }
+        console.log('BlockChain.addBlockToChain(): new block index is the same as the last block');
+        return false;
     }
-    console.log('BlockChain.addBlockToChain(): new block index is the same as the last block');
-    return false;
-}
 
     /**
      * @description - process the transaction for the given block
      * @param latestBlockReceived - block to have the transactions processed
      */
     public processTransactions(latestBlockReceived: Block): void {
-    //throw new Error("Method not implemented.");
-    /**
-     * Process transactions means.
-     * 1. mark successfull if good signature and the from balance > value + fee -- call this.validateRecievedTransaction()
-     * 2. push into this.blockchain.blockchain.
-     * 3. remove from pending list. 
-     * 
-     */
-    let _blockTransactions: Transaction[] = latestBlockReceived.transactions;
-    for(let i = 0; i <_blockTransactions.length; i++) {
-    let message: ValidationMessage = this.validateReceivedTransaction(_blockTransactions[i]);
-    console.log('BlockChain.processTransactions(): message=', message.message);
-    if (message.message === 'success') {
-        _blockTransactions[i].transferSuccessful = true;
-        _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
-    } else {
-        console.log('BlockChain.processTransactions(): transaction did not validate for transaction=', _blockTransactions[i].data);
-    }
-    // Removed this transaction from the pending transactions list.
-    for (let j = 0; j < this.getPendingTransactions().length; j++) {
-        console.log('BlockChain.processTransactions(): _blockTransactions[' + i + '].transactionDataHash=' + _blockTransactions[i].transactionDataHash);
-        console.log('BlockChain.processTransactions(): pendingTransactions[' + j + '].transactionDataHash=' + this.getPendingTransactions()[j].transactionDataHash);
-        if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
-            this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
+        //throw new Error("Method not implemented.");
+        /**
+         * Process transactions means.
+         * 1. mark successfull if good signature and the from balance > value + fee -- call this.validateRecievedTransaction()
+         * 2. push into this.blockchain.blockchain.
+         * 3. remove from pending list. 
+         * 
+         */
+        let _blockTransactions: Transaction[] = latestBlockReceived.transactions;
+        for (let i = 0; i < _blockTransactions.length; i++) {
+            let message: ValidationMessage = this.validateReceivedTransaction(_blockTransactions[i]);
+            console.log('BlockChain.processTransactions(): message=', message.message);
+            if (message.message === 'success') {
+                _blockTransactions[i].transferSuccessful = true;
+                _blockTransactions[i].minedInBlockIndex = latestBlockReceived.index;
+            } else {
+                console.log('BlockChain.processTransactions(): transaction did not validate for transaction=', _blockTransactions[i].data);
+            }
+            // Removed this transaction from the pending transactions list.
+            for (let j = 0; j < this.getPendingTransactions().length; j++) {
+                console.log('BlockChain.processTransactions(): _blockTransactions[' + i + '].transactionDataHash=' + _blockTransactions[i].transactionDataHash);
+                console.log('BlockChain.processTransactions(): pendingTransactions[' + j + '].transactionDataHash=' + this.getPendingTransactions()[j].transactionDataHash);
+                if (_blockTransactions[i].transactionDataHash === this.getPendingTransactions()[j].transactionDataHash) {
+                    this.getPendingTransactions().splice(j, 1); // delete the matching transaction from the pending transactions list.
+                }
+            }
         }
-    }
-}
     }
 
     /**
@@ -888,66 +866,66 @@ export class BlockChain {
      * @param {Block[]} receivedBlocks 
      */
     public replaceChain(receivedBlocks: Block[]): void {
-    /**
-     * 
-    Synchronizing the Chain & Pending Txs
-        Synchronizing the chain from certain peer
-            First get /info and check the peer's chain cumulative difficulty
-            If the peer chain has bigger difficulty, download it from /blocks
-            Validate the downloaded peer chain (blocks, transactions, etc.)
-            If the peer chain is valid, replace the current chain with it
-            Notify all peers about the new chain
-        Synchronizing the pending transactions from certain peer
-            Download /transactions/pending and append the missing ones
-            Transactions with the same hash should never be duplicated
-
-    Validating a Chain
-        When a chain is downloaded from a peer, it needs be validated
-        Validate the genesis block -> should be exactly the same
-        Validate each block from the first to the last
-            Validate that all block fields are present and have valid values
-            Validate the transactions in the block
-                Validate transaction fields and their values , recalculate the transaction data
-                hash , validate the signature
-            Re-execute all transactions, re calculate the values of minedInBlockIndex and
-            transferSuccessful fields
-
-        Validate each block from the first to the last (cont.)
-            Re-calculate the block data hash and block hash for each block
-            Ensure the block hash matches the block difficulty
-            Validate that prevBlockHash == the hash of the previous block
-        Re-calculate the cumulative difficulty of the incoming chain
-        If the cumulative difficulty > current cumulative difficulty
-            Replace the current chain with the incoming chain
-            Clear all current mining jobs (because they are invalid)
-     */
-    // TODO: Need to write this.
-    if(this.getCumulativeDifficulty(this.getBlockchain()) < this.getCumulativeDifficulty(receivedBlocks)) {
-    // Get ready to replace this node's blockchain.
-    /**
-     * Validate the peer chain (blocks, transactions, etc.)
-     * If valid, then replace the current chain with the peer's chain.
-     * Notify all the other peers about the new chain.
-     */
-    let _success: boolean;
-    _success = this.isValidPeerChain(receivedBlocks);
-    if (_success !== false) {
-        for (let i = 0; i < receivedBlocks.length; i++) {
-            this.processTransactions(receivedBlocks[i]);
-            // _success = this.processTransactions(receivedBlocks[i]);
-            // if (_success === false) {
-            //     console.log('BlockChain.replaceChain(): unable to process transactions');
-            //     return;
-            // }
+        /**
+         * 
+        Synchronizing the Chain & Pending Txs
+            Synchronizing the chain from certain peer
+                First get /info and check the peer's chain cumulative difficulty
+                If the peer chain has bigger difficulty, download it from /blocks
+                Validate the downloaded peer chain (blocks, transactions, etc.)
+                If the peer chain is valid, replace the current chain with it
+                Notify all peers about the new chain
+            Synchronizing the pending transactions from certain peer
+                Download /transactions/pending and append the missing ones
+                Transactions with the same hash should never be duplicated
+    
+        Validating a Chain
+            When a chain is downloaded from a peer, it needs be validated
+            Validate the genesis block -> should be exactly the same
+            Validate each block from the first to the last
+                Validate that all block fields are present and have valid values
+                Validate the transactions in the block
+                    Validate transaction fields and their values , recalculate the transaction data
+                    hash , validate the signature
+                Re-execute all transactions, re calculate the values of minedInBlockIndex and
+                transferSuccessful fields
+    
+            Validate each block from the first to the last (cont.)
+                Re-calculate the block data hash and block hash for each block
+                Ensure the block hash matches the block difficulty
+                Validate that prevBlockHash == the hash of the previous block
+            Re-calculate the cumulative difficulty of the incoming chain
+            If the cumulative difficulty > current cumulative difficulty
+                Replace the current chain with the incoming chain
+                Clear all current mining jobs (because they are invalid)
+         */
+        // TODO: Need to write this.
+        if (this.getCumulativeDifficulty(this.getBlockchain()) < this.getCumulativeDifficulty(receivedBlocks)) {
+            // Get ready to replace this node's blockchain.
+            /**
+             * Validate the peer chain (blocks, transactions, etc.)
+             * If valid, then replace the current chain with the peer's chain.
+             * Notify all the other peers about the new chain.
+             */
+            let _success: boolean;
+            _success = this.isValidPeerChain(receivedBlocks);
+            if (_success !== false) {
+                for (let i = 0; i < receivedBlocks.length; i++) {
+                    this.processTransactions(receivedBlocks[i]);
+                    // _success = this.processTransactions(receivedBlocks[i]);
+                    // if (_success === false) {
+                    //     console.log('BlockChain.replaceChain(): unable to process transactions');
+                    //     return;
+                    // }
+                }
+                this.blockchain = receivedBlocks;
+                this.p2p.broadcastLatestBlockToOtherNodes();
+            } else {
+                console.log('BlockChain.replaceChain(): Received blockchain did not validate');
+            }
+        } else {
+            console.log('BlockChain.replaceChain(): Received blockchain is valid');
         }
-        this.blockchain = receivedBlocks;
-        this.p2p.broadcastLatestBlockToOtherNodes();
-    } else {
-        console.log('BlockChain.replaceChain(): Received blockchain did not validate');
-    }
-} else {
-    console.log('BlockChain.replaceChain(): Received blockchain is valid');
-}
     }
 
     /**
@@ -956,8 +934,8 @@ export class BlockChain {
      * @returns {boolean}
      */
     private isValidGenesisBlock(peerGenesisBlock: Block): boolean {
-    return JSON.stringify(peerGenesisBlock) === JSON.stringify(this.getGenesisBlock());
-}
+        return JSON.stringify(peerGenesisBlock) === JSON.stringify(this.getGenesisBlock());
+    }
 
     /**
      * @description - validate the blocks in the given blockchain
@@ -965,49 +943,90 @@ export class BlockChain {
      * @returns {boolean} 
      */
     private isValidPeerChain(peerChain: Block[]): boolean {
-    if (this.isValidGenesisBlock(peerChain[0]) === false) {
-        return null;
-    }
-    for (let i = 0; i < peerChain.length; i++) {
-        const currentBlock: Block = peerChain[i];
-        if (i !== 0 && !this.isValidNewBlock(currentBlock, peerChain[i - 1])) {
-            return false;
+        if (this.isValidGenesisBlock(peerChain[0]) === false) {
+            return null;
         }
+        for (let i = 0; i < peerChain.length; i++) {
+            const currentBlock: Block = peerChain[i];
+            if (i !== 0 && !this.isValidNewBlock(currentBlock, peerChain[i - 1])) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
-}
     /**
      * @description - get the current difficulty
      * @returns {number} current difficulty
      */
     public getCurrentDifficulty(): number {
-    return this.difficulty;
-}
+        return this.difficulty;
+    }
+
+    /**
+     * @description - adjust the block mining difficulty
+     */
+    public adjustMiningDifficulty(): void {
+        // I believe the times are in millseconds.
+        if (this.getBlocksCount() > 2) {
+            const previousBlockTimestamp: number = this.blockchain[this.blockchain.length - 2].timestamp;
+            const currentBlockTimestamp: number = this.getLatestBlock().timestamp;
+            let difftime: number = Math.round((currentBlockTimestamp - previousBlockTimestamp)/1000);
+            if (difftime <= this.config.targetBlockTime) {
+                this.difficulty++;
+            } else if (this.difficulty > 1) {
+                this.difficulty--;
+            }
+        } else {
+            this.difficulty = 1;
+        }
+    }
+    // /**
+    //  * @description - adjust the block mining difficulty
+    //  */
+    // public adjustMiningDifficulty(): void {
+    //     // I believe the times are in millseconds.
+    //     let _blocks: Block[] = this.getBlockchain();
+    //     let pTime: number = this.getGenesisBlock().timestamp;
+    //     let cTime: number = this.getGenesisBlock().timestamp;
+    //     let sTime: number = 0;
+    //     for (let i = 0; i < _blocks.length; i++) {
+    //         cTime = _blocks[i].timestamp;
+    //         sTime += (cTime - pTime);
+    //         pTime = cTime;
+    //     }
+    //     let average: number = sTime / this.getBlocksCount();
+    //     if (average <= this.config.targetBlockTime) {
+    //         this.difficulty++;
+    //     } else if (this.difficulty > 1) {
+    //         this.difficulty--;
+    //     }
+    // }
+
 
     /**
      * @description - get the cumulative difficulty
      * @returns {number} cumulative difficulty
      */
     public getCumulativeDifficulty(_blockchain: Block[]): number {
-    // TODO: How does this get calculated?
-    /**
-     * Calculating the Cumulative Difficulty
-        Difficulty 0 == 0 leading zeroes -> every hash works well
-        Difficulty 1 == 1 leading zero -> 1/16 of hashes work
-        Difficulty 2 == 2 leading zero -> 1/256 of hashes work
-        Conclusion: difficulty p is 16 times more difficult than p 1
-        Cumulative difficulty == how much effort is spent to calculate it
-            cumulativeDifficulty == 16 ^ d 0 + 16 ^ d 1 + … 16 ^ d n
-            where d 0 , d 1 , … d n are the individual difficulties of the blocks
-    */
-    let _cumulativeDifficulty: number = 0;
-    for (let i = 0; i < _blockchain.length; i++) {
-        //_cumulativeDifficulty += 16 ** _blockchain[i].difficulty;
-        _cumulativeDifficulty += Math.pow(16, _blockchain[i].difficulty);
-        //.map((difficulty) => Math.pow(2, difficulty))
+        // TODO: How does this get calculated?
+        /**
+         * Calculating the Cumulative Difficulty
+            Difficulty 0 == 0 leading zeroes -> every hash works well
+            Difficulty 1 == 1 leading zero -> 1/16 of hashes work
+            Difficulty 2 == 2 leading zero -> 1/256 of hashes work
+            Conclusion: difficulty p is 16 times more difficult than p 1
+            Cumulative difficulty == how much effort is spent to calculate it
+                cumulativeDifficulty == 16 ^ d 0 + 16 ^ d 1 + … 16 ^ d n
+                where d 0 , d 1 , … d n are the individual difficulties of the blocks
+        */
+        let _cumulativeDifficulty: number = 0;
+        for (let i = 0; i < _blockchain.length; i++) {
+            //_cumulativeDifficulty += 16 ** _blockchain[i].difficulty;
+            _cumulativeDifficulty += Math.pow(16, _blockchain[i].difficulty);
+            //.map((difficulty) => Math.pow(2, difficulty))
+        }
+        return _cumulativeDifficulty;
     }
-    return _cumulativeDifficulty;
-}
 
     /**
      * @description - calculate the confirmation count
@@ -1015,12 +1034,12 @@ export class BlockChain {
      * @returns {number} confirmation count
      */
     private calculateConfirmationCount(_transaction: Transaction): number {
-    let rVal: number = 1;
-    let currentBlockHeight: number = this.getBlocksCount();
-    let transactionBlockIndex: number = _transaction.minedInBlockIndex;
-    rVal = currentBlockHeight - transactionBlockIndex + 1;
-    return rVal;
-}
+        let rVal: number = 1;
+        let currentBlockHeight: number = this.getBlocksCount();
+        let transactionBlockIndex: number = _transaction.minedInBlockIndex;
+        rVal = currentBlockHeight - transactionBlockIndex + 1;
+        return rVal;
+    }
 
     /**
      * @description - get the account balances for the given account address 
@@ -1028,51 +1047,51 @@ export class BlockChain {
      * @returns {Balance} balance
      */
     public getAccountBalance(address: string): Balance {
-    let addressExists: boolean = false;
-    let balance: Balance = new Balance();
-    // calculate the balances for this account.
-    balance.accountAddress = address;
-    let myTrans: Transaction[] = this.getAllTransactions();
-    if (myTrans === undefined) {
-        return null;
-    }
-    let confirmedSum: number = 0;
-    let confirmedOneSum: number = 0;
-    let pendingSum: number = 0;
-    for (let i = 0; i < myTrans.length; i++) {
-        if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
-            addressExists = true;
+        let addressExists: boolean = false;
+        let balance: Balance = new Balance();
+        // calculate the balances for this account.
+        balance.accountAddress = address;
+        let myTrans: Transaction[] = this.getAllTransactions();
+        if (myTrans === undefined) {
+            return null;
         }
-        if (myTrans[i].transferSuccessful === true && addressExists) {
-            let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
-            if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
-                if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    confirmedOneSum -= (myTrans[i].value + myTrans[i].fee);
-                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
-                    confirmedOneSum += myTrans[i].value;
-                }
-            } else if (_comfirmationCount >= this.config.safeConfirmCount) {
-                if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    confirmedSum -= (myTrans[i].value + myTrans[i].fee);
-                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
-                    confirmedSum += myTrans[i].value;
-                }
-            } else {
-                if (myTrans[i].from === address && myTrans[i].to !== address) {
-                    pendingSum -= (myTrans[i].value + myTrans[i].fee);
-                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
-                    pendingSum += myTrans[i].value;
+        let confirmedSum: number = 0;
+        let confirmedOneSum: number = 0;
+        let pendingSum: number = 0;
+        for (let i = 0; i < myTrans.length; i++) {
+            if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
+                addressExists = true;
+            }
+            if (myTrans[i].transferSuccessful === true && addressExists) {
+                let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
+                if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        confirmedOneSum -= (myTrans[i].value + myTrans[i].fee);
+                    } else if (myTrans[i].from !== address && myTrans[i].to === address) {
+                        confirmedOneSum += myTrans[i].value;
+                    }
+                } else if (_comfirmationCount >= this.config.safeConfirmCount) {
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        confirmedSum -= (myTrans[i].value + myTrans[i].fee);
+                    } else if (myTrans[i].from !== address && myTrans[i].to === address) {
+                        confirmedSum += myTrans[i].value;
+                    }
+                } else {
+                    if (myTrans[i].from === address && myTrans[i].to !== address) {
+                        pendingSum -= (myTrans[i].value + myTrans[i].fee);
+                    } else if (myTrans[i].from !== address && myTrans[i].to === address) {
+                        pendingSum += myTrans[i].value;
+                    }
                 }
             }
         }
-    }
-    if (addressExists === false) {
-        return null;
-    }
-    balance.confirmedBalance = confirmedOneSum;
-    balance.safeBalance = confirmedSum;
-    balance.pendingBalance = pendingSum;
+        if (addressExists === false) {
+            return null;
+        }
+        balance.confirmedBalance = confirmedOneSum;
+        balance.safeBalance = confirmedSum;
+        balance.pendingBalance = pendingSum;
 
-    return balance;
-}
+        return balance;
+    }
 }

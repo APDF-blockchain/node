@@ -1,1 +1,0 @@
-{"version":3,"file":"balance.js","sourceRoot":"","sources":["../../src/models/balance.ts"],"names":[],"mappings":";;;AAAA;;;GAGG;AACH,MAAa,OAAO;IAkBhB;;;OAGG;IACH;QACI,IAAI,CAAC,cAAc,GAAG,0CAA0C,CAAC;QACjE,IAAI,CAAC,gBAAgB,GAAG,CAAC,CAAC;QAC1B,IAAI,CAAC,cAAc,GAAG,CAAC,CAAC;QACxB,IAAI,CAAC,WAAW,GAAG,CAAC,CAAC;IACzB,CAAC;CACJ;AA5BD,0BA4BC"}
