@@ -26,7 +26,7 @@ class Node {
         /**
          * @description - p2p port number for the p2p server
          */
-        this.p2pPort = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort;
+        this.p2pPort = this.config.defaultP2pPort;
         /**
          * @description - comma separated list of peer urls.
          */
