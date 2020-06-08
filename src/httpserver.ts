@@ -361,7 +361,7 @@ export class HttpServer {
              * find the mined block in the mining request map.
              */
             let candidateBlock: Block = this.blockchain.getMiningRequestMap().get(req.body.blockDataHash);
-            if (candidateBlock.blockDataHash === undefined) {
+            if (candidateBlock == undefined || candidateBlock.blockDataHash === undefined) {
                 rVal.message = 'Block not found or already mined';
                 res.status(404).send({ 'error': rVal.message });
             } else {

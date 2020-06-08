@@ -155,28 +155,6 @@ class BlockChain {
         this.p2p = p2p;
     }
     /**
-     * @description - adjust the block mining difficulty
-     */
-    adjustMiningDifficulty() {
-        // I believe the times are in millseconds.
-        let _blocks = this.getBlockchain();
-        let pTime = this.getGenesisBlock().timestamp;
-        let cTime = this.getGenesisBlock().timestamp;
-        let sTime = 0;
-        for (let i = 0; i < _blocks.length; i++) {
-            cTime = _blocks[i].timestamp;
-            sTime += cTime - pTime;
-            pTime = cTime;
-        }
-        let average = sTime / this.getBlocksCount();
-        if (average <= this.config.targetBlockTime) {
-            this.difficulty++;
-        }
-        else if (this.difficulty > 1) {
-            this.difficulty--;
-        }
-    }
-    /**
      * @description - creates a new block for the miner.
      * @param {string} minerAddress - address of the miner
      * @returns {Block} - new miner block
@@ -708,7 +686,7 @@ class BlockChain {
             message.message = 'Sender address has no balance.';
             return message;
         }
-        if (rBalance.confirmedBalance < transaction.value + transaction.fee) {
+        if (transaction.from !== this.config.nullAddress && rBalance.confirmedBalance < transaction.value + transaction.fee) {
             message.message = 'Sender does not have enough funds to complete the transaction';
         }
         if (transaction.value < 0) {
@@ -923,6 +901,42 @@ class BlockChain {
     getCurrentDifficulty() {
         return this.difficulty;
     }
+    /**
+     * @description - adjust the block mining difficulty
+     */
+    adjustMiningDifficulty() {
+        // I believe the times are in millseconds.
+        const previousBlockTimestamp = this.getBlockchain()[this.blockchain.length - 1].timestamp;
+        const currentBlockTimestamp = this.getLatestBlock().timestamp;
+        let difftime = (currentBlockTimestamp - previousBlockTimestamp);
+        if (difftime <= this.config.targetBlockTime) {
+            this.difficulty++;
+        }
+        else if (this.difficulty > 1) {
+            this.difficulty--;
+        }
+    }
+    // /**
+    //  * @description - adjust the block mining difficulty
+    //  */
+    // public adjustMiningDifficulty(): void {
+    //     // I believe the times are in millseconds.
+    //     let _blocks: Block[] = this.getBlockchain();
+    //     let pTime: number = this.getGenesisBlock().timestamp;
+    //     let cTime: number = this.getGenesisBlock().timestamp;
+    //     let sTime: number = 0;
+    //     for (let i = 0; i < _blocks.length; i++) {
+    //         cTime = _blocks[i].timestamp;
+    //         sTime += (cTime - pTime);
+    //         pTime = cTime;
+    //     }
+    //     let average: number = sTime / this.getBlocksCount();
+    //     if (average <= this.config.targetBlockTime) {
+    //         this.difficulty++;
+    //     } else if (this.difficulty > 1) {
+    //         this.difficulty--;
+    //     }
+    // }
     /**
      * @description - get the cumulative difficulty
      * @returns {number} cumulative difficulty

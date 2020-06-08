@@ -3,4 +3,13 @@ npm-debug.log
 .idea
 /dist
 dist
+dist/*
 src/p2p copy.ts.old
+dist/blockchain.js
+dist/blockchain.js
+dist/blockchain.js
+dist/blockchain.js.map
+dist/config.js
+dist/config.js.map
+dist/httpserver.js
+dist/httpserver.js.map
