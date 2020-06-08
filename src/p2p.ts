@@ -86,9 +86,9 @@ export class P2P {
      */
     public initP2PServer(p2pPort: number) {
         this.mylistenerPort = p2pPort;
-        this.mylistenerUrl = 'ws://' + this.mylistenerHost + '/stream' + ':' + this.mylistenerPort;
+        this.mylistenerUrl = 'ws://' + this.mylistenerHost + '/stream';
         console.log('*************************************** ', this.mylistenerUrl);
-        const server: Server = new WebSocket.Server({ port: p2pPort });
+        const server = new WebSocket(this.mylistenerUrl);
         server.on('connection', (ws: WebSocket, req: Request) => {
             //console.log('req='+JSON.stringify(req));
             let remoteAddress: string = req.url;
