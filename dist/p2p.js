@@ -66,7 +66,7 @@ class P2P {
             'type': MessageType.RESPONSE_TRANSACTION_POOL,
             'data': JSON.stringify(this.blockchain.getTransactionPool())
         });
-        this.mylistenerHost = process.env.NODE_ENV === 'production' ? 'https://awesome-blockchain-node.herokuapp.com' : 'localhost';
+        this.mylistenerHost = 'localhost';
     }
     /**
      * @description - Initialize the mylistener for this peer-to-peer server
@@ -74,8 +74,7 @@ class P2P {
      */
     initP2PServer(p2pPort) {
         this.mylistenerPort = p2pPort;
-        this.mylistenerUrl = 'ws://' + this.mylistenerHost + '/stream' + ':' + this.mylistenerPort;
-        console.log('*************************************** ', this.mylistenerUrl);
+        this.mylistenerUrl = 'ws://' + this.mylistenerHost + ":" + p2pPort;
         const server = new ws_1.default.Server({ port: p2pPort });
         server.on('connection', (ws, req) => {
             //console.log('req='+JSON.stringify(req));
