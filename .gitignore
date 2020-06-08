@@ -13,3 +13,5 @@ dist/config.js
 dist/config.js.map
 dist/httpserver.js
 dist/httpserver.js.map
+dist/blockchain.js
+dist/blockchain.js.map

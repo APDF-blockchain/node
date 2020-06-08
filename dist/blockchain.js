@@ -686,7 +686,7 @@ class BlockChain {
             message.message = 'Sender address has no balance.';
             return message;
         }
-        if (transaction.from !== this.config.nullAddress && rBalance.confirmedBalance < transaction.value + transaction.fee) {
+        if (transaction.from !== this.config.nullAddress && (rBalance.confirmedBalance + rBalance.safeBalance) < transaction.value + transaction.fee) {
             message.message = 'Sender does not have enough funds to complete the transaction';
         }
         if (transaction.value < 0) {
