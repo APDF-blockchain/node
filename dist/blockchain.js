@@ -906,14 +906,19 @@ class BlockChain {
      */
     adjustMiningDifficulty() {
         // I believe the times are in millseconds.
-        const previousBlockTimestamp = this.getBlockchain()[this.blockchain.length - 1].timestamp;
-        const currentBlockTimestamp = this.getLatestBlock().timestamp;
-        let difftime = (currentBlockTimestamp - previousBlockTimestamp);
-        if (difftime <= this.config.targetBlockTime) {
-            this.difficulty++;
+        if (this.getBlocksCount() > 2) {
+            const previousBlockTimestamp = this.blockchain[this.blockchain.length - 2].timestamp;
+            const currentBlockTimestamp = this.getLatestBlock().timestamp;
+            let difftime = Math.round((currentBlockTimestamp - previousBlockTimestamp) / 1000);
+            if (difftime <= this.config.targetBlockTime) {
+                this.difficulty++;
+            }
+            else if (this.difficulty > 1) {
+                this.difficulty--;
+            }
         }
-        else if (this.difficulty > 1) {
-            this.difficulty--;
+        else {
+            this.difficulty = 1;
         }
     }
     // /**

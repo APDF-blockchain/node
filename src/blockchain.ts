@@ -967,13 +967,17 @@ export class BlockChain {
      */
     public adjustMiningDifficulty(): void {
         // I believe the times are in millseconds.
-        const previousBlockTimestamp: number = this.getBlockchain()[this.blockchain.length -1].timestamp;
-        const currentBlockTimestamp: number = this.getLatestBlock().timestamp;
-        let difftime: number =  (currentBlockTimestamp - previousBlockTimestamp);
-        if (difftime <= this.config.targetBlockTime) {
-            this.difficulty++;
-        } else if (this.difficulty > 1) {
-            this.difficulty--;
+        if (this.getBlocksCount() > 2) {
+            const previousBlockTimestamp: number = this.blockchain[this.blockchain.length - 2].timestamp;
+            const currentBlockTimestamp: number = this.getLatestBlock().timestamp;
+            let difftime: number = Math.round((currentBlockTimestamp - previousBlockTimestamp)/1000);
+            if (difftime <= this.config.targetBlockTime) {
+                this.difficulty++;
+            } else if (this.difficulty > 1) {
+                this.difficulty--;
+            }
+        } else {
+            this.difficulty = 1;
         }
     }
     // /**

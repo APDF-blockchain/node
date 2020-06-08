@@ -47,7 +47,7 @@ class Config {
         this.oneCoin = 1000 * this.milliCoin;
         this.confirmCount = 1;
         this.safeConfirmCount = 6;
-        this.targetBlockTime = 5000; // 5 seconds.
+        this.targetBlockTime = 30; // seconds
     }
 }
 exports.Config = Config;
