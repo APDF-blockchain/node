@@ -62,7 +62,7 @@ export class P2P {
     * @param {Block[]} blockchain - The blockchain.
     */
     constructor(private blockchain: BlockChain) {
-        this.mylistenerHost = process.env.NODE_ENV === 'production' ? 'awesome-blockchain-node.herokuapp.com' : 'localhost';
+        this.mylistenerHost = 'localhost';
     }
 
     /**
@@ -86,9 +86,8 @@ export class P2P {
      */
     public initP2PServer(p2pPort: number) {
         this.mylistenerPort = p2pPort;
-        this.mylistenerUrl = 'ws://' + this.mylistenerHost + '/stream' + ':' + this.mylistenerPort;
-        console.log('*************************************** ', this.mylistenerUrl);
-        const server: Server = new WebSocket.Server({ host: 'ws://' + this.mylistenerHost + '/stream', port: p2pPort });
+        this.mylistenerUrl = 'ws://' + this.mylistenerHost + ":" + p2pPort;
+        const server: Server = new WebSocket.Server({ port: p2pPort });
         server.on('connection', (ws: WebSocket, req: Request) => {
             //console.log('req='+JSON.stringify(req));
             let remoteAddress: string = req.url;
