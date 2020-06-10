@@ -778,6 +778,7 @@ export class BlockChain {
     public getTransactions(address: string): Transaction[] {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
+        _aTrans = _aTrans.concat(this.getPendingTransactions());
         for (let i = 0; i < _aTrans.length; i++) {
             if (_aTrans[i].from === address || _aTrans[i].to === address) {
                 rVal.push(_aTrans[i]);
