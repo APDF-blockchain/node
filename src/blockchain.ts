@@ -721,6 +721,7 @@ export class BlockChain {
         let validateDups: ValidationMessage = new ValidationMessage();
         let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
         let allTrans: Transaction[] = this.getAllNonPendingTransactions();
+        allTrans = allTrans.concat(this.getPendingTransactions());
         for (let i = 0; i < allTrans.length; i++) {
             let _ltransactionDataHash: string = allTrans[i].transactionDataHash;
             if (_ltransactionDataHash === _transactionDataHash) {
