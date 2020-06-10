@@ -740,7 +740,8 @@ export class BlockChain {
             message.message = 'Sender address has no balance.';
             return message;
         }
-        if (transaction.from !== this.config.nullAddress && (rBalance.confirmedBalance + rBalance.safeBalance) < transaction.value + transaction.fee) {
+        if (transaction.from !== this.config.nullAddress && (rBalance.confirmedBalance) < transaction.value + transaction.fee) {
+            //if (transaction.from !== this.config.nullAddress && (rBalance.confirmedBalance + rBalance.safeBalance) < transaction.value + transaction.fee) {
             message.message = 'Sender does not have enough funds to complete the transaction';
         }
         if (transaction.value < 0) {
@@ -970,7 +971,7 @@ export class BlockChain {
         if (this.getBlocksCount() > 2) {
             const previousBlockTimestamp: number = this.blockchain[this.blockchain.length - 2].timestamp;
             const currentBlockTimestamp: number = this.getLatestBlock().timestamp;
-            let difftime: number = Math.round((currentBlockTimestamp - previousBlockTimestamp)/1000);
+            let difftime: number = Math.round((currentBlockTimestamp - previousBlockTimestamp) / 1000);
             if (difftime <= this.config.targetBlockTime) {
                 this.difficulty++;
             } else if (this.difficulty > 1) {
@@ -1038,7 +1039,10 @@ export class BlockChain {
         let rVal: number = 1;
         let currentBlockHeight: number = this.getBlocksCount();
         let transactionBlockIndex: number = _transaction.minedInBlockIndex;
-        rVal = currentBlockHeight - transactionBlockIndex + 1;
+        rVal = currentBlockHeight - transactionBlockIndex;
+        if (rVal <= 0) {
+            rVal = 1;
+        }
         return rVal;
     }
 
@@ -1053,44 +1057,49 @@ export class BlockChain {
         // calculate the balances for this account.
         balance.accountAddress = address;
         let myTrans: Transaction[] = this.getAllTransactions();
-        if (myTrans === undefined) {
-            return null;
-        }
-        let confirmedSum: number = 0;
+        myTrans = myTrans.concat(this.getPendingTransactions());
+        // if (myTrans === undefined) {
+        //     return null;
+        // }
+        let safeSum: number = 0;
         let confirmedOneSum: number = 0;
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
-            if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
-                addressExists = true;
-            }
-            if (myTrans[i].transferSuccessful === true && addressExists) {
+            // if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
+            //     addressExists = true;
+            // }
+            //if (myTrans[i].transferSuccessful === true && addressExists) {
+            if (myTrans[i].transferSuccessful === true) {
                 let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
-                if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
+                //if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
+                if (_comfirmationCount >= this.config.confirmCount) {
                     if (myTrans[i].from === address && myTrans[i].to !== address) {
                         confirmedOneSum -= (myTrans[i].value + myTrans[i].fee);
                     } else if (myTrans[i].from !== address && myTrans[i].to === address) {
                         confirmedOneSum += myTrans[i].value;
                     }
-                } else if (_comfirmationCount >= this.config.safeConfirmCount) {
+                }
+                if (_comfirmationCount >= this.config.safeConfirmCount) {
                     if (myTrans[i].from === address && myTrans[i].to !== address) {
-                        confirmedSum -= (myTrans[i].value + myTrans[i].fee);
+                        safeSum -= (myTrans[i].value + myTrans[i].fee);
                     } else if (myTrans[i].from !== address && myTrans[i].to === address) {
-                        confirmedSum += myTrans[i].value;
-                    }
-                } else {
-                    if (myTrans[i].from === address && myTrans[i].to !== address) {
-                        pendingSum -= (myTrans[i].value + myTrans[i].fee);
-                    } else if (myTrans[i].from !== address && myTrans[i].to === address) {
-                        pendingSum += myTrans[i].value;
+                        safeSum += myTrans[i].value;
                     }
                 }
             }
+            if (myTrans[i].minedInBlockIndex === -1) {
+                if (myTrans[i].from === address && myTrans[i].to !== address) {
+                    pendingSum -= (myTrans[i].value + myTrans[i].fee);
+                } else if (myTrans[i].from !== address && myTrans[i].to === address) {
+                    pendingSum += myTrans[i].value;
+                }
+            }
         }
-        if (addressExists === false) {
-            return null;
-        }
+        // if (addressExists === false) {
+        //     return null;
+        // }
         balance.confirmedBalance = confirmedOneSum;
-        balance.safeBalance = confirmedSum;
+        balance.safeBalance = safeSum;
         balance.pendingBalance = pendingSum;
 
         return balance;
