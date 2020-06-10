@@ -413,7 +413,7 @@ export class BlockChain {
      * @returns {any[]} balances
      */
     public getBalances(): { [address: string]: number } {
-        const mytrans: Transaction[] = this.getAllTransactions();
+        const mytrans: Transaction[] = this.getAllNonPendingTransactions();
         if (mytrans.length === 0) {
             return null;
         }
@@ -442,7 +442,7 @@ export class BlockChain {
     /**
      * @description - get all the transactions in all blocks
      */
-    public getAllTransactions(): Transaction[] {
+    public getAllNonPendingTransactions(): Transaction[] {
         let rTrans: Transaction[] = [];
         /**
          * Get all the transactions in all the blocks.
@@ -464,7 +464,7 @@ export class BlockChain {
      */
     public getTransactionsByTxHash(txHash: string): Transaction[] {
         let rVal: Transaction[] = [];
-        let _aTrans: Transaction[] = this.getAllTransactions();
+        let _aTrans: Transaction[] = this.getAllNonPendingTransactions();
         _aTrans = _aTrans.concat(this.getPendingTransactions());
         for (let i = 0; i < _aTrans.length; i++) {
             if (_aTrans[i].transactionDataHash === txHash) {
@@ -507,7 +507,7 @@ export class BlockChain {
      */
     public getConfirmedTransactions(): Transaction[] {
         let rVal: Transaction[] = [];
-        let _aTrans: Transaction[] = this.getAllTransactions();
+        let _aTrans: Transaction[] = this.getAllNonPendingTransactions();
         for (let i = 0; i < _aTrans.length; i++) {
             if (_aTrans[i].transferSuccessful === true && this.calculateConfirmationCount(_aTrans[i]) >= this.config.confirmCount) {
                 rVal.push(_aTrans[i]);
@@ -720,7 +720,7 @@ export class BlockChain {
         }
         let validateDups: ValidationMessage = new ValidationMessage();
         let _transactionDataHash: string = this.calcTransactionDataHash(transaction);
-        let allTrans: Transaction[] = this.getAllTransactions();
+        let allTrans: Transaction[] = this.getAllNonPendingTransactions();
         for (let i = 0; i < allTrans.length; i++) {
             let _ltransactionDataHash: string = allTrans[i].transactionDataHash;
             if (_ltransactionDataHash === _transactionDataHash) {
@@ -778,7 +778,7 @@ export class BlockChain {
      */
     public getTransactions(address: string): Transaction[] {
         let rVal: Transaction[] = [];
-        let _aTrans: Transaction[] = this.getAllTransactions();
+        let _aTrans: Transaction[] = this.getAllNonPendingTransactions();
         _aTrans = _aTrans.concat(this.getPendingTransactions());
         for (let i = 0; i < _aTrans.length; i++) {
             if (_aTrans[i].from === address || _aTrans[i].to === address) {
@@ -1054,23 +1054,15 @@ export class BlockChain {
      * @returns {Balance} balance
      */
     public getAccountBalance(address: string): Balance {
-        let addressExists: boolean = false;
         let balance: Balance = new Balance();
         // calculate the balances for this account.
         balance.accountAddress = address;
-        let myTrans: Transaction[] = this.getAllTransactions();
+        let myTrans: Transaction[] = this.getAllNonPendingTransactions();
         myTrans = myTrans.concat(this.getPendingTransactions());
-        // if (myTrans === undefined) {
-        //     return null;
-        // }
         let safeSum: number = 0;
         let confirmedOneSum: number = 0;
         let pendingSum: number = 0;
         for (let i = 0; i < myTrans.length; i++) {
-            // if ((myTrans[i].from === address || myTrans[i].to === address) && !addressExists) {
-            //     addressExists = true;
-            // }
-            //if (myTrans[i].transferSuccessful === true && addressExists) {
             if (myTrans[i].transferSuccessful === true) {
                 let _comfirmationCount = this.calculateConfirmationCount(myTrans[i]);
                 //if (_comfirmationCount >= this.config.confirmCount && _comfirmationCount < this.config.safeConfirmCount) {
@@ -1097,9 +1089,6 @@ export class BlockChain {
                 }
             }
         }
-        // if (addressExists === false) {
-        //     return null;
-        // }
         balance.confirmedBalance = confirmedOneSum;
         balance.safeBalance = safeSum;
         balance.pendingBalance = pendingSum;
