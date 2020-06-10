@@ -465,6 +465,7 @@ export class BlockChain {
     public getTransactionsByTxHash(txHash: string): Transaction[] {
         let rVal: Transaction[] = [];
         let _aTrans: Transaction[] = this.getAllTransactions();
+        _aTrans = _aTrans.concat(this.getPendingTransactions());
         for (let i = 0; i < _aTrans.length; i++) {
             if (_aTrans[i].transactionDataHash === txHash) {
                 rVal.push(_aTrans[i]);
