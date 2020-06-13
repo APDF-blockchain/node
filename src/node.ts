@@ -28,11 +28,11 @@ export class Node {
     /**
      * @description - http port for the http server
      */
-    public httpPort: number = parseInt(process.env.PORT) || this.config.defaultServerPort;
+    public httpPort: number = parseInt(process.env.HTTP_PORT) || this.config.defaultServerPort;
     /**
      * @description - p2p port number for the p2p server
      */
-    public p2pPort: number = this.config.defaultP2pPort;
+    public p2pPort: number = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort;
     /**
      * @description - comma separated list of peer urls.
      */

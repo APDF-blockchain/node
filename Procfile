@@ -1,1 +1,1 @@
-web: NODE_ENV=production node dist/node.js
+web: NODE_ENV=production HTTP_PORT=3002 P2P_PORT=6002 node dist/node.js
