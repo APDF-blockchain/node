@@ -1,1 +1,1 @@
-worker: NODE_ENV=production node dist/node.js
+worker: NODE_ENV=production NPM_CONFIG_PRODUCTION=false node dist/node.js
