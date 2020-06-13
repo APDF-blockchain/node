@@ -33,7 +33,7 @@ export class Node {
     /**
      * @description - p2p port number for the p2p server
      */
-    public p2pPort: number = parseInt(process.env.NODE_ENV === 'production' ? process.env.PORT : process.env.P2P_PORT) || this.config.defaultP2pPort;
+    public p2pPort: number = process.env.NODE_ENV === 'production' || !parseInt(process.env.P2P_PORT) ? this.config.defaultP2pPort : parseInt(process.env.P2P_PORT);
     // public p2pPort: number = parseInt(process.env.P2P_PORT) || this.config.defaultP2pPort;
     /**
      * @description - comma separated list of peer urls.
